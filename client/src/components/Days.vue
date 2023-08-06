@@ -56,12 +56,6 @@ function eventClickHandler(date: DateObject) : void
     showEventModal.value = true
 }
 
-// function closeEventModal()
-// {
-//     showEventModal.value = false
-// }
-
-
 watch(() => store.state.days, (newValue) => {
     days.value = newValue;
 });

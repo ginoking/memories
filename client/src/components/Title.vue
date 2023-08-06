@@ -12,6 +12,8 @@
 import { ref } from "vue"
 import { useStore } from 'vuex'
 import moment from 'moment'
+import axiosInstance from '../axios/axios';
+
 const store = useStore()
 let currentDate = ref(`2021-12-01`);
 let yearTitle = ref(formatDate('YYYY'));
@@ -143,7 +145,9 @@ const events: {
 
 changeDates(true);
 
-function changeDates(next: boolean): void {  
+function changeDates(next: boolean): void { 
+	console.log(axiosInstance.get('/'));
+	
     const containEventDays : Array<object> = [];
     const newMoment = next ? moment(currentDate.value).add(1, "M") : moment(currentDate.value).subtract(1, "M");
     currentDate.value = newMoment.format('YYYY-MM-DD').toString();

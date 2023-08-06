@@ -30,5 +30,6 @@ app.use(createPinia())
 app.use(router)
 app.use(store)
 app.use(VueSweetalert2)
+// app.mixin(axiosInstance)
 
 app.mount('#app')
