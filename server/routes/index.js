@@ -1,39 +1,28 @@
 var express = require('express');
 var router = express.Router();
-const Stories = require("../database/mongodb");
+const event_controller = require("../controllers/eventController");
 const yup = require('yup');
-const moment = require('moment');
 
-
-router.get("/", async (req, res) => {
+const validate = () => async (req, res, next) => {
 	try {
 		const DATE_REGEX = /^[0-9]{4}-[0-9]{2}$/;
 
 		const linkSchema = yup.object({
 			body: yup.object({
-			  date: yup.string().matches(DATE_REGEX, 'birthDate must be in the format YYYY-MM-DD'),
+				time: yup.string().matches(DATE_REGEX, 'time must be in the format YYYY-MM'),
 			}),
 		});
-
 		await linkSchema.validate({
-			body: req.body
+			body: req.body,
+			query: req.query,
+			params: req.params,
 		});
-
-		const start = moment('2022-01', 'YYYY-MM-DD')
-		const end = start.clone().endOf('month').format('YYYY-MM-DD');
-		
-		const stories = await Stories.find({
-			date :{
-				$gte: start,
-				$lt: end
-			}
-		});
-
-		res.json(stories);
+		return next();
 	} catch (err) {
-		//如果資料庫出現錯誤時回報 status:500 並回傳錯誤訊息 
-		res.status(500).json({ message: err.message })
+		return res.status(500).json({ type: err.name, message: err.message });
 	}
-})
+};
+
+router.post("/", validate(), event_controller.index)
 
 module.exports = router;

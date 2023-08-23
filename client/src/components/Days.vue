@@ -2,7 +2,7 @@
     <div class="darkgrey body-list">
         <ul>
             <li v-for="i in days" :class="checkEventClass(i)" @click="eventClickHandler(i)">
-                {{ i.date }}
+                {{ i.number }}
             </li>
         </ul>
     </div>
@@ -11,9 +11,7 @@
         v-if="showEventModal" 
         @click="eventClickHandler" 
         @close-modal="showEventModal = false"
-        :title="title"
-        :image="image"
-        :des="des"
+        :event="event"
         />
     </Transition>
     
@@ -26,10 +24,11 @@ import EventModal from "./EventModal.vue"
 const store = useStore();
 const days = ref(store.state.days);
 const showEventModal = ref(false)
-const title = ref('');
-const image = ref('');
-// const date = ref('');
-const des = ref('');
+const event = ref({});
+// const title = ref('');
+// const image = ref('');
+// // const date = ref('');
+// const des = ref('');
 
 interface DateObject {
     event: {
@@ -46,12 +45,12 @@ function checkEventClass(date: DateObject) : string {
 function eventClickHandler(date: DateObject) : void 
 {
     if (!date.event) return 
-    const event = date.event
+    event.value = date.event
     
-    title.value = event.name;
-    des.value = event.des;
-    image.value = event.image;
-    // date.value = date.date;
+    // title.value = event.name;
+    // des.value = event.des;
+    // image.value = event.image;
+    // // date.value = date.date;
 
     showEventModal.value = true
 }

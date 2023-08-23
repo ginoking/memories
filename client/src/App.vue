@@ -88,7 +88,7 @@ body > .title {
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
-    background-color: #203139;
+    background-color: #8abae1;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 	margin-top: 50px;

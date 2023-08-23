@@ -1,22 +1,31 @@
 <template>
     <div class="modal-overlay" @click.self="close">
         <div class="modal">
-            <h6>{{ title }}</h6>
-            <p>{{ date }}</p>
-            <p>{{ des }}</p>
-        </div>
-        <div class="close" @click="close">
-            <img class="close-img" src="../assets/close-icon.svg" alt="" />
+            <div class="modal-header">
+                <div class="close" @click="close">
+                    <img class="close-img" src="../assets/close-icon.svg" alt="" />
+                </div>
+            </div>
+            <div class="modal-content">
+                <h6 class="name">{{ event.name }}</h6>
+                <p class="date">{{ moment(event.date).format('YYYY/MM/DD') }}</p>
+                <img src="123459789" alt="">
+                <p class="des">{{ event.des }}</p>
+            </div>
         </div>
     </div>
 </template>
   
 <script setup lang="ts">
+import moment from 'moment';
+interface EventObject {
+    name: string,
+    des: string,
+    image: string,
+    date: string
+}
 const props = defineProps<{
-  title?: string
-  date?: string
-  image?: string
-  des?: string
+    event: EventObject
 }>()
 const emit = defineEmits(['close-modal'])
 const close = () => {
@@ -37,17 +46,31 @@ const close = () => {
 }
 
 .modal {
+    position: relative;
     text-align: center;
-    background-color: #ccc;
-    height: 500px;
-    width: 500px;
+    background-color: #78aede;
+    color: #fff;
+    max-height: 500px;
+    width: 550px;
     margin-top: 10%;
-    padding: 60px 0;
+    padding: 30px 0;
     border-radius: 20px;
 }
+.modal .modal-content {
+    padding: 1rem;
+}
 
-.close {
-    margin: 10% 0 0 16px;
+.modal .modal-content .name {
+    text-align: left;
+}
+
+.modal .modal-content .date {
+    text-align: right;
+}
+.modal .close {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .close-img {
