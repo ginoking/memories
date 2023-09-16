@@ -76,7 +76,7 @@ watch(() => store.state.days, (newValue) => {
     justify-content: center;
     align-items: center;
     width: 14.28%;
-    height: 80px;
+    height: 8vh;
     line-height: 36px;
     font-size: 15px;
     list-style-type: none;
@@ -86,13 +86,13 @@ watch(() => store.state.days, (newValue) => {
     text-align: center;
 }
 .event {
-    color: #daa0a1;
+    color: #ff0008;
     border: 0;
     background-color: transparent;
-    background-image: url('/static/images/heart.png');
+    background-image: url('heart.png');
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 70px;
     cursor: pointer;
 }
 .v-enter-active,
@@ -103,5 +103,11 @@ watch(() => store.state.days, (newValue) => {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+
+@media (max-width: 768px) {
+    .event {
+        background-size: 60px;
+    }
 }
 </style>

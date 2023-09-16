@@ -260,7 +260,7 @@ body > .title {
     }
 
     .footer > p {
-        font-size: 18px;
+        font-size: 20px;
     }
 
     .modal-content {
@@ -284,6 +284,12 @@ body > .title {
 
     .modal .image {
        max-width: 25%;
+    }
+}
+
+@media (min-width: 1024px) {
+    #app {
+        padding: 0.5rem;
     }
 }
 </style>

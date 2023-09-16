@@ -9,7 +9,7 @@
             <div class="modal-content">
                 <h6 class="name">{{ event.name }}</h6>
                 <p class="date">{{ moment(event.date).format('YYYY/MM/DD') }}</p>
-                <img src="123459789" alt="">
+                <img :src="`${serverUrl}/${event.image}`" alt="">
                 <p class="des">{{ event.des }}</p>
             </div>
         </div>
@@ -18,6 +18,7 @@
   
 <script setup lang="ts">
 import moment from 'moment';
+import axiosInstance from '../axios/axios';
 interface EventObject {
     name: string,
     des: string,
@@ -31,6 +32,7 @@ const emit = defineEmits(['close-modal'])
 const close = () => {
     emit('close-modal', false)
 }
+const serverUrl = axiosInstance.defaults.baseURL;
 </script>
 
 <style scoped>
@@ -50,11 +52,14 @@ const close = () => {
     text-align: center;
     background-color: #78aede;
     color: #fff;
-    max-height: 500px;
-    width: 550px;
-    margin-top: 10%;
+    max-height: 85vh;
+    width: 80%;
+    margin-top: 1.5rem;
     padding: 30px 0;
     border-radius: 20px;
+}
+.modal h6 {
+    margin: 10px;
 }
 .modal .modal-content {
     padding: 1rem;
@@ -62,10 +67,22 @@ const close = () => {
 
 .modal .modal-content .name {
     text-align: left;
+    margin-bottom: 0;
 }
 
 .modal .modal-content .date {
     text-align: right;
+    margin-bottom: 0;
+}
+
+.modal .modal-content .des {
+    text-align: left;
+    margin-bottom: 0;
+}
+
+.modal .modal-content img {
+    width: 50%;
+    border-radius: 10px;
 }
 .modal .close {
     position: absolute;
@@ -85,7 +102,7 @@ const close = () => {
 h6 {
     font-weight: 500;
     font-size: 28px;
-    margin: 20px 0;
+    margin: 10px 0;
 }
 
 p {
