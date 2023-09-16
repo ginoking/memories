@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const event_controller = require("../controllers/eventController");
+const create_controller = require("../controllers/createController");
 const yup = require('yup');
 
 const validate = () => async (req, res, next) => {
@@ -24,5 +25,6 @@ const validate = () => async (req, res, next) => {
 };
 
 router.post("/", validate(), event_controller.index)
+router.post("create", create_controller.index);
 
 module.exports = router;
