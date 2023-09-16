@@ -45,5 +45,6 @@ function formatDate(format: string) : string {
 <style scoped>
     .title a {
         cursor: pointer;
+        font-size: 25px;
     }
 </style>

@@ -87,6 +87,26 @@ const serverUrl = axiosInstance.defaults.baseURL;
 .modal .modal-content img {
     width: 50%;
     border-radius: 10px;
+    --s: 15px;  /* size of the frame */
+    --b: 2px;   /* border thickness */
+    --w: 80px; /* width of the image */
+    --c: #fff;
+    object-fit: cover;
+    padding: calc(2*var(--s));
+    --_g: var(--c) var(--b),#0000 0 calc(100% - var(--b)),var(--c) 0;
+    background:
+        linear-gradient(      var(--_g)) 50%/100% var(--_i,100%) no-repeat,
+        linear-gradient(90deg,var(--_g)) 50%/var(--_i,100%) 100% no-repeat;
+    outline: calc(var(--w)/2) solid #0009;
+    outline-offset: calc(var(--w)/-2 - 2*var(--s));
+    transition: .4s;
+    cursor: pointer;
+}
+
+.modal .modal-content img:hover {
+  outline: var(--b) solid var(--c);
+  outline-offset: calc(var(--s)/-2);
+  --_i: calc(100% - 2*var(--s));
 }
 .modal .close {
     position: absolute;
