@@ -63,6 +63,7 @@ const serverUrl = axiosInstance.defaults.baseURL;
 }
 .modal .modal-content {
     padding: 1rem;
+    font-family: Microsoft JhengHei;
 }
 
 .modal .modal-content .name {
@@ -73,6 +74,9 @@ const serverUrl = axiosInstance.defaults.baseURL;
 .modal .modal-content .date {
     text-align: right;
     margin-bottom: 0;
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    letter-spacing: 3px;
 }
 
 .modal .modal-content .des {
