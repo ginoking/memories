@@ -24,7 +24,14 @@ import EventModal from "./EventModal.vue"
 const store = useStore();
 const days = ref(store.state.days);
 const showEventModal = ref(false)
-const event = ref({});
+const event = ref(
+    {
+        name: "",
+        des: "",
+        image: "",
+        date: ""
+    }
+);
 // const title = ref('');
 // const image = ref('');
 // // const date = ref('');
@@ -34,7 +41,8 @@ interface DateObject {
     event: {
         name: string,
         des: string,
-        image: string
+        image: string,
+        date: string
     }
 }
 
@@ -89,7 +97,7 @@ watch(() => store.state.days, (newValue) => {
     color: #ff0008;
     border: 0;
     background-color: transparent;
-    background-image: url('heart.png');
+    /* background-image: url('heart.png');*/
     background-position: center;
     background-repeat: no-repeat;
     background-size: 70px;

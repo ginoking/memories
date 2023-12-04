@@ -18,7 +18,7 @@ const store = createStore({
         }
     },
     mutations: {
-        setDays(state, days: [string, number]) {
+        setDays(state, days) {
             state.days = days
         }
     }
