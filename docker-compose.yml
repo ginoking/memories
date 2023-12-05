@@ -1,0 +1,39 @@
+version: '3'
+networks:
+  myNetwork:
+    driver: bridge
+services:
+  client:
+    container_name: 'gino-memory-client'
+    build: ./client
+    restart: always
+    ports: 
+      - 7070:80
+    depends_on:
+      - db
+      - backend
+    networks:
+      - myNetwork
+    # volumes:
+    #   - ./client:/app
+  backend:
+    container_name: 'gino-memory-backend'
+    build: ./server
+    restart: always
+    ports: 
+      - 3000:3000
+    depends_on:
+      - db
+    networks:
+      - myNetwork
+    environment:
+      MONGO_URI: mongodb://db:27017
+  db:
+    image: 'mongo'
+    container_name: 'gino-memory-db'
+    ports:
+      - 27017:27017
+    networks:
+      - myNetwork
+    volumes:
+      - ./tmp/data/db:/data/db

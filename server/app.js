@@ -15,13 +15,14 @@ app.use(cookieParser());
 app.use(express.static('public'));
 app.use('/images', express.static('images'));
 app.use(cors({
-  origin: 'http://localhost:5173'
+  // origin: 'http://localhost:5173'
 }));
 
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  console.log(404);
   next(createError(404));
 });
 
