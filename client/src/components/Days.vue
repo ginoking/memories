@@ -97,7 +97,7 @@ watch(() => store.state.days, (newValue) => {
     color: #ff0008;
     border: 0;
     background-color: transparent;
-    /* background-image: url('heart.png');*/
+    background-image: url('/heart.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: 70px;
