@@ -1,6 +1,18 @@
 <script setup lang="ts">
 import Days from '../components/Days.vue'
 import Title from '../components/Title.vue'
+import axiosInstance from '../axios/axios';
+import { ref } from "vue";
+const selectFile = ref({});
+const fileChange = (e: Event) => {
+    selectFile.value = e.target.files[0];
+    console.log(selectFile.value);
+}
+const create = () => {
+    const formData = new FormData;
+    formData.append("file", selectFile.value);
+    axiosInstance.post("create", formData);
+}
 </script>
 
 <template>
@@ -23,6 +35,9 @@ import Title from '../components/Title.vue'
 		<div class="footer">
 			<p>Hope we can remember our memories forever.</p>
 		</div>
+
+        <input type="file" @change="fileChange">
+        <button @click="create">upload</button>
 	</div>
 </template>
 

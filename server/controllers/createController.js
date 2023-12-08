@@ -10,9 +10,9 @@ exports.index = async (req, res) => {
 		const myFile = req.files.file;
 	
 		//  mv() method places the file inside public directory
-		myFile.mv(`${__dirname}/public/${myFile.name}`, function (err) {
+		myFile.mv(`${__dirname}/public/images/${myFile.name}`, function (err) {
 			if (err) {
-				console.log(err)
+				// console.log(err)
 				return res.status(500).send({ msg: "Error occured" });
 			}
 			// returing the response with file path and name
