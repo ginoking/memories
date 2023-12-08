@@ -30,9 +30,6 @@ async function changeDates(next: boolean): Promise<void> {
     yearTitle.value = formatDate('YYYY');
     monthTitle.value = formatDate('MMMM');
 
-	console.log(newMoment.format("YYYY-MM"));
-	
-
 	const { data } = await axiosInstance.post('/', {time: newMoment.format("YYYY-MM")})
 
     store.commit('setDays', data)    

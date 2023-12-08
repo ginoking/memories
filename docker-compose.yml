@@ -8,14 +8,16 @@ services:
     build: ./client
     restart: always
     ports: 
-      - 7070:80
+      - 5173:5173
+    tty: true
     depends_on:
       - db
       - backend
     networks:
       - myNetwork
-    # volumes:
-    #   - ./client:/app
+    volumes:
+      - ./client:/app
+    
   backend:
     container_name: 'gino-memory-backend'
     build: ./server
@@ -37,3 +39,16 @@ services:
       - myNetwork
     volumes:
       - ./tmp/data/db:/data/db
+  nginx: 
+    image: 'nginx:stable-alpine'
+    ports:
+      - 7070:80
+    depends_on:
+      - db
+      - backend
+      - client
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    networks:
+      - myNetwork
+    tty: true
