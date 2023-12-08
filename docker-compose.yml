@@ -30,6 +30,8 @@ services:
       - myNetwork
     environment:
       MONGO_URI: mongodb://db:27017
+    volumes:
+      - ./server:/usr/src/app
   db:
     image: 'mongo'
     container_name: 'gino-memory-db'
