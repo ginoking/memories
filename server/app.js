@@ -15,7 +15,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static('public'));
 app.use('/images', express.static('images'));
-app.use(fileUpload());
+app.use(fileUpload({
+	createParentPath: true,
+}));
 app.use(cors({
 	// origin: 'http://localhost:5173'
 }));

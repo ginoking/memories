@@ -11,7 +11,10 @@ const fileChange = (e: Event) => {
 const create = () => {
     const formData = new FormData;
     formData.append("file", selectFile.value);
-    axiosInstance.post("create", formData);
+    axiosInstance.post("create", formData, {
+    headers: {
+        "Content-Type": "multipart/form-data",
+    }});
 }
 </script>
 
