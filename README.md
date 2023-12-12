@@ -10,5 +10,5 @@
 ## 技術
 1. vue3 + typescript
 2. nodejs(express)
-3. mongodb
+3. mongodb(mongoose)
 4. docker

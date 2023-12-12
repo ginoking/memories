@@ -7,12 +7,15 @@ exports.index = async (req, res) => {
 	
 		myFile.mv(`${__dirname}/../public/images/${myFile.name}`, function (err) {
 			if (err) {
-				console.log(err)
-				return res.status(500).send({ msg: "Error occured" });
+				return res.status(500).send({ message: "Error occured" });
 			}
-			// returing the response with file path and name
-			return res.send({name: myFile.name, path: `/${myFile.name}`});
 		});
+
+		const data = req.body;
+		data.image = "images/" + myFile.name;
+
+		await Stories.create(data);
+		return res.send("done");
 	} catch (err) {
 		//如果資料庫出現錯誤時回報 status:500 並回傳錯誤訊息 
 		res.status(500).json({ message: err.message })
