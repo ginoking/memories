@@ -1,14 +1,28 @@
 <template>
-    <a href="#" class="effect5">
+    <a href="#" class="effect5" @click="open">
         <i class="label">+</i>
     </a>
 </template>
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, inject } from "vue"
 import { useStore } from 'vuex'
 import moment from 'moment'
 import axiosInstance from '../axios/axios';
 
+const swal = inject('$swal');
+
+const open = () =>  {
+    // Use sweetalert2
+    swal({
+        html: `
+            <input type='text' class='swal2-input' name='name' id='name' placeholder='回憶名稱'>
+            <input type='textarea' class='swal2-input' name='des' id='des' placeholder='簡單描述'>
+            <input type='file' class='swal2-input' name='file' id='file' accept="image/png, image/jpeg, image/jpg">
+            <input type='date' class='swal2-input' name='date' id='date'>
+            `,
+        width: '70%'
+    });
+}
 
 </script>
 <style scoped>

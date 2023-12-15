@@ -14,12 +14,16 @@ const store = createStore({
         return {
             days: [],
             year: '2021',
-            month: '12'
+            month: '12',
+            editModelState: false 
         }
     },
     mutations: {
         setDays(state, days) {
             state.days = days
+        },
+        setEditModelState(state) {
+            state.editModelState = !state.editModelState
         }
     }
 })
