@@ -60,7 +60,8 @@ function eventClickHandler(date: DateObject) : void
     // image.value = event.image;
     // // date.value = date.date;
 
-    showEventModal.value = true
+    showEventModal.value = true;
+    store.commit('setShowCreateBtn', false);
 }
 
 watch(() => store.state.days, (newValue) => {

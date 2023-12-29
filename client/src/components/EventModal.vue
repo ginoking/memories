@@ -1,22 +1,26 @@
 <template>
-    <div class="modal-overlay" @click.self="close">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="close" @click="close">
-                    <img class="close-img" src="../assets/close-icon.svg" alt="" />
+    <div class="modal-overlay">
+        <div class="modal-container" @click.self="close">
+            <div class="modal">
+                <div class="modal-header">
+                    <div class="close" @click="close">
+                        <img class="close-img" src="../assets/close-icon.svg" alt="" />
+                    </div>
                 </div>
-            </div>
-            <div class="modal-content">
-                <h6 class="name">{{ event.name }}</h6>
-                <p class="date">{{ moment(event.date).format('YYYY/MM/DD') }}</p>
-                <img :src="`${serverUrl}/${event.image}`" alt="">
-                <p class="des">{{ event.des }}</p>
+                <div class="modal-content">
+                    <h6 class="name">{{ event.name }}</h6>
+                    <p class="date">{{ moment(event.date).format('YYYY/MM/DD') }}</p>
+                    <img :src="`${serverUrl}/${event.image}`" alt="">
+                    <!-- <img :src="`${serverUrl}/images/test.jpg`" alt=""> -->
+                    <p class="des">{{ event.des }}</p>
+                </div>
             </div>
         </div>
     </div>
 </template>
   
 <script setup lang="ts">
+import { useStore } from 'vuex'
 import moment from 'moment';
 import axiosInstance from '../axios/axios';
 interface EventObject {
@@ -25,12 +29,14 @@ interface EventObject {
     image: string,
     date: string
 }
+const store = useStore();
 const props = defineProps<{
     event: EventObject
 }>()
 const emit = defineEmits(['close-modal'])
 const close = () => {
     emit('close-modal', false)
+    store.commit('setShowCreateBtn', true);
 }
 const serverUrl = axiosInstance.defaults.baseURL;
 </script>
@@ -47,12 +53,18 @@ const serverUrl = axiosInstance.defaults.baseURL;
     background-color: #000000da;
 }
 
+.modal-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .modal {
     position: relative;
     text-align: center;
     background-color: #78aede;
     color: #fff;
-    max-height: 85vh;
+    
     width: 80%;
     margin-top: 1.5rem;
     padding: 30px 0;
@@ -62,18 +74,18 @@ const serverUrl = axiosInstance.defaults.baseURL;
     margin: 10px;
 }
 .modal .modal-content {
-    padding: 1rem;
+    padding: 0.25rem;
     font-family: Microsoft JhengHei;
 }
 
 .modal .modal-content .name {
     text-align: left;
-    margin-bottom: 0;
+    margin: 0;
 }
 
 .modal .modal-content .date {
     text-align: right;
-    margin-bottom: 0;
+    margin: 0;
     font-family: 'Caveat', cursive;
     font-size: 20px;
     letter-spacing: 3px;
@@ -85,11 +97,11 @@ const serverUrl = axiosInstance.defaults.baseURL;
 }
 
 .modal .modal-content img {
-    width: 50%;
+    max-width: 70%;
     border-radius: 10px;
-    --s: 15px;  /* size of the frame */
+    --s: 7.5px;  /* size of the frame */
     --b: 2px;   /* border thickness */
-    --w: 80px; /* width of the image */
+    --w: 20px; /* width of the image */
     --c: #fff;
     object-fit: cover;
     padding: calc(2*var(--s));

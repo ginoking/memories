@@ -18,51 +18,18 @@
 		<div class="footer">
 			<p>Hope we can remember our memories forever.</p>
 		</div>
-
-        <!-- name:{{ eventName }}<br>
-        description:{{ eventDes }}<br>
-        date: {{ eventDate.getFullYear() + "/" + (eventDate.getMonth() +1)  + "/" + eventDate.getDate() }}<br>
-
-        <input type="text" v-model="eventName">
-        <input type="textarea" v-model="eventDes">
-        <Datepicker v-model="eventDate" />
-        <input type="file" @change="fileChange">
-        <button @click="create">upload</button> -->
 	</div>
-	<CreateBtn />
+	<CreateBtn v-if="store.state.showCreateBtn" />
 </template>
 
 <script setup lang="ts">
 import Days from '../components/Days.vue'
 import Title from '../components/Title.vue'
 import CreateBtn from '@/components/CreateBtn.vue';
-import axiosInstance from '../axios/axios';
-import { ref } from "vue";
-import Datepicker from 'vue3-datepicker'
+import { useStore } from "vuex";
 
-const selectFile = ref({});
-const eventName = ref("");
-const eventDes = ref("");
-const eventDate = ref(new Date);
-const fileChange = (e: Event) => {
-    selectFile.value = e.target.files[0];
-    console.log(selectFile.value);
-}
-const create = () => {
-    const formData = new FormData;
-    formData.append("file", selectFile.value);
-    formData.append("name", eventName.value);
-    formData.append("des", eventDes.value);
-    formData.append("date", eventDate.value.getFullYear() + "-" + (eventDate.value.getMonth() +1)  + "-" + eventDate.value.getDate());
-    axiosInstance.post("create", formData, {
-    headers: {
-        "Content-Type": "multipart/form-data",
-    }}).then((response) => {
-        alert("done");
-    }).catch((error) => {
-        alert(error.response.data.message);
-    });
-}
+const store = useStore();
+
 </script>
 
 <style scoped>
@@ -108,7 +75,7 @@ body>.title {
 	background-color: #8abae1;
 	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
-	margin-top: 80px;
+	margin-top: 10px;
 }
 
 .title {
@@ -268,9 +235,10 @@ span {
 }
 
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
 	.calendar {
 		width: 95%;
+		margin-top: 80px;
 	}
 
 	.footer {
