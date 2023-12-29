@@ -81,7 +81,7 @@ const create = () => {
     formData.append("file", selectFile.value);
     formData.append("name", eventName.value);
     formData.append("des", eventDes.value);
-    formData.append("date", eventDate.value.getFullYear() + "-" + (eventDate.value.getMonth() + 1) + "-" + eventDate.value.getDate());
+    formData.append("date", eventDate.value.toLocaleDateString('zh').replaceAll('/', '-'));
     axiosInstance.post("create", formData,
         {
             headers: {

@@ -5,11 +5,11 @@ module.exports = () => async (req, res, next) => {
 		if (!req.files) {
 			return res.status(500).send({ message: "file is not found" })
 		}
-		const DATE_REGEX = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
+		// const DATE_REGEX = /^[0-9]{4}-[0-9]{1}-[0-9]{1}$/;
 
 		const linkSchema = yup.object({
 			body: yup.object({
-				date: yup.string().matches(DATE_REGEX, 'time must be in the format YYYY-MM-DD'),
+				date: yup.date(),
 				name: yup.string().required(),
 				des: yup.string().required(),
 			}),
