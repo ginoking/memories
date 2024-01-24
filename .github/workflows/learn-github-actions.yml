@@ -11,7 +11,7 @@ jobs:
       contents: read
     steps: 
       - name: check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: configure GCP credentials
         id: auth
         uses: google-github-actions/auth@v2
