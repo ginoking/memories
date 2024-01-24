@@ -15,13 +15,14 @@ jobs:
       - name: configure GCP credentials
         id: auth
         uses: google-github-actions/auth@v2
-        with: 
+        with:
+          token_format: access_token 
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
           service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
       - name: connect to Artifact Registry
         uses: docker/login-action@v1
         with: 
-          registry: us-west2-docker.pkg.dev
+          registry: asia-east1-docker.pkg.dev
           username: oauth2accesstoken
           password: ${{ steps.auth.outputs.access_token }}
         # run: |-
