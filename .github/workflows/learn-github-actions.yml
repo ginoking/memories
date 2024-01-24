@@ -18,8 +18,8 @@ jobs:
         with:
           project_id: memory-410003
           token_format: access_token 
-          workload_identity_provider: '${{ secrets.WIF_PROVIDER }}'
-          # service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}'
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
       - name: login to Artifact Registry
         uses: docker/login-action@v1
         with: 
