@@ -6,6 +6,9 @@ jobs:
   build:
     name: build image
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps: 
       - name: check out code
         uses: actions/checkout@v2
