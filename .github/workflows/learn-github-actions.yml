@@ -16,6 +16,7 @@ jobs:
         id: auth
         uses: google-github-actions/auth@v2
         with:
+          project_id: memory-410003
           token_format: access_token 
           workload_identity_provider: '${{ secrets.WIF_PROVIDER }}'
           # service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}'
