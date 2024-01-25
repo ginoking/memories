@@ -6,12 +6,13 @@ jobs:
   build:
     name: build image
     runs-on: ubuntu-latest
-    matrix: 
-      include: 
-        - dockerfile: ./Dockerfile
-          image: $REPOSITORY/$PROJECT_ID/memory/$IMAGE_NAME-client
-        - dockerfile: ./server/Dockerfile
-          image: $REPOSITORY/$PROJECT_ID/memory/$IMAGE_NAME-server
+    strategy:
+      matrix: 
+        include: 
+          - dockerfile: ./Dockerfile
+            image: $REPOSITORY/$PROJECT_ID/memory/$IMAGE_NAME-client
+          - dockerfile: ./server/Dockerfile
+            image: $REPOSITORY/$PROJECT_ID/memory/$IMAGE_NAME-server
     env: 
       IMAGE_NAME: ginoking-memory-v1
       PROJECT_ID: memory-410003
