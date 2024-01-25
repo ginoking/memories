@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix: 
         include: 
-          - dockerfile: ./Dockerfile
+          - dockerfile: ./client/Dockerfile
             image: asia-east1-docker.pkg.dev/memory-410003/memory/ginoking-memory-v1-client
           - dockerfile: ./server/Dockerfile
             image: asia-east1-docker.pkg.dev/memory-410003/memory/ginoking-memory-v1-server
