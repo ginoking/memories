@@ -16,7 +16,7 @@
 			<Days />
 		</div>
 		<div class="footer">
-			<p>Hope we can remember our memories forever ~</p>
+			<p>Hope we can remember our memories forever.</p>
 		</div>
 	</div>
 	<CreateBtn v-if="store.state.showCreateBtn" />
