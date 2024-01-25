@@ -14,9 +14,9 @@ jobs:
       matrix: 
         include: 
           - dockerfile: ./Dockerfile
-            image: $REPOSITORY/$PROJECT_ID/memory/$IMAGE_NAME-client
+            image: asia-east1-docker.pkg.dev/memory-410003/memory/ginoking-memory-v1-client
           - dockerfile: ./server/Dockerfile
-            image: $REPOSITORY/$PROJECT_ID/memory/$IMAGE_NAME-server
+            image: asia-east1-docker.pkg.dev/memory-410003/memory/ginoking-memory-v1-server
     permissions:
       id-token: write
       contents: read
