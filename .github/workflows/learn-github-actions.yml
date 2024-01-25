@@ -6,6 +6,10 @@ jobs:
   build:
     name: build image
     runs-on: ubuntu-latest
+    env: 
+      IMAGE_NAME: test_for_github_action
+      PROJECT_ID: memory-410003
+      REPOSITORY: asia-east1-docker.pkg.dev
     permissions:
       id-token: write
       contents: read
@@ -23,25 +27,18 @@ jobs:
       - name: login to Artifact Registry
         uses: docker/login-action@v1
         with: 
-          registry: asia-east1-docker.pkg.dev
+          registry: $REPOSITORY
           username: oauth2accesstoken
           password: ${{ steps.auth.outputs.access_token }}
-        # run: |-
-        #   echo ${{ steps.auth.outputs.access_token }} | docker login -u oauth2accesstoken --password-stdin https://${{ env.REPOSITORY_REGION }}-docker.pkg.dev
-          
-      # - name: login aws ecr
-      #   id: login-ecr
-      #   uses: aws-actions/amazon-ecr-login@v1
-      # - name: build and push image to aws ecr
-      #   id: build-image
-      #   env: 
-      #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      #     ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
-      #     IMAGE_TAG: latest
-      #   run: 
-      #     cd server
-      #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-      #     echo "Pushing image to ECR..."
-      #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-      #     echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+      - name: build image
+        id: build-image
+        run: docker build -t $IMAGE_NAME:latest .
+      - name: push image to gcp gar
+        env:
+          GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
+        run: |-
+          docker tag $IMAGE_NAME:latest $REPOSITORY/$PROJECT_ID/images/$IMAGE_NAME:latest
+          docker tag $IMAGE_NAME:latest $REPOSITORY/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
+          docker push $REPOSITORY/$PROJECT_ID/images/$IMAGE_NAME:latest
+          docker push $REPOSITORY/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
 
