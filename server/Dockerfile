@@ -2,6 +2,6 @@ FROM node AS build-stage
 WORKDIR /usr/src/app
 COPY ./server/package*.json ./
 RUN npm install 
-COPY . . 
+COPY ./server . 
 EXPOSE 3000
 CMD [ "npm", "start" ]
