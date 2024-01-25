@@ -41,10 +41,10 @@ jobs:
         run: docker build -t $IMAGE_NAME:latest .
       - name: push image to gcp gar
         env:
-          GIT_TAG: ${{ steps.version.outputs.version }}
+          GIT_TAG: ${{ steps.version.outputs.version }}l
         run: |-
-          docker tag $IMAGE_NAME:latest $REPOSITORY/$PROJECT_ID/images/$IMAGE_NAME:latest
-          docker tag $IMAGE_NAME:latest $REPOSITORY/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
-          docker push $REPOSITORY/$PROJECT_ID/images/$IMAGE_NAME:latest
-          docker push $REPOSITORY/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
+          docker tag $IMAGE_NAME:latest $REPOSITORY/$PROJECT_ID/memory/$IMAGE_NAME:latest
+          docker tag $IMAGE_NAME:latest $REPOSITORY/$PROJECT_ID/memory/$IMAGE_NAME:$GIT_TAG
+          docker push $REPOSITORY/$PROJECT_ID/memory/$IMAGE_NAME:latest
+          docker push $REPOSITORY/$PROJECT_ID/memory/$IMAGE_NAME:$GIT_TAG
 
