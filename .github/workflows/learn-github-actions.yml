@@ -16,6 +16,12 @@ jobs:
     steps: 
       - name: check out code
         uses: actions/checkout@v4
+      - name: Get next version
+        uses: reecetech/version-increment@2023.9.3
+        id: version
+        with:
+          scheme: semver
+          increment: patch
       - name: configure GCP credentials
         id: auth
         uses: google-github-actions/auth@v2
@@ -35,7 +41,7 @@ jobs:
         run: docker build -t $IMAGE_NAME:latest .
       - name: push image to gcp gar
         env:
-          GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
+          GIT_TAG: ${{ steps.version.outputs.version }}
         run: |-
           docker tag $IMAGE_NAME:latest $REPOSITORY/$PROJECT_ID/images/$IMAGE_NAME:latest
           docker tag $IMAGE_NAME:latest $REPOSITORY/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
