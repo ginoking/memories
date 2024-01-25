@@ -7,7 +7,7 @@ jobs:
     name: build image
     runs-on: ubuntu-latest
     env: 
-      IMAGE_NAME: test_for_github_action
+      IMAGE_NAME: ginoking-memory-v1
       PROJECT_ID: memory-410003
       REPOSITORY: asia-east1-docker.pkg.dev
     permissions:

@@ -74,11 +74,14 @@ const open = () => {
 }
 
 const fileChange = (e: Event) => {
-    selectFile.value = e.target.files[0];
+    const files = (e.target as HTMLInputElement).files;
+    if (files && files[0]) {
+        selectFile.value = files[0];
+    }
 }
 const create = () => {
     const formData = new FormData;
-    formData.append("file", selectFile.value);
+    formData.append("file", selectFile.value!);
     formData.append("name", eventName.value);
     formData.append("des", eventDes.value);
     formData.append("date", eventDate.value.toLocaleDateString('zh').replaceAll('/', '-'));

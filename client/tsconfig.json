@@ -1,4 +1,9 @@
 {
+  "compilerOptions": {
+    "lib": [
+      "ES2021.String"
+    ]
+  },
   "files": [],
   "references": [
     {
@@ -10,5 +15,5 @@
     {
       "path": "./tsconfig.vitest.json"
     }
-  ]
+  ],
 }
