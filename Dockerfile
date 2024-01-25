@@ -9,5 +9,5 @@ RUN npm run build
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/dist /usr/share/nginx/index/html
 COPY nginx/production.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
+EXPOSE $PORT
 CMD ["nginx", "-g", "daemon off;"] 
