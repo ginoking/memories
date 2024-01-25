@@ -27,7 +27,7 @@ jobs:
       - name: login to Artifact Registry
         uses: docker/login-action@v1
         with: 
-          registry: '$REPOSITORY'
+          registry: asia-east1-docker.pkg.dev
           username: oauth2accesstoken
           password: ${{ steps.auth.outputs.access_token }}
       - name: build image
