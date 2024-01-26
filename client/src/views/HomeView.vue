@@ -16,7 +16,7 @@
 			<Days />
 		</div>
 		<div class="footer">
-			<p>123</p>
+			<p>456</p>
 			<p>Hope we can remember our memories forever. test</p>
 		</div>
 	</div>

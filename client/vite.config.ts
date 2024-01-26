@@ -18,5 +18,8 @@ export default defineConfig({
   server: {
     open: false,
     host: '0.0.0.0',
+  },
+  build: {
+    envFile: '.env.production'
   }
 })
