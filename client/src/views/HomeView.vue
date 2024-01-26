@@ -30,9 +30,6 @@ import { useStore } from "vuex";
 
 const store = useStore();
 
-console.log(import.meta.env.API_URL);
-
-
 </script>
 
 <style scoped>
