@@ -1,0 +1,11 @@
+FROM node:lts-alpine as build-stage
+
+WORKDIR /app
+COPY ./ /app/  
+
+RUN npm install
+
+EXPOSE 80
+
+# RUN npm run dev
+# 需要進行執行
