@@ -1,5 +1,0 @@
-steps:
-# - name: 'gcr.io/cloud-builders/docker'
-#   args: ['build', '-t', 'asia-east1-docker.pkg.dev/memory-410003/memory/ginoking-memory-v1-client', '.']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'asia-east1-docker.pkg.dev/memory-410003/cloud-run-source-deploy/memories/ginoking-memory-v1-client']
