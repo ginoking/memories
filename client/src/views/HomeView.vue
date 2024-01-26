@@ -16,8 +16,7 @@
 			<Days />
 		</div>
 		<div class="footer">
-			<p>456</p>
-			<p>Hope we can remember our memories forever. test</p>
+			<p>Hope we can remember our memories forever.</p>
 		</div>
 	</div>
 	<CreateBtn v-if="store.state.showCreateBtn" />
@@ -29,11 +28,7 @@ import Title from '../components/Title.vue'
 import CreateBtn from '@/components/CreateBtn.vue';
 import { useStore } from "vuex";
 
-const test = import.meta.env.VITE_API_URL;
 const store = useStore();
-
-console.log();
-
 
 </script>
 
