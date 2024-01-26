@@ -16,6 +16,7 @@
 			<Days />
 		</div>
 		<div class="footer">
+			<p>{{ test }}123</p>
 			<p>Hope we can remember our memories forever. test</p>
 		</div>
 	</div>
@@ -28,9 +29,10 @@ import Title from '../components/Title.vue'
 import CreateBtn from '@/components/CreateBtn.vue';
 import { useStore } from "vuex";
 
+const test = import.meta.env.VITE_API_URL;
 const store = useStore();
 
-console.log(import.meta.env.VITE_API_URL);
+console.log();
 
 
 </script>
