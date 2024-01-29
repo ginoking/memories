@@ -7,19 +7,15 @@ const { Storage } = require('@google-cloud/storage');
 exports.index = async (req, res) => {
     try {
 
-		const projectId = 'memory-410003';
+		if (process.env.memoryStorageSecret) {
+			const storage = new Storage(process.env.memoryStorageSecret);
 
-		const storage = new Storage(process.env.memoryStorageSecret);
+			const [buckets] = await storage.getBuckets();
 
-		console.log(storage);
-
-		const [buckets] = await storage.getBuckets();
-
-		for (const bucket of buckets) {
-			console.log(`- ${bucket.name}`);
+			for (const bucket of buckets) {
+				console.log(`- ${bucket.name}`);
+			}
 		}
-
-		// res.json([]);
 
 		const containEventDays = [];
 		const currentDate = req.body.time;

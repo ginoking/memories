@@ -28,7 +28,7 @@ var StoriesSchema = new Schema({
 var Stories = mongoose.model("Stories", StoriesSchema);
 
 //Set up default mongoose connection
-var mongoDB = process.env.MONGO_URI + "/memories";
+var mongoDB = process.env.mongoDBUrI + "/memories";
 mongoose.connect(mongoDB);
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
