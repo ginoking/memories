@@ -7,7 +7,7 @@ const { Storage } = require('@google-cloud/storage');
 exports.index = async (req, res) => {
     try {
 
-		const projectId = 'memory-410003';
+		// const projectId = 'memory-410003';
 
 		const storage = new Storage(process.env.memory-storage-secret);
 
