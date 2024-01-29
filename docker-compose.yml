@@ -30,8 +30,8 @@ services:
       - db
     networks:
       - myNetwork
-    # environment:
-    #   MONGO_URI: mongodb://db:27017
+    environment:
+      MONGO_URI: mongodb://db:27017
     volumes:
       - ./server:/usr/src/app
   db:
