@@ -1,7 +1,28 @@
 const moment = require('moment');
 const Stories = require("../database/mongodb");
 const _ = require('lodash');
-const { Storage } = require('@google-cloud/storage');
+// const { Storage } = require('@google-cloud/storage');
+// const { GoogleAuth } = require('google-auth-library');
+
+// async function uploadGCS(filename)
+// {
+// 	const bucketName = 'memory-image';
+
+// 	const re = await storage.bucket(bucketName).upload(filename, {
+//         // Support for HTTP requests made with `Accept-Encoding: gzip`
+//         gzip: true,
+//         // By setting the option `destination`, you can change the name of the
+//         // object you are uploading to a bucket.
+//         metadata: {
+//             // Enable long-lived HTTP caching headers
+//             // Use only if the contents of the file will never change
+//             // (If the contents will change, use cacheControl: 'no-cache')
+//             cacheControl: 'public, max-age=31536000',
+//         },
+//     });
+
+// 	console.log(res);
+// }
 
 exports.index = async (req, res) => {
     try {
@@ -11,6 +32,8 @@ exports.index = async (req, res) => {
 
 		const extension = _.split(myFile.name, '.').slice(-1)[0];
 		const newFileName = data.date + "." + extension;
+
+		// uploadGCS(newFileName);
 	
 		myFile.mv(`${__dirname}/../public/images/${newFileName}`, function (err) {
 			if (err) {

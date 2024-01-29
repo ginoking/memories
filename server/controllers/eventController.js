@@ -1,7 +1,23 @@
 const moment = require('moment');
 const Stories = require("../database/mongodb");
+
+const { Storage } = require('@google-cloud/storage');
+
+
 exports.index = async (req, res) => {
     try {
+
+		// const projectId = 'memory-410003';
+
+		const storage = new Storage(process.env.memory-storage-secret);
+
+		console.log(storage);
+
+		const [buckets] = await storage.getBuckets();
+
+		for (const bucket of buckets) {
+			console.log(`- ${bucket.name}`);
+		}
 
 		// res.json([]);
 
