@@ -9,7 +9,7 @@ exports.index = async (req, res) => {
 
 		const projectId = 'memory-410003';
 
-		const storage = new Storage(process.env.memory-storage-secret);
+		const storage = new Storage(process.env.memoryStorageSecret);
 
 		console.log(storage);
 
