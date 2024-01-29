@@ -1,5 +1,5 @@
 const moment = require('moment');
-const Stories = require("../database/mongodb");
+// const Stories = require("../database/mongodb");
 
 const { Storage } = require('@google-cloud/storage');
 
@@ -16,6 +16,10 @@ exports.index = async (req, res) => {
 				console.log(`- ${bucket.name}`);
 			}
 		}
+
+		console.log(process.env.mongoDBUrI);
+
+		res.json([]);
 
 		const containEventDays = [];
 		const currentDate = req.body.time;
