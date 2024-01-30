@@ -15,6 +15,9 @@ exports.index = async (req, res) => {
 			for (const bucket of buckets) {
 				console.log(`- ${bucket.name}`);
 			}
+
+			res.json(buckets);
+			return;
 		}
 
 		// console.log();
