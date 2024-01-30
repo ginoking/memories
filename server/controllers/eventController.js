@@ -7,8 +7,8 @@ const { Storage } = require('@google-cloud/storage');
 exports.index = async (req, res) => {
 	try {
 
-		if (process.env.hasOwnProperty('memoryStorageSecret')) {
-			const storage = new Storage(process.env.memoryStorageSecret);
+		if (process.env.hasOwnProperty('STORAGE_SECRET')) {
+			const storage = new Storage(process.env.STORAGE_SECRET);
 
 			const [buckets] = await storage.getBuckets();
 
