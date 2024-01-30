@@ -5,7 +5,7 @@ const { Storage } = require('@google-cloud/storage');
 
 
 exports.index = async (req, res) => {
-    try {
+	try {
 
 		if (process.env.memoryStorageSecret) {
 			const storage = new Storage(process.env.memoryStorageSecret);
@@ -25,13 +25,13 @@ exports.index = async (req, res) => {
 		const currentDate = req.body.time;
 
 		const emptyArray = Array.from({ length: moment(currentDate).day() }, () => "");
-		const numberArray = Array.from({ length: moment(currentDate).daysInMonth() }, (_, i) => (i+1).toString());
+		const numberArray = Array.from({ length: moment(currentDate).daysInMonth() }, (_, i) => (i + 1).toString());
 		for (const number of emptyArray.concat(numberArray)) {
-            const dateString = `${currentDate}-${(number ?? '').padStart(2, '0')}`;
-            const event = (number !== '') ? await Stories.findOne({
-			  	date: new Date(dateString)
+			const dateString = `${currentDate}-${(number ?? '').padStart(2, '0')}`;
+			const event = (number !== '') ? await Stories.findOne({
+				date: new Date(dateString)
 			}) : null;
-		
+
 			containEventDays.push({
 				date: dateString,
 				number: number,
