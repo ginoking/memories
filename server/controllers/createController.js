@@ -1,5 +1,5 @@
 const moment = require('moment');
-const Stories = require("../database/mongodb");
+// const Stories = require("../database/mongodb");
 const _ = require('lodash');
 // const { Storage } = require('@google-cloud/storage');
 // const { GoogleAuth } = require('google-auth-library');
@@ -43,7 +43,7 @@ exports.index = async (req, res) => {
 
 		data.image = "images/" + newFileName;
 
-		await Stories.create(data);
+		// await Stories.create(data);
 		return res.send("done");
 	} catch (err) {
 		//如果資料庫出現錯誤時回報 status:500 並回傳錯誤訊息 
