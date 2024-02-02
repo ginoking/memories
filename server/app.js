@@ -22,7 +22,9 @@ app.use(cors({
 	origin: 'https://ginoking-memory-v1-client-qkusmmamqq-de.a.run.app/'
 }));
 
-app.use('/', indexRouter);
+app.use('/', cors({
+	origin: 'https://ginoking-memory-v1-client-qkusmmamqq-de.a.run.app/'
+}), indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

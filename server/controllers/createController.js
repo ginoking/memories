@@ -3,11 +3,9 @@ const Stories = require("../database/mongodb");
 const _ = require('lodash');
 const { Storage } = require('@google-cloud/storage');
 
-async function uploadGCS(filename)
+async function uploadGCS(bucket, filename)
 {
-	const bucketName = 'memory-image';
-
-	const re = await storage.bucket(bucketName).upload(filename, {
+	const re = await storage.bucket(bucket).upload(filename, {
         // Support for HTTP requests made with `Accept-Encoding: gzip`
         gzip: true,
         // By setting the option `destination`, you can change the name of the
