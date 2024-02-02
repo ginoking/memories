@@ -5,8 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
-const { Storage } = require('@google-cloud/storage');
-const storage = new Storage(process.env.memoryStorageSecret);
+// const { Storage } = require('@google-cloud/storage');
+// const storage = new Storage(process.env.memoryStorageSecret);
 
 var app = express();
 const corsOptions = {
@@ -50,7 +50,7 @@ app.use(function (err, req, res, next) {
 	res.render('error');
 });
 
-app.use(Storage(process.env.memoryStorageSecret));
+// app.use(Storage(process.env.memoryStorageSecret));
 app.locals.bucket = "memory-image";
 
 module.exports = app;

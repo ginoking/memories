@@ -30,7 +30,7 @@ exports.index = async (req, res) => {
 		const newFileName = data.date + "." + extension;
 
 		if (process.env.hasOwnProperty('memoryStorageSecret')) {
-			// uploadGCS(myFile, req.app.locals.bucket, newFileName);
+			uploadGCS(myFile, req.app.locals.bucket, newFileName);
 			data.image = newFileName;
 		}
 		else {
