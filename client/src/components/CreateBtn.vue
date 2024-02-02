@@ -14,15 +14,8 @@
                 <template #action-preview></template>
             </VueDatePicker>
             <label for="" class="swal2-input-label">Image:</label>
-            <input class="swal2-file" type="file" @change="fileChange">
-            <!-- <button @click="create">upload</button> -->
+            <input class="swal2-file" type="file" @change="fileChange" accept="image/png, image/jpeg, image/jpg, image/gif" >
 
-
-            <!-- <div>
-                name:{{ eventName }}<br>
-                description:{{ eventDes }}<br>
-                date: {{ eventDate.getFullYear() + "/" + (eventDate.getMonth() + 1) + "/" + eventDate.getDate() }}
-            </div> -->
         </div>
     </div>
 </template>

@@ -25,6 +25,7 @@ app.use(cookieParser());
 app.use(express.static('public'));
 app.use('/images', express.static('images'));
 app.use(fileUpload({
+	useTempFiles : true,
 	createParentPath: true,
 }));
 

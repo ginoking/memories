@@ -45,7 +45,7 @@ async function changeDates(next: boolean): Promise<void> {
 
     setTimeout(() => {
         loader.hide()
-    }, 1500)
+    }, 1000)
 }
 
 function formatDate(format: string) : string {

@@ -7,11 +7,16 @@ const storage = new Storage(process.env.memoryStorageSecret);
 const getImage = async (filename, domain) => {
 	if (process.env.hasOwnProperty('memoryStorageSecret')) {
 		try {
-			const [metadata] = await storage
+			const options = {
+				version: 'v4',
+				action: 'read',
+				expires: Date.now() + 15 * 60 * 1000, // 15 minutes
+			};
+			const [url] = await storage
 									.bucket('memory-image')
 									.file(filename)
-									.getMetadata();
-			return "https://storage.googleapis.com/" + metadata.bucket + "/" + metadata.name;
+									.getSignedUrl(options);
+			return url;
 		} catch (error) {
 			return "";
 		}
@@ -20,7 +25,6 @@ const getImage = async (filename, domain) => {
 		return `${domain}/api/${filename}`;
 	}
 }
-
 
 exports.index = async (req, res) => {
 	try {

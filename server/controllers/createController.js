@@ -1,25 +1,24 @@
 const moment = require('moment');
-const Stories = require("../database/mongodb");
 const _ = require('lodash');
 const { Storage } = require('@google-cloud/storage');
+const Stories = require("../database/mongodb");
 
-async function uploadGCS(bucket, filename)
+const storage = new Storage({keyFilename: "key.json"});
+
+async function uploadGCS(file, bucket, filename)
 {
-	const re = await storage.bucket(bucket).upload(filename, {
-        // Support for HTTP requests made with `Accept-Encoding: gzip`
+	const re = await storage.bucket(bucket).upload(file.tempFilePath, {
         gzip: true,
-        // By setting the option `destination`, you can change the name of the
-        // object you are uploading to a bucket.
+		destination: filename,
         metadata: {
-            // Enable long-lived HTTP caching headers
-            // Use only if the contents of the file will never change
-            // (If the contents will change, use cacheControl: 'no-cache')
             cacheControl: 'public, max-age=31536000',
         },
     });
 
-	console.log(res);
+	console.log(re);
 }
+
+
 
 exports.index = async (req, res) => {
     try {
@@ -30,17 +29,20 @@ exports.index = async (req, res) => {
 		const extension = _.split(myFile.name, '.').slice(-1)[0];
 		const newFileName = data.date + "." + extension;
 
-		// uploadGCS(newFileName);
+		if (process.env.hasOwnProperty('memoryStorageSecret')) {
+			uploadGCS(myFile, req.app.locals.bucket, newFileName);
+		}
+		else {
+			myFile.mv(`${__dirname}/../public/images/${newFileName}`, function (err) {
+				if (err) {
+					return res.status(500).send({ message: "Error occur" });
+				}
+			});
 	
-		myFile.mv(`${__dirname}/../public/images/${newFileName}`, function (err) {
-			if (err) {
-				return res.status(500).send({ message: "Error occur" });
-			}
-		});
+			data.image = "images/" + newFileName;
+		}
 
-		data.image = "images/" + newFileName;
-
-		// await Stories.create(data);
+		await Stories.create(data);
 		return res.send("done");
 	} catch (err) {
 		//如果資料庫出現錯誤時回報 status:500 並回傳錯誤訊息 
