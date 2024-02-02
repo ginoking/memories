@@ -3,12 +3,11 @@ const _ = require('lodash');
 const { Storage } = require('@google-cloud/storage');
 const Stories = require("../database/mongodb");
 
-const storage = new Storage({
-	credentials: JSON.parse(process.env.memoryStorageSecret)
-});
-
 async function uploadGCS(file, bucket, filename)
 {
+	const storage = new Storage({
+		credentials: JSON.parse(process.env.memoryStorageSecret)
+	});
 	const re = await storage.bucket(bucket).upload(file.tempFilePath, {
         gzip: true,
 		destination: filename,

@@ -107,7 +107,7 @@ watch(() => store.state.days, (newValue) => {
 
 @media (max-width: 768px) {
     .event {
-        background-size: 60px;
+        background-size: 50px;
     }
 }
 </style>
