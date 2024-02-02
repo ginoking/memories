@@ -9,7 +9,7 @@ const fileUpload = require('express-fileupload');
 var app = express();
 const corsOptions = {
 	origin: [
-		'https://ginoking-memory-v1-client-qkusmmamqq-de.a.run.app/',
+		'https://ginoking-memory-v1-client-qkusmmamqq-de.a.run.app',
 		'http://localhost:7070',
 	],
 	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
