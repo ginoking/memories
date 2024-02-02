@@ -31,6 +31,7 @@ exports.index = async (req, res) => {
 
 		if (process.env.hasOwnProperty('memoryStorageSecret')) {
 			uploadGCS(myFile, req.app.locals.bucket, newFileName);
+			data.image = newFileName;
 		}
 		else {
 			myFile.mv(`${__dirname}/../public/images/${newFileName}`, function (err) {
