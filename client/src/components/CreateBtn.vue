@@ -9,13 +9,14 @@
             <label for="" class="swal2-input-label">Description:</label>
             <textarea class="swal2-textarea" name="" id="" cols="30" rows="10" v-model="eventDes">{{ eventDes }}</textarea>
             <label for="" class="swal2-input-label">Date:</label>
-            <VueDatePicker class="datetime-input" auto-apply v-model="eventDate" :enable-time-picker="false" :format="format" >
+            <VueDatePicker auto-apply v-model="eventDate" :enable-time-picker="false" :format="format">
                 <template #action-buttons></template>
                 <template #action-preview></template>
             </VueDatePicker>
             <label for="" class="swal2-input-label">Image:</label>
-            <input class="swal2-file" type="file" @change="fileChange" accept="image/png, image/jpeg, image/jpg, image/gif" >
-
+            <p class="filename">{{ selectFile?.name }}</p>
+            <input id="file-input" type="file" @change="fileChange" accept="image/png, image/jpeg, image/jpg, image/gif">
+            <label for="file-input" class="input-file-trigger">Select a image</label>
         </div>
     </div>
 </template>
@@ -56,7 +57,7 @@ const open = () => {
     };
 
     if (window.innerWidth >= 1200) swalOptions.width = '50%';
-    else if(window.innerWidth >= 768) swalOptions.width = '70%';
+    else if (window.innerWidth >= 768) swalOptions.width = '70%';
     showContent.value = true;
     // Use sweetalert2
     Swal.fire(swalOptions).then((result) => {
@@ -123,22 +124,9 @@ i {
 }
 
 .dp__action_buttons {
-    flex: 1!important;
+    flex: 1 !important;
 }
 
-.model-content >>> .datetime-input {
-    box-sizing: border-box;
-    transition: border-color .1s,box-shadow .1s;
-    border: 1px solid #d9d9d9;
-    border-radius: 0.1875em;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .06);
-    color: inherit;
-    width: 100%;
-    height: 2.625rem;
-    margin: 0.5rem 0;
-    padding: 0 0.75rem;
-    font-size: 1.125rem;
-}
 .swal2-input {
     width: 100%;
     margin: 0.5rem 0;
@@ -165,6 +153,31 @@ i {
             color: #27ae60;
         }
     }
+}
+
+input[type=file] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 225px;
+    opacity: 0;
+    padding: 14px 0;
+    cursor: pointer;
+}
+
+.input-file-trigger {
+    margin: 1.5rem;
+    display: block;
+    padding: 14px 45px;
+    background: var(--color-background);
+    color: #fff;
+    font-size: 1em;
+    transition: all .4s;
+    cursor: pointer;
+}
+
+.filename {
+    margin: 0.5rem 0;
 }
 
 @media (max-width: 768px) {

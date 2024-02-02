@@ -7,14 +7,8 @@
         </ul>
     </div>
     <Transition>
-        <EventModal 
-        v-if="showEventModal" 
-        @click="eventClickHandler" 
-        @close-modal="showEventModal = false"
-        :event="event"
-        />
+        <EventModal v-if="showEventModal" @click="eventClickHandler" @close-modal="showEventModal = false" :event="event" />
     </Transition>
-    
 </template>
 <script setup lang="ts">
 import { ref, watch } from "vue"
@@ -42,13 +36,12 @@ interface DateObject {
     }
 }
 
-function checkEventClass(date: DateObject) : string {
+function checkEventClass(date: DateObject): string {
     return date.event ? 'event' : '';
 }
 
-function eventClickHandler(date: DateObject) : void 
-{
-    if (!date.event) return 
+function eventClickHandler(date: DateObject): void {
+    if (!date.event) return
     event.value = date.event
 
     showEventModal.value = true;
@@ -64,6 +57,7 @@ watch(() => store.state.days, (newValue) => {
     display: flex;
     justify-content: center;
 }
+
 .body-list ul {
     padding-left: 0;
     width: 80%;
@@ -71,6 +65,7 @@ watch(() => store.state.days, (newValue) => {
     font-weight: bold;
     font-size: 14px;
 }
+
 .body-list ul li {
     display: flex !important;
     justify-content: center;
@@ -85,6 +80,7 @@ watch(() => store.state.days, (newValue) => {
     float: left;
     text-align: center;
 }
+
 .event {
     color: #ff0008;
     border: 0;
@@ -95,14 +91,15 @@ watch(() => store.state.days, (newValue) => {
     background-size: 70px;
     cursor: pointer;
 }
+
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease;
 }
 
 .v-enter-from,
 .v-leave-to {
-  opacity: 0;
+    opacity: 0;
 }
 
 @media (max-width: 768px) {

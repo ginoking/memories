@@ -244,7 +244,6 @@ span {
 
 	.footer {
 		letter-spacing: 0.5px;
-		width: 90%;
 	}
 
 	.footer>p {
