@@ -2,7 +2,9 @@ const moment = require('moment');
 const Stories = require("../database/mongodb");
 
 const { Storage } = require('@google-cloud/storage');
-const storage = new Storage(process.env.memoryStorageSecret);
+const storage = new Storage({
+	credentials: JSON.parse(process.env.memoryStorageSecret)
+});
 
 const getImage = async (filename, domain) => {
 	if (process.env.hasOwnProperty('memoryStorageSecret')) {
@@ -18,6 +20,7 @@ const getImage = async (filename, domain) => {
 									.getSignedUrl(options);
 			return url;
 		} catch (error) {
+			console.log(error);
 			return "";
 		}
 	}

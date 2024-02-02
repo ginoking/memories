@@ -3,7 +3,9 @@ const _ = require('lodash');
 const { Storage } = require('@google-cloud/storage');
 const Stories = require("../database/mongodb");
 
-const storage = new Storage(process.env.memoryStorageSecret);
+const storage = new Storage({
+	credentials: JSON.parse(process.env.memoryStorageSecret)
+});
 
 async function uploadGCS(file, bucket, filename)
 {
