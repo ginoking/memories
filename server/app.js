@@ -19,7 +19,7 @@ app.use(fileUpload({
 	createParentPath: true,
 }));
 app.use(cors({
-	origin: 'https://ginoking-memory-v1-server-qkusmmamqq-de.a.run.app/'
+	origin: 'https://ginoking-memory-v1-client-qkusmmamqq-de.a.run.app/'
 }));
 
 app.use('/', indexRouter);
