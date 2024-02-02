@@ -10,7 +10,7 @@
                 <div class="modal-content">
                     <h6 class="name">{{ event.name }}</h6>
                     <p class="date">{{ moment(event.date).format('YYYY/MM/DD') }}</p>
-                    <img :src="event.image" alt="">
+                    <img v-if="event.image != ''" :src="event.image" alt="">
                     <!-- <img :src="`${serverUrl}/images/test.jpg`" alt=""> -->
                     <p class="des">{{ event.des }}</p>
                 </div>
