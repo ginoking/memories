@@ -33,7 +33,6 @@ exports.index = async (req, res) => {
 			}) : null;
 
 			if (event) {
-				console.log(getImage(event.image, req.get('origin')));
 				event.image = await getImage(event.image, req.get('origin'));
 			}
 

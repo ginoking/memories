@@ -19,7 +19,7 @@ app.use(fileUpload({
 	createParentPath: true,
 }));
 app.use(cors({
-	// origin: 'http://localhost:5173'
+	origin: 'https://ginoking-memory-v1-server-qkusmmamqq-de.a.run.app/'
 }));
 
 app.use('/', indexRouter);
@@ -40,5 +40,7 @@ app.use(function (err, req, res, next) {
 	res.status(err.status || 500);
 	res.render('error');
 });
+
+app.locals.bucket = "memory-image";
 
 module.exports = app;
