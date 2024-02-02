@@ -23,6 +23,7 @@
 </template>
 
 <script setup lang="ts">
+import 'vue-loading-overlay/dist/css/index.css';
 import Days from '../components/Days.vue'
 import Title from '../components/Title.vue'
 import CreateBtn from '@/components/CreateBtn.vue';

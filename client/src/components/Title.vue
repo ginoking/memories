@@ -12,6 +12,7 @@
 import { ref } from "vue"
 import { useStore } from 'vuex'
 import moment from 'moment'
+import {useLoading} from 'vue-loading-overlay'
 import axiosInstance from '../axios/axios';
 
 const store = useStore()
@@ -19,9 +20,17 @@ let currentDate = ref(`2021-12-01`);
 let yearTitle = ref(formatDate('YYYY'));
 let monthTitle = ref(formatDate('MMMM'));
 
+const $loading = useLoading({
+    // options
+});
+
 changeDates(true);
 
 async function changeDates(next: boolean): Promise<void> { 
+
+    const loader = $loading.show({
+        // Optional parameters
+    });
 	
     const newMoment = next ? 
 		moment(currentDate.value).add(1, "M") : 
@@ -33,6 +42,10 @@ async function changeDates(next: boolean): Promise<void> {
 	const { data } = await axiosInstance.post('/', {time: newMoment.format("YYYY-MM")})
 
     store.commit('setDays', data)    
+
+    setTimeout(() => {
+        loader.hide()
+    }, 1500)
 }
 
 function formatDate(format: string) : string {

@@ -2,20 +2,24 @@ const moment = require('moment');
 const Stories = require("../database/mongodb");
 
 const { Storage } = require('@google-cloud/storage');
+const storage = new Storage(process.env.memoryStorageSecret);
+
+const getImage = async (filename, domain) => {
+	if (process.env.hasOwnProperty('memoryStorageSecret')) {
+		const [metadata] = await storage
+									.bucket('memory-image')
+									.file(filename)
+									.getMetadata();
+		return "https://storage.googleapis.com/" + metadata.bucket + "/" + metadata.name;
+	}
+	else {
+		return `${domain}/api/${filename}`;
+	}
+}
 
 
 exports.index = async (req, res) => {
 	try {
-
-		if (process.env.hasOwnProperty('memoryStorageSecret')) {
-			const storage = new Storage(process.env.memoryStorageSecret);
-
-			const [buckets] = await storage.getBuckets();
-
-			for (const bucket of buckets) {
-				console.log(`- ${bucket.name}`);
-			}
-		}
 
 		const containEventDays = [];
 		const currentDate = req.body.time;
@@ -27,6 +31,11 @@ exports.index = async (req, res) => {
 			const event = (number !== '') ? await Stories.findOne({
 				date: new Date(dateString)
 			}) : null;
+
+			if (event) {
+				console.log(getImage(event.image, req.get('origin')));
+				event.image = await getImage(event.image, req.get('origin'));
+			}
 
 			containEventDays.push({
 				date: dateString,

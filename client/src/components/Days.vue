@@ -32,10 +32,6 @@ const event = ref(
         date: ""
     }
 );
-// const title = ref('');
-// const image = ref('');
-// // const date = ref('');
-// const des = ref('');
 
 interface DateObject {
     event: {
@@ -54,11 +50,6 @@ function eventClickHandler(date: DateObject) : void
 {
     if (!date.event) return 
     event.value = date.event
-    
-    // title.value = event.name;
-    // des.value = event.des;
-    // image.value = event.image;
-    // // date.value = date.date;
 
     showEventModal.value = true;
     store.commit('setShowCreateBtn', false);

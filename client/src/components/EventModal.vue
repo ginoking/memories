@@ -10,7 +10,7 @@
                 <div class="modal-content">
                     <h6 class="name">{{ event.name }}</h6>
                     <p class="date">{{ moment(event.date).format('YYYY/MM/DD') }}</p>
-                    <img :src="`${serverUrl}/${event.image}`" alt="">
+                    <img :src="event.image" alt="">
                     <!-- <img :src="`${serverUrl}/images/test.jpg`" alt=""> -->
                     <p class="des">{{ event.des }}</p>
                 </div>
@@ -18,7 +18,7 @@
         </div>
     </div>
 </template>
-  
+
 <script setup lang="ts">
 import { useStore } from 'vuex'
 import moment from 'moment';
@@ -64,15 +64,17 @@ const serverUrl = axiosInstance.defaults.baseURL;
     text-align: center;
     background-color: #78aede;
     color: #fff;
-    
+
     width: 80%;
     margin-top: 1.5rem;
     padding: 30px 0;
     border-radius: 20px;
 }
+
 .modal h6 {
     margin: 10px;
 }
+
 .modal .modal-content {
     padding: 0.25rem;
     font-family: Microsoft JhengHei;
@@ -99,16 +101,19 @@ const serverUrl = axiosInstance.defaults.baseURL;
 .modal .modal-content img {
     max-width: 70%;
     border-radius: 10px;
-    --s: 7.5px;  /* size of the frame */
-    --b: 2px;   /* border thickness */
-    --w: 20px; /* width of the image */
+    --s: 7.5px;
+    /* size of the frame */
+    --b: 2px;
+    /* border thickness */
+    --w: 20px;
+    /* width of the image */
     --c: #fff;
     object-fit: cover;
     padding: calc(2*var(--s));
-    --_g: var(--c) var(--b),#0000 0 calc(100% - var(--b)),var(--c) 0;
+    --_g: var(--c) var(--b), #0000 0 calc(100% - var(--b)), var(--c) 0;
     background:
-        linear-gradient(      var(--_g)) 50%/100% var(--_i,100%) no-repeat,
-        linear-gradient(90deg,var(--_g)) 50%/var(--_i,100%) 100% no-repeat;
+        linear-gradient(var(--_g)) 50%/100% var(--_i, 100%) no-repeat,
+        linear-gradient(90deg, var(--_g)) 50%/var(--_i, 100%) 100% no-repeat;
     outline: calc(var(--w)/2) solid #0009;
     outline-offset: calc(var(--w)/-2 - 2*var(--s));
     transition: .4s;
@@ -116,10 +121,11 @@ const serverUrl = axiosInstance.defaults.baseURL;
 }
 
 .modal .modal-content img:hover {
-  outline: var(--b) solid var(--c);
-  outline-offset: calc(var(--s)/-2);
-  --_i: calc(100% - 2*var(--s));
+    outline: var(--b) solid var(--c);
+    outline-offset: calc(var(--s)/-2);
+    --_i: calc(100% - 2*var(--s));
 }
+
 .modal .close {
     position: absolute;
     top: 0;
@@ -154,5 +160,4 @@ button {
     font-size: 14px;
     border-radius: 16px;
     margin-top: 50px;
-}
-</style>
+}</style>
