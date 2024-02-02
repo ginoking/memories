@@ -6,8 +6,17 @@ var logger = require('morgan');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 
-var indexRouter = require('./routes/index');
 var app = express();
+const corsOptions = {
+	origin: [
+		'https://ginoking-memory-v1-client-qkusmmamqq-de.a.run.app/',
+		'http://localhost:7070',
+	],
+	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+	allowedHeaders: ['Content-Type', 'Authorization'],
+};
+app.use(cors(corsOptions));
+var indexRouter = require('./routes/index');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -18,13 +27,8 @@ app.use('/images', express.static('images'));
 app.use(fileUpload({
 	createParentPath: true,
 }));
-app.use(cors({
-	origin: 'https://ginoking-memory-v1-client-qkusmmamqq-de.a.run.app/'
-}));
 
-app.use('/', cors({
-	origin: 'https://ginoking-memory-v1-client-qkusmmamqq-de.a.run.app/'
-}), indexRouter);
+app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
