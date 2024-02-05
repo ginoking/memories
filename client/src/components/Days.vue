@@ -11,7 +11,10 @@
     </Transition>
     <div ref="listContent">
         <div class="model-content">
-            <p class="event-item" v-for="item in events" @click="eventClickHandler(item)">{{ item.name }} </p>
+            <p class="event-item" v-for="item in events" @click="eventClickHandler(item)">
+                {{ item.type }}
+                {{ item.name }} 
+            </p>
         </div>
     </div>
 </template>
@@ -28,6 +31,12 @@ const days = ref(store.state.days);
 const showEventModal = ref(false)
 const events = ref();
 const event = ref();
+const eventTypes = ref({
+    happy: "U+1F606",
+    // love: ❤️,
+    sad: "U+1F972",
+    // angry: 😡
+})
 
 interface EventObject {
     name: string,

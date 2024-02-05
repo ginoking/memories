@@ -20,6 +20,10 @@ var StoriesSchema = new Schema({
     image: {
         type: String,
         required: [true]
+    },
+    type: {
+        type: String,
+        required: [true]
     }
 });
 

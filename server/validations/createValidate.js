@@ -12,6 +12,7 @@ module.exports = () => async (req, res, next) => {
 				date: yup.date(),
 				name: yup.string().required(),
 				des: yup.string().required(),
+				type: yup.string().required()
 			}),
 		});
 		await linkSchema.validate({

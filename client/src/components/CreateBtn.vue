@@ -4,6 +4,14 @@
     </a>
     <div ref="modelContent">
         <div class="model-content" v-if="showContent">
+            <label for="" class="swal2-input-label">Type:</label>
+            <select class="type-select" v-model="selectType">
+                <option disabled selected value="">Select type</option>
+                <option value="happy">😆happy</option>
+                <option value="love">❤️love</option>
+                <option value="sad">😢sad</option>
+                <option value="angry">😡angry</option>
+            </select>
             <label for="" class="swal2-input-label">Name:</label>
             <input type="text" class="swal2-input" v-model="eventName">
             <label for="" class="swal2-input-label">Description:</label>
@@ -33,6 +41,7 @@ const eventName = ref<string>("");
 const eventDes = ref<string>("");
 const eventDate = ref<Date>(new Date);
 const modelContent = ref<HTMLDivElement>();
+const selectType = ref<string>("");
 
 const format = () => {
     return eventDate.value.getFullYear() + "/" + (eventDate.value.getMonth() + 1) + "/" + eventDate.value.getDate();
@@ -50,7 +59,7 @@ const open = () => {
             inputLabel: 'text-left'
         },
         preConfirm: () => {
-            if (eventName.value == '' || eventDes.value == '' || !selectFile.value) {
+            if (eventName.value == '' || eventDes.value == '' || !selectFile.value || selectType.value == '') {
                 return false;
             }
         }
@@ -75,6 +84,7 @@ const fileChange = (e: Event) => {
 }
 const create = () => {
     const formData = new FormData;
+    formData.append("type", selectType.value);
     formData.append("file", selectFile.value!);
     formData.append("name", eventName.value);
     formData.append("des", eventDes.value);
@@ -177,6 +187,21 @@ input[type=file] {
 }
 
 .filename {
+    margin: 0.5rem 0;
+}
+
+.type-select {
+    -webkit-appearance: none;
+    padding: 7px 40px 7px 12px;
+    width: 100%;
+    border: 1px solid #e8eaed;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 1px 3px -2px #9098a9;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 16px;
+    transition: all 150ms ease;
     margin: 0.5rem 0;
 }
 
