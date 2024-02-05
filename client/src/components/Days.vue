@@ -1,51 +1,79 @@
 <template>
     <div class="darkgrey body-list">
         <ul>
-            <li v-for="i in days" :class="checkEventClass(i)" @click="eventClickHandler(i)">
+            <li v-for="i in days" :class="checkEventClass(i)" @click="dateClickHandler(i)">
                 {{ i.number }}
             </li>
         </ul>
     </div>
     <Transition>
-        <EventModal v-if="showEventModal" @click="eventClickHandler" @close-modal="showEventModal = false" :event="event" />
+        <EventModal v-if="showEventModal" @close-modal="showEventModal = false" :event="event" />
     </Transition>
+    <div ref="listContent">
+        <div class="model-content">
+            <p class="event-item" v-for="item in events" @click="eventClickHandler(item)">{{ item.name }} </p>
+        </div>
+    </div>
 </template>
 <script setup lang="ts">
 import { ref, watch } from "vue"
 import { useStore } from 'vuex'
+import Swal, { SweetAlertOptions } from 'sweetalert2'
 import EventModal from "./EventModal.vue"
 
 const store = useStore();
+
+const listContent = ref<HTMLDivElement>();
 const days = ref(store.state.days);
 const showEventModal = ref(false)
-const event = ref(
-    {
-        name: "",
-        des: "",
-        image: "",
-        date: ""
-    }
-);
+const events = ref();
+const event = ref();
 
-interface DateObject {
-    event: {
-        name: string,
-        des: string,
-        image: string,
-        date: string
-    }
+interface EventObject {
+    name: string,
+    des: string,
+    image: string,
+    date: string
 }
 
-function checkEventClass(date: DateObject): string {
-    return date.event ? 'event' : '';
+interface DateEvents {
+    date: string, 
+    event: EventObject[],
+    number: string
 }
 
-function eventClickHandler(date: DateObject): void {
+function checkEventClass(date: DateEvents) : string {
+    return date.event?.length > 0 ? 'event' : '';
+}
+
+function dateClickHandler(date: DateEvents)
+{    
     if (!date.event) return
-    event.value = date.event
+    if (date.event.length > 1) {
+        events.value = date.event
+        const swalOptions = <SweetAlertOptions>{
+            html: listContent.value,
+            showConfirmButton: false,
+            width: '90%',
+        };
+        Swal.fire(swalOptions).then((result) => {            
+            if (!result.dismiss) {
+                showEventModal.value = true;
+            }
+        });
+    }
+    else {
+        event.value = date.event[0];
+        showEventModal.value = true;
+        store.commit('setShowCreateBtn', false);
+    }
 
-    showEventModal.value = true;
+}
+
+function eventClickHandler(date: EventObject): void {
     store.commit('setShowCreateBtn', false);
+    event.value = date
+    Swal.close();
 }
 
 watch(() => store.state.days, (newValue) => {
@@ -89,6 +117,13 @@ watch(() => store.state.days, (newValue) => {
     background-position: center;
     background-repeat: no-repeat;
     background-size: 70px;
+    cursor: pointer;
+}
+
+.event-item {
+    display: flex;
+    justify-content: start;
+    margin: 1rem 0;
     cursor: pointer;
 }
 

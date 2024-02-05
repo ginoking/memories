@@ -38,12 +38,14 @@ exports.index = async (req, res) => {
 		const numberArray = Array.from({ length: moment(currentDate).daysInMonth() }, (_, i) => (i + 1).toString());
 		for (const number of emptyArray.concat(numberArray)) {
 			const dateString = `${currentDate}-${(number ?? '').padStart(2, '0')}`;
-			const event = (number !== '') ? await Stories.findOne({
+			const event = (number !== '') ? await Stories.find({
 				date: new Date(dateString)
 			}) : null;
 
 			if (event) {
-				event.image = await getImage(event.image, req.get('origin'));
+				event.map(async (item) => {
+					item.image = await getImage(item.image, req.get('origin'));
+				})
 			}
 
 			containEventDays.push({

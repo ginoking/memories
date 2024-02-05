@@ -8,11 +8,10 @@
                     </div>
                 </div>
                 <div class="modal-content">
-                    <h6 class="name">{{ event.name }}</h6>
-                    <p class="date">{{ moment(event.date).format('YYYY/MM/DD') }}</p>
-                    <img v-if="event.image != ''" :src="event.image" alt="">
-                    <!-- <img :src="`${serverUrl}/images/test.jpg`" alt=""> -->
-                    <p class="des">{{ event.des }}</p>
+                    <h6 class="name">{{ props.event.name }}</h6>
+                    <p class="date">{{ moment(props.event.date).format('YYYY/MM/DD') }}</p>
+                    <img v-if="event.image != ''" :src="props.event.image" alt="">
+                    <p class="des">{{ props.event.des }}</p>
                 </div>
             </div>
         </div>
@@ -22,7 +21,6 @@
 <script setup lang="ts">
 import { useStore } from 'vuex'
 import moment from 'moment';
-import axiosInstance from '../axios/axios';
 interface EventObject {
     name: string,
     des: string,
@@ -38,7 +36,7 @@ const close = () => {
     emit('close-modal', false)
     store.commit('setShowCreateBtn', true);
 }
-const serverUrl = axiosInstance.defaults.baseURL;
+
 </script>
 
 <style scoped>

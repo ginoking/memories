@@ -42,9 +42,9 @@ const open = () => {
     const swalOptions = {
         html: modelContent.value,
         width: '90%',
-        showCancelButton: true,
-        confirmButtonText: "建立",
-        cancelButtonText: "取消",
+        // showCancelButton: true,
+        confirmButtonText: "Create",
+        // cancelButtonText: "取消",
         customClass: {
             input: 'text-left',
             inputLabel: 'text-left'
