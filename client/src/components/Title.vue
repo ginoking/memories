@@ -66,6 +66,11 @@ changeDates(true);
         font-size: 25px;
     }
 
+    .text >>> .dp__input_wrap {
+        margin: 0 auto;
+        width: 55%;
+    }
+
     .dp__theme_light {
         --dp-text-color: white;
         --dp-icon-color: white;
