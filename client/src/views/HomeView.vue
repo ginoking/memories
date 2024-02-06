@@ -69,7 +69,7 @@ body>.title {
 
 .calendar {
 	width: 70%;
-	height: 700px;
+	height: 30rem;
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
@@ -109,15 +109,6 @@ body>.title {
 
 .darkgrey {
 	color: #255d6e;
-}
-
-.green {
-	color: #e3e3e3;
-}
-
-.greenbox {
-	border: 1px solid #203139;
-	background: #e9f8df;
 }
 
 .modal {
@@ -235,11 +226,11 @@ span {
 	margin-right: 10px;
 }
 
-
 @media (max-width: 768px) {
 	.calendar {
 		width: 95%;
-		margin-top: 80px;
+		height: 35rem;
+		margin-top: 3rem;
 	}
 
 	.footer {
@@ -261,6 +252,14 @@ span {
 
 	.modal .image {
 		width: 80%;
+	}
+}
+
+@media (max-width: 414px) {
+	.calendar {
+		width: 95%;
+		height: 40rem;
+		margin-top: 3rem;
 	}
 }
 

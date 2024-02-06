@@ -17,7 +17,7 @@
             <label for="" class="swal2-input-label">Description:</label>
             <textarea class="swal2-textarea" name="" id="" cols="30" rows="10" v-model="eventDes">{{ eventDes }}</textarea>
             <label for="" class="swal2-input-label">Date:</label>
-            <VueDatePicker auto-apply v-model="eventDate" :enable-time-picker="false" :format="format">
+            <VueDatePicker auto-apply v-model="eventDate" :enable-time-picker="false" :format="() => moment(eventDate).format('L') ">
                 <template #action-buttons></template>
                 <template #action-preview></template>
             </VueDatePicker>
@@ -29,12 +29,12 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, getCurrentInstance } from "vue"
 import axiosInstance from '../axios/axios';
 import Swal from 'sweetalert2'
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
 
+const app = getCurrentInstance();
+const moment = app?.appContext.config.globalProperties.$moment;
 const showContent = ref<boolean>(false);
 const selectFile = ref<File>();
 const eventName = ref<string>("");
@@ -42,10 +42,6 @@ const eventDes = ref<string>("");
 const eventDate = ref<Date>(new Date);
 const modelContent = ref<HTMLDivElement>();
 const selectType = ref<string>("");
-
-const format = () => {
-    return eventDate.value.getFullYear() + "/" + (eventDate.value.getMonth() + 1) + "/" + eventDate.value.getDate();
-}
 
 const open = () => {
     const swalOptions = {
