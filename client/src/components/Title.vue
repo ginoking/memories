@@ -67,21 +67,21 @@ changeDates(true);
         font-size: 25px;
     }
 
-    .text >>> .dp__overlay_cell {
+    .text :deep(.dp__overlay_cell) {
         color: #53656d;
     }
 
-    .text >>> .dp--year-select
+    .text :deep(.dp--year-select)
     {
         color: #53656d;
     }
 
-    .text >>> .dp__input_wrap {
+    .text :deep(.dp__input_wrap) {
         margin: 0 auto;
         width: 55%;
     }
 
-    .text >>> .dp__overlay_cell_active {
+    .text :deep(.dp__overlay_cell_active) {
         background-color: #8abae1;
     }
 
