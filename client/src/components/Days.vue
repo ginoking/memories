@@ -110,7 +110,7 @@ watch(() => store.state.days, (newValue) => {
     width: 14.28%;
     height: 8vh;
     line-height: 36px;
-    font-size: 15px;
+    /* font-size: 15px; */
     list-style-type: none;
     display: block;
     box-sizing: border-box;
@@ -119,10 +119,11 @@ watch(() => store.state.days, (newValue) => {
 }
 
 .event {
-    color: #ff0008;
+    color: #e77569;
+    font-size: 20px;
+    font-weight: bold;
     border: 0;
     background-color: transparent;
-    background-image: url('/heart.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: 70px;

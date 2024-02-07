@@ -9,6 +9,7 @@
                 month-picker 
                 v-model="currentDate" 
                 :enable-time-picker="false" :format="() => moment(currentDate).format('YYYY/MM')"
+                :clearable="false"
                 @update:model-value="changeDates"
             >
                 <template #action-buttons></template>
@@ -66,9 +67,22 @@ changeDates(true);
         font-size: 25px;
     }
 
+    .text >>> .dp__overlay_cell {
+        color: #53656d;
+    }
+
+    .text >>> .dp--year-select
+    {
+        color: #53656d;
+    }
+
     .text >>> .dp__input_wrap {
         margin: 0 auto;
         width: 55%;
+    }
+
+    .text >>> .dp__overlay_cell_active {
+        background-color: #8abae1;
     }
 
     .dp__theme_light {
@@ -77,4 +91,6 @@ changeDates(true);
         --dp-background-color: transparent;
         --dp-border-color: transparent;
     }
+
+    
 </style>
