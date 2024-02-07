@@ -8,6 +8,7 @@
                     </div>
                 </div>
                 <div class="modal-content">
+                    <span class="emoji" v-html="emojis[props.event.type]"></span>
                     <h6 class="name">{{ props.event.name }}</h6>
                     <p class="date">{{ moment(props.event.date).format('YYYY/MM/DD') }}</p>
                     <img v-if="event.image != ''" :src="props.event.image" alt="">
@@ -21,11 +22,13 @@
 <script setup lang="ts">
 import { useStore } from 'vuex'
 import moment from 'moment';
+import emojis from "../helpers/emojis"
 interface EventObject {
     name: string,
     des: string,
     image: string,
-    date: string
+    date: string,
+    type: string
 }
 const store = useStore();
 const props = defineProps<{
@@ -129,6 +132,12 @@ const close = () => {
     position: absolute;
     top: 0;
     right: 0;
+}
+
+.modal .emoji {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .close-img {

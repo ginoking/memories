@@ -122,7 +122,7 @@ a {
     right: 0;
 }
 
-i {
+.effect5 > i {
     font-size: 22px;
     font-weight: bold;
     font-style: normal;

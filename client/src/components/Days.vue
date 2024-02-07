@@ -12,7 +12,7 @@
     <div ref="listContent">
         <div class="model-content">
             <p class="event-item" v-for="item in events" @click="eventClickHandler(item)">
-                <span v-html="eventTypes[item.type]"></span>
+                <span v-html="emojis[item.type]"></span>
                 {{ item.name }} 
             </p>
         </div>
@@ -23,20 +23,15 @@ import { ref, watch } from "vue"
 import { useStore } from 'vuex'
 import Swal, { SweetAlertOptions } from 'sweetalert2'
 import EventModal from "./EventModal.vue"
+import emojis from "../helpers/emojis"
 
 const store = useStore();
 
 const listContent = ref<HTMLDivElement>();
 const days = ref(store.state.days);
-const showEventModal = ref(false)
-const events = ref();
-const event = ref();
-const eventTypes = ref({
-    happy: "&#128518;",
-    love: "&#128525;",
-    sad: "&#128546;",
-    angry: "&#128545;"
-})
+const showEventModal = ref<boolean>(false)
+const events = ref<DateEvents>();
+const event = ref<EventObject>();
 
 interface EventObject {
     name: string,
