@@ -12,7 +12,7 @@
     <div ref="listContent">
         <div class="model-content">
             <p class="event-item" v-for="item in events" @click="eventClickHandler(item)">
-                <span v-html="emojis[item.type]"></span>
+                <!-- <span v-html="emojis[item.type]"></span> -->
                 {{ item.name }} 
             </p>
         </div>
@@ -21,9 +21,9 @@
 <script setup lang="ts">
 import { ref, watch } from "vue"
 import { useStore } from 'vuex'
-import Swal, { SweetAlertOptions } from 'sweetalert2'
+import Swal, { type SweetAlertOptions } from 'sweetalert2'
 import EventModal from "./EventModal.vue"
-import emojis from "../helpers/emojis"
+// import emojis from "../helpers/emojis"
 
 const store = useStore();
 

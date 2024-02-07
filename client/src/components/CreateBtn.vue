@@ -17,7 +17,8 @@
             <label for="" class="swal2-input-label">Description:</label>
             <textarea class="swal2-textarea" name="" id="" cols="30" rows="10" v-model="eventDes">{{ eventDes }}</textarea>
             <label for="" class="swal2-input-label">Date:</label>
-            <VueDatePicker auto-apply v-model="eventDate" :enable-time-picker="false" :format="() => moment(eventDate).format('L') ">
+            <VueDatePicker auto-apply v-model="eventDate" :enable-time-picker="false"
+                :format="() => moment(eventDate).format('L')">
                 <template #action-buttons></template>
                 <template #action-preview></template>
             </VueDatePicker>
@@ -122,7 +123,7 @@ a {
     right: 0;
 }
 
-.effect5 > i {
+.effect5>i {
     font-size: 22px;
     font-weight: bold;
     font-style: normal;
@@ -205,5 +206,4 @@ input[type=file] {
     a {
         margin: 20px;
     }
-}
-</style>
+}</style>
