@@ -27,12 +27,6 @@ import emojis from "../helpers/emojis"
 
 const store = useStore();
 
-const listContent = ref<HTMLDivElement>();
-const days = ref(store.state.days);
-const showEventModal = ref<boolean>(false)
-const events = ref<DateEvents>();
-const event = ref<EventObject>();
-
 interface EventObject {
     name: string,
     des: string,
@@ -45,6 +39,12 @@ interface DateEvents {
     event: EventObject[],
     number: string
 }
+
+const listContent = ref<HTMLDivElement>();
+const days = ref(store.state.days);
+const showEventModal = ref<boolean>(false)
+const events = ref();
+const event = ref();
 
 function checkEventClass(date: DateEvents) : string {
     return date.event?.length > 0 ? 'event' : '';
