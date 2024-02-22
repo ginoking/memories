@@ -1,7 +1,7 @@
 const moment = require('moment');
 const _ = require('lodash');
 const { Storage } = require('@google-cloud/storage');
-const Stories = require("../database/mongodb");
+const Stories = require("../database/stories");
 
 async function uploadGCS(file, bucket, filename)
 {

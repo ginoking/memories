@@ -163,13 +163,8 @@ a {
 }
 
 input[type=file] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 225px;
+    width: 0px;
     opacity: 0;
-    padding: 14px 0;
-    cursor: pointer;
 }
 
 .input-file-trigger {

@@ -1,6 +1,8 @@
 const moment = require('moment');
 const { Storage } = require('@google-cloud/storage');
-const Stories = require("../database/mongodb");
+const Stories = require("../database/stories");
+const Users = require("../database/users");
+// const { now } = require('mongoose');
 
 const getImage = async (filename, domain) => {
 	if (process.env.hasOwnProperty('memoryStorageSecret')) {
@@ -29,6 +31,11 @@ const getImage = async (filename, domain) => {
 }
 
 exports.index = async (req, res) => {
+	// Users.register({
+	// 	'username': "gino",
+	// 	'created_at': new Date,
+	// 	'active': true
+	// }, '123')
 	try {
 
 		const containEventDays = [];
