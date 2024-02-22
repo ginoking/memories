@@ -17,6 +17,7 @@ app.use(passport.initialize());
 passport.use(new LocalStrategy(Users.authenticate()));
 passport.serializeUser(Users.serializeUser());
 passport.deserializeUser(Users.deserializeUser());
+passport.use(Users.createStrategy());
 // passport.use(new LocalStrategy(Users.authenticate()));
 // app.use(passport.session());
 // passport.use(new LocalStrategy(
