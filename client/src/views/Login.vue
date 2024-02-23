@@ -1,36 +1,49 @@
 <template>
-	<div class="screen-1">
-		<div class="container">
-			<div class="email">
-				<label for="email">Email Address</label>
-				<div class="sec-2">
-					<MdMailIcon />
-					<input type="email" name="email" placeholder="Username@gmail.com" />
+	<div class="body">
+		<div class="screen-1">
+			<div class="container">
+				<div class="email">
+					<label for="email">User Name</label>
+					<div class="sec-2">
+						<MdPersonIcon />
+						<input type="text" name="username" placeholder="gino" v-model="username" />
+					</div>
 				</div>
-			</div>
-			<div class="password">
-				<label for="password">Password</label>
-				<div class="sec-2">
-					<MdLockIcon />
-					<input class="pas" type="password" name="password" placeholder="············" />
-					<MdEyeIcon :class="'show-hide'" />
+				<div class="password">
+					<label for="password">Password</label>
+					<div class="sec-2">
+						<MdLockIcon />
+						<input class="pas" v-model="password" type="password" name="password" placeholder="············" />
+						<!-- <MdEyeIcon /> -->
+					</div>
 				</div>
+				<button class="login" @click="login">Login</button>
+				<p v-if="errorMessage" class="error-message">123</p>
+				<div class="footer"><span>Sign up</span><span>Forgot Password?</span></div>
 			</div>
-			<button class="login">Login</button>
-			<div class="footer"><span>Sign up</span><span>Forgot Password?</span></div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import MdEyeIcon from 'vue-ionicons/dist/md-eye.vue'
 import MdLockIcon from 'vue-ionicons/dist/md-lock.vue'
-import MdMailIcon from 'vue-ionicons/dist/md-mail.vue'
+import MdPersonIcon from 'vue-ionicons/dist/md-person.vue'
+import { ref } from "vue"
+
+const errorMessage = ref<string>('123');
+const username = ref<string>('');
+const password = ref<string>('');
+
+const login = () => {
+	console.log(123);
+	
+}
 
 </script>
 
 <style scoped>
-body {
+
+.body {
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
@@ -75,7 +88,6 @@ body {
 	gap: 0.5em;
 	border-radius: 20px;
 	color: #4d4d4d;
-	margin-top: -3em;
 }
 
 .screen-1 .container .email input {
@@ -96,11 +108,6 @@ body {
 .screen-1 .container .email input::placeholder {
 	color: black;
 	font-size: 0.9em;
-}
-
-.screen-1 .container .email ion-icon {
-	color: #4d4d4d;
-	margin-bottom: -0.2em;
 }
 
 .screen-1 .container .password {
@@ -134,18 +141,13 @@ body {
 	font-size: 0.9em;
 }
 
-.screen-1 .container .password ion-icon {
-	color: #4d4d4d;
-	margin-bottom: -0.2em;
-}
-
 .screen-1 .container .password .show-hide {
 	margin-right: -5em;
 }
 
 .screen-1 .container .login {
 	padding: 1em;
-	background: #3e4684;
+	background: var(--color-background);
 	color: white;
 	border: none;
 	border-radius: 30px;
@@ -166,5 +168,10 @@ body {
 
 button {
 	cursor: pointer;
+}
+
+::v-deep svg {
+	fill: #4d4d4d;
+	margin-bottom: -0.2em;
 }
 </style>

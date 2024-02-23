@@ -35,14 +35,6 @@ const store = useStore();
 
 <style scoped>
 
-body {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	font-family: 'Shantell Sans', cursive;
-}
-
 body>.title {
 	letter-spacing: 5px;
 	color: #255d6e;
