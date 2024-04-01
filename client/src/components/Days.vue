@@ -56,6 +56,7 @@ function dateClickHandler(date: DateEvents)
     if (date.event.length > 1) {
         events.value = date.event
         const swalOptions = <SweetAlertOptions>{
+            title: "Events List",
             html: listContent.value,
             showConfirmButton: false,
             width: '90%',
@@ -114,7 +115,7 @@ watch(() => store.state.days, (newValue) => {
 }
 
 .event {
-    color: #e77569;
+    color: #2778c4;
     font-size: 20px;
     font-weight: bold;
     border: 0;

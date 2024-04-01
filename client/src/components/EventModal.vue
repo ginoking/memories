@@ -1,14 +1,14 @@
 <template>
     <div class="modal-overlay">
         <div class="modal-container" @click.self="close">
-            <div class="modal">
+            <div :class="'modal ' + props.event.type">
                 <div class="modal-header">
                     <div class="close" @click="close">
                         <img class="close-img" src="../assets/close-icon.svg" alt="" />
                     </div>
                 </div>
                 <div class="modal-content">
-                    <!-- <span class="emoji" v-html="emojis[props.event.type]"></span> -->
+                    <span class="emoji" >{{ props.event.type }}</span>
                     <h6 class="name">{{ props.event.name }}</h6>
                     <p class="date">{{ moment(props.event.date).format('YYYY/MM/DD') }}</p>
                     <img v-if="event.image != ''" :src="props.event.image" alt="">
@@ -22,7 +22,6 @@
 <script setup lang="ts">
 import { useStore } from 'vuex'
 import moment from 'moment';
-// import emojis from "../helpers/emojis"
 interface EventObject {
     name: string,
     des: string,
@@ -71,6 +70,22 @@ const close = () => {
     margin-top: 1.5rem;
     padding: 30px 0;
     border-radius: 20px;
+}
+
+.modal.happy {
+    background-color: #d7d73b;
+}
+
+.modal.love {
+    background-color: pink;
+}
+
+.modal.angry {
+    background-color: #ab5656;
+}
+
+.modal.sad {
+    background-color: #5682aa;
 }
 
 .modal h6 {
