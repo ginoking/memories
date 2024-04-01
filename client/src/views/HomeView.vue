@@ -58,7 +58,7 @@ body>.title {
 
 .calendar {
 	width: 70%;
-	height: 30rem;
+	/* height: 30rem; */
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
@@ -218,7 +218,7 @@ span {
 @media (max-width: 768px) {
 	.calendar {
 		width: 95%;
-		height: 35rem;
+		/* height: 35rem; */
 		margin-top: 3rem;
 	}
 
