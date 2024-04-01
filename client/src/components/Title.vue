@@ -1,6 +1,6 @@
 <template>
     <div class="title">
-        <a @click.prevent="changeDates(false)">{{ '<' }}</a>
+        <a @click.prevent="changeDates(-1)">{{ '<' }}</a>
         <div class="text">
             <h1 for="test" class="date" id="calendar-title">{{ moment(currentDate).locale('en').format('MMMM') }}</h1>
             <h3 class="date small" id="calendar-year">{{ moment(currentDate).format('YYYY') }}</h3>
@@ -8,7 +8,7 @@
                 auto-apply 
                 month-picker 
                 v-model="currentDate" 
-                :enable-time-picker="false" :format="() => moment(currentDate).format('YYYY/MM')"
+                :enable-time-picker="false" :format="() => moment(currentDate).format('YYYY-MM')"
                 :clearable="false"
                 @update:model-value="changeDates"
             >
@@ -16,7 +16,7 @@
                 <template #action-preview></template>
             </VueDatePicker>
         </div>
-        <a @click.prevent="changeDates(true)">{{ '>' }}</a>
+        <a @click.prevent="changeDates(1)">{{ '>' }}</a>
     </div>
 </template>
 <script setup lang="ts">
@@ -29,20 +29,22 @@ const app = getCurrentInstance();
 const store = useStore()
 const moment = app?.appContext.config.globalProperties.$moment ;
 
-const currentDate = ref(`2024-01-01`);
+const currentDate = ref(new Date(`2024-01-01`));
 
 const $loading = useLoading({
     // options
 });
 
-const changeDates = async (next:boolean) => {
+const changeDates = async (change?:number) => {
     const loader = $loading.show({
         // Optional parameters
-    });
-	
-    const newMoment = next ? 
-		moment(currentDate.value).add(1, "M") : 
-		moment(currentDate.value).subtract(1, "M");
+    });    
+    
+    const newMoment = moment(currentDate.value);
+    if (typeof change === 'number') {
+        newMoment.add(change, 'M');
+    }
+        
     currentDate.value = newMoment.format('YYYY-MM-DD').toString();
 
 	const { data } = await axiosInstance.post('/', {time: newMoment.format("YYYY-MM")})
@@ -54,7 +56,7 @@ const changeDates = async (next:boolean) => {
     }, 1000)
 }
 
-changeDates(true);
+changeDates();
 
 </script>
 <style scoped>
