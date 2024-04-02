@@ -1,8 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var JsonStrategy = require('passport-json').Strategy;
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -14,27 +12,10 @@ const Users = require('./database/users');
 // const storage = new Storage(process.env.memoryStorageSecret);
 
 var app = express();
-app.use(passport.initialize());
-passport.use(new LocalStrategy(Users.authenticate()));
+app.disable("x-powered-by");
 passport.serializeUser(Users.serializeUser());
 passport.deserializeUser(Users.deserializeUser());
 passport.use(Users.createStrategy());
-// passport.use(new LocalStrategy(Users.authenticate()));
-// app.use(passport.session());
-// passport.use(new LocalStrategy(
-// 	function (username, password, done) {
-// 		// return done(null, false);
-// 		// console.log(123);
-// 		// authenticate user
-// 		Users.findOne({ username: 'gino' }, function (err, user) {
-// 			if (err) { return done(err); }
-// 			if (!user) { return done(null, false); }
-// 			if (!user.verifyPassword(password)) { return done(null, false); }
-// 			return done(null, user);
-// 		});
-// 		// next();
-// 	}
-// ));
 
 const corsOptions = {
 	origin: [
