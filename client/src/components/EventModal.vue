@@ -8,7 +8,7 @@
                     </div>
                 </div>
                 <div class="modal-content">
-                    <span class="emoji" >{{ props.event.type }}</span>
+                    <!-- <span class="emoji" >{{ props.event.type }}</span> -->
                     <h6 class="name">{{ props.event.name }}</h6>
                     <p class="date">{{ moment(props.event.date).format('YYYY/MM/DD') }}</p>
                     <img v-if="event.image != ''" :src="props.event.image" alt="">
