@@ -51,26 +51,35 @@ const register = async () => {
 	if (password.value != password2.value) {
 		error.value = 'Two password not same';
 	}
+
+	try {
+		const { data: { success, status, token, err } } = await axiosInstance.post('signup', { username: username.value, password: password.value })
+		if (success) {
+			localStorage.setItem('token', token);
+			const swalOptions = <SweetAlertOptions>{
+				title: status,
+				icon: 'success',
+				width: '90%',
+			};
+			Swal.fire(swalOptions).then(() => router.push('login'));
+		}
+		else {
+			const swalOptions = <SweetAlertOptions>{
+				title: status,
+				icon: 'error',
+				showConfirmButton: false,
+				width: '90%',
+			};
+			Swal.fire(swalOptions);
+		}
+	} catch (error) {
+		// 目前axios http 500 貌似catch會沒有觸發
+		console.log(error);
+	}
+
 	
-	const { data: { success, status, token } } = await axiosInstance.post('signup', { username: username.value, password: password.value })
-	if (success) {
-		localStorage.setItem('token', token);
-		const swalOptions = <SweetAlertOptions>{
-			title: status,
-			icon: 'success',
-			width: '90%',
-		};
-		Swal.fire(swalOptions).then(() => router.push('login'));
-	}
-	else {
-		const swalOptions = <SweetAlertOptions>{
-			title: status,
-			icon: 'error',
-			showConfirmButton: false,
-			width: '90%',
-		};
-		Swal.fire(swalOptions);
-	}
+
+
 }
 
 </script>

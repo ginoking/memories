@@ -31,6 +31,7 @@ const getImage = async (filename, domain) => {
 }
 
 exports.index = async (req, res) => {
+	console.log(req.user);
 	// Users.register({
 	// 	'username': "gino",
 	// 	'created_at': new Date,

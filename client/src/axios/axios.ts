@@ -35,7 +35,10 @@ instance.interceptors.response.use((response) => {
 	return response
 }, (error) => {
 	loader.hide();
-	router.push('login');
+	if (error.response.status == 401) {
+		router.push('login');
+	}
+	return Promise.reject(error)
 })
 
 export default instance;
