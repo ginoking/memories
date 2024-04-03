@@ -1,6 +1,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var passport = require('passport');
+var passportJWT = require("passport-jwt");
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -8,14 +9,37 @@ var compress = require('compression');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const Users = require('./database/users');
-// const { Storage } = require('@google-cloud/storage');
-// const storage = new Storage(process.env.memoryStorageSecret);
+const config = require('./auth/config');
+var ExtractJwt = passportJWT.ExtractJwt;
+var Strategy = passportJWT.Strategy;
+
+var params = {
+	secretOrKey: config.jwtSecret,
+	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
+};
 
 var app = express();
 app.disable("x-powered-by");
-passport.serializeUser(Users.serializeUser());
-passport.deserializeUser(Users.deserializeUser());
-passport.use(Users.createStrategy());
+// passport.serializeUser(Users.serializeUser());
+// passport.deserializeUser(Users.deserializeUser());
+// passport.use(Users.createStrategy());
+// passport.use(new Strategy(params, function (payload, done) {
+// 	console.log(123);
+// 	Users.findById(payload.id, function (err, user) {
+// 		if (err) {
+// 			console.log(1);
+// 			return done(new Error("UserNotFound"), null);
+// 		} else if (payload.expire <= Date.now()) {
+// 			console.log(2);
+// 			return done(new Error("TokenExpired"), null);
+// 		} else {
+// 			console.log(3);
+// 			return done(null, user);
+// 		}
+// 	})
+// }));
+passport.initialize();
+// passport.session();
 
 const corsOptions = {
 	origin: [
@@ -53,9 +77,11 @@ app.use(function (err, req, res, next) {
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+	console.log(err);
+
 	// render the error page
 	res.status(err.status || 500);
-	res.render('error');
+	res.json(err);
 });
 
 // app.use(Storage(process.env.memoryStorageSecret));

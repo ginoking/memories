@@ -5,22 +5,29 @@
 				<div class="email">
 					<label for="email">User Name</label>
 					<div class="sec-2">
-						<MdPersonIcon />
 						<input type="text" name="username" placeholder="gino" v-model="username" />
 					</div>
 				</div>
 				<div class="password">
 					<label for="password">Password</label>
 					<div class="sec-2">
-						<MdLockIcon />
-						<input class="pas" v-model="password" type="password" name="password" placeholder="············" />
+						<input class="pas" v-model="password" type="password" name="password"
+							placeholder="············" />
 						<!-- <MdEyeIcon /> -->
 					</div>
 				</div>
-				<button class="login" @click="login">Login</button>
+				<div class="password">
+					<label for="password">Password Confirm</label>
+					<div class="sec-2">
+						<input class="pas" v-model="password2" type="password" name="password"
+							placeholder="············" />
+						<!-- <MdEyeIcon /> -->
+					</div>
+				</div>
+				<span class="error" v-if="error">{{ error }}</span>
+				<button class="login" @click="register">Signup</button>
 				<div class="footer">
-					<span @click="() => router.push('signup')">Sign up</span>
-					<span>Forgot Password?</span>
+					<span @click="() => router.push('login')">Login</span>
 				</div>
 			</div>
 		</div>
@@ -28,8 +35,6 @@
 </template>
 
 <script setup lang="ts">
-import MdLockIcon from 'vue-ionicons/dist/md-lock.vue'
-import MdPersonIcon from 'vue-ionicons/dist/md-person.vue'
 import { ref } from "vue"
 import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
@@ -39,33 +44,38 @@ const router = useRouter();
 
 const username = ref<string>('');
 const password = ref<string>('');
+const password2 = ref<string>('');
+const error = ref<string>('');
 
-const login = async () => {
-	const { data: { success, status, token } } = await axiosInstance.post('login', {username: username.value, password: password.value})
+const register = async () => {
+	if (password.value != password2.value) {
+		error.value = 'Two password not same';
+	}
+	
+	const { data: { success, status, token } } = await axiosInstance.post('signup', { username: username.value, password: password.value })
 	if (success) {
 		localStorage.setItem('token', token);
 		const swalOptions = <SweetAlertOptions>{
-            title: 'Login success!',
+			title: status,
 			icon: 'success',
-            width: '90%',
-        };
-        Swal.fire(swalOptions).then(() => router.push('/'));
+			width: '90%',
+		};
+		Swal.fire(swalOptions).then(() => router.push('login'));
 	}
 	else {
 		const swalOptions = <SweetAlertOptions>{
-            title: status,
+			title: status,
 			icon: 'error',
-            showConfirmButton: false,
-            width: '90%',
-        };
-        Swal.fire(swalOptions);
+			showConfirmButton: false,
+			width: '90%',
+		};
+		Swal.fire(swalOptions);
 	}
 }
 
 </script>
 
 <style scoped>
-
 .body {
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -80,6 +90,7 @@ const login = async () => {
 	height: 100vh;
 	width: 50%;
 }
+
 .screen-1 {
 	width: 100%;
 }
@@ -195,6 +206,10 @@ const login = async () => {
 
 button {
 	cursor: pointer;
+}
+
+.error {
+	color: red;
 }
 
 ::v-deep svg {

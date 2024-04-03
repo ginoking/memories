@@ -22,7 +22,6 @@
 <script setup lang="ts">
 import { ref, getCurrentInstance } from "vue"
 import { useStore } from 'vuex'
-import {useLoading} from 'vue-loading-overlay'
 import axiosInstance from '../axios/axios';
 
 const app = getCurrentInstance();
@@ -31,14 +30,8 @@ const moment = app?.appContext.config.globalProperties.$moment ;
 
 const currentDate = ref(new Date(`2024-01-01`));
 
-const $loading = useLoading({
-    // options
-});
 
-const changeDates = async (change?:number) => {
-    const loader = $loading.show({
-        // Optional parameters
-    });    
+const changeDates = async (change?:number) => { 
     
     const newMoment = moment(currentDate.value);
     if (typeof change === 'number') {
@@ -51,9 +44,6 @@ const changeDates = async (change?:number) => {
 
     store.commit('setDays', data)    
 
-    setTimeout(() => {
-        loader.hide()
-    }, 1000)
 }
 
 changeDates();
