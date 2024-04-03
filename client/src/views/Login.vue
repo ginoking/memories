@@ -205,7 +205,7 @@ button {
 
 @media (max-width: 414px) {
 	.body {
-		width: 80%;
+		width: 85%;
 	}
 }
 </style>
