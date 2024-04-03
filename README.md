@@ -10,10 +10,15 @@
 ## 技術
 1. vue3 + typescript
 2. nodejs(express)
-3. mongodb(mongoose)
-4. docker(docker-compose)
-5. <del>github action<del>
-6. GCP
+   * login
+     ```
+     採用passport-local-mongoose 建立user 帳號
+     搭配jsonwebtoken 產生token 並用passport-jwt 驗證token
+     ```
+4. mongodb(mongoose)
+5. docker(docker-compose)
+6. <del>github action<del>
+7. GCP
    * cloud build
         ```
         用於cicd，取代github action
