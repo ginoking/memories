@@ -5,16 +5,13 @@
 				<div class="email">
 					<label for="email">User Name</label>
 					<div class="sec-2">
-						<MdPersonIcon />
 						<input type="text" name="username" placeholder="gino" v-model="username" />
 					</div>
 				</div>
 				<div class="password">
 					<label for="password">Password</label>
 					<div class="sec-2">
-						<MdLockIcon />
 						<input class="pas" v-model="password" type="password" name="password" placeholder="············" />
-						<!-- <MdEyeIcon /> -->
 					</div>
 				</div>
 				<button class="login" @click="login">Login</button>
@@ -28,8 +25,6 @@
 </template>
 
 <script setup lang="ts">
-import MdLockIcon from 'vue-ionicons/dist/md-lock.vue'
-import MdPersonIcon from 'vue-ionicons/dist/md-person.vue'
 import { ref } from "vue"
 import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
