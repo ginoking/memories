@@ -128,7 +128,7 @@ const login = async () => {
 }
 
 .screen-1 .container .email input::placeholder {
-	color: black;
+	/* color: black; */
 	font-size: 0.9em;
 }
 

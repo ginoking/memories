@@ -36,6 +36,7 @@ instance.interceptors.response.use((response) => {
 }, (error) => {
 	loader.hide();
 	if (error.response.status == 401) {
+		localStorage.removeItem('token');
 		router.push('login');
 	}
 	return Promise.reject(error)
