@@ -171,7 +171,7 @@ input[type=file] {
     margin: 1.5rem;
     display: block;
     padding: 14px 45px;
-    background: var(--color-background);
+    background-color: var(--color-background);
     color: #fff;
     font-size: 1em;
     transition: all .4s;

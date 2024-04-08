@@ -194,7 +194,7 @@ const register = async () => {
 
 .screen-1 .container .login {
 	padding: 1em;
-	background: var(--color-background);
+	background-color: var(--color-background);
 	color: white;
 	border: none;
 	border-radius: 30px;
