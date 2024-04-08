@@ -19,6 +19,7 @@
 			<p>Hope we can remember our memories forever.</p>
 		</div>
 	</div>
+	<LogoutBtn />
 	<CreateBtn v-if="store.state.showCreateBtn" />
 </template>
 
@@ -28,6 +29,7 @@ import Days from '../components/Days.vue'
 import Title from '../components/Title.vue'
 import CreateBtn from '@/components/CreateBtn.vue';
 import { useStore } from "vuex";
+import LogoutBtn from '../components/LogoutBtn.vue';
 
 const store = useStore();
 

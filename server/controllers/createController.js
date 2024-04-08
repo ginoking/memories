@@ -44,6 +44,7 @@ exports.index = async (req, res) => {
 			data.image = "images/" + newFileName;
 		}
 
+		data.user_id = req.user._id;
 		await Stories.create(data);
 		return res.send("done");
 	} catch (err) {

@@ -178,10 +178,9 @@ const login = async () => {
 
 .screen-1 .container .footer {
 	display: flex;
+	justify-content: space-between;
 	font-size: 0.7em;
 	color: #5e5e5e;
-	gap: 14em;
-	/* padding-bottom: 10em; */
 }
 
 .screen-1 .container .footer span {
