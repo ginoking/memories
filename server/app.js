@@ -1,45 +1,17 @@
 var createError = require('http-errors');
 var express = require('express');
 var passport = require('passport');
-var passportJWT = require("passport-jwt");
-var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var compress = require('compression');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
-const Users = require('./database/users');
-const config = require('./auth/config');
-var ExtractJwt = passportJWT.ExtractJwt;
-var Strategy = passportJWT.Strategy;
-
-var params = {
-	secretOrKey: config.jwtSecret,
-	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
-};
 
 var app = express();
 app.disable("x-powered-by");
-// passport.serializeUser(Users.serializeUser());
-// passport.deserializeUser(Users.deserializeUser());
-// passport.use(Users.createStrategy());
-// passport.use(new Strategy(params, function (payload, done) {
-// 	console.log(123);
-// 	Users.findById(payload.id, function (err, user) {
-// 		if (err) {
-// 			console.log(1);
-// 			return done(new Error("UserNotFound"), null);
-// 		} else if (payload.expire <= Date.now()) {
-// 			console.log(2);
-// 			return done(new Error("TokenExpired"), null);
-// 		} else {
-// 			console.log(3);
-// 			return done(null, user);
-// 		}
-// 	})
-// }));
+
 passport.initialize();
-// passport.session();
+passport.session();
 
 const corsOptions = {
 	origin: [

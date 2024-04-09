@@ -1,4 +1,4 @@
 module.exports = {
-    secretKey: "JWT Secret",
+    secretKey: process.env.jwtSecretKey,
     jwtSession: { session: false }
 };
