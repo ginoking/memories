@@ -12,8 +12,9 @@
 2. nodejs(express)
    * login
      ```
-     採用passport-local-mongoose 建立user 帳號
-     搭配jsonwebtoken 產生token 並用passport-jwt 驗證token
+     密碼強度驗證採用 yup-password
+     採用 passport-local-mongoose 建立user 帳號
+     搭配 jsonwebtoken 產生token 並用passport-jwt 驗證token
      ```
 4. mongodb(mongoose)
 5. docker(docker-compose)

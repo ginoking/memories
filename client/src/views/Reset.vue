@@ -8,24 +8,26 @@
 						<input type="text" name="username" placeholder="gino" v-model="username" />
 					</div>
 				</div>
-				<div class="password">
-					<label for="password">Password</label>
-					<div class="sec-2">
-						<input class="pas" v-model="password" type="password" name="password"
-							placeholder="············" />
-						<!-- <MdEyeIcon /> -->
+
+				<div v-if="exists">
+					<div class="password">
+						<label for="password">New Password</label>
+						<div class="sec-2">
+							<input class="pas" v-model="password" type="password" name="password"
+								placeholder="············" />
+						</div>
 					</div>
-				</div>
-				<div class="password">
-					<label for="password">Password Confirm</label>
-					<div class="sec-2">
-						<input class="pas" v-model="password2" type="password" name="password"
-							placeholder="············" />
-						<!-- <MdEyeIcon /> -->
+					<div class="password">
+						<label for="password">New Password Confirm</label>
+						<div class="sec-2">
+							<input class="pas" v-model="password2" type="password" name="password"
+								placeholder="············" />
+						</div>
 					</div>
 				</div>
 				<span class="error" v-if="error">{{ error }}</span>
-				<button class="login" @click="register">Signup</button>
+				<button v-if="!exists" class="login" @click="check">Check User</button>
+				<button v-else class="login" @click="reset">Reset Password</button>
 				<div class="footer">
 					<span @click="() => router.push('login')">Login</span>
 				</div>
@@ -46,16 +48,25 @@ const username = ref<string>('');
 const password = ref<string>('');
 const password2 = ref<string>('');
 const error = ref<string>('');
+const exists = ref<boolean>(false);
 
-const register = async () => {
+const check = async () => {
+	try {
+		const { data: { success, status, token, err } } = await axiosInstance.post('check', { username: username.value })
+		exists.value = success;
+	} catch (error) {
+		// 目前axios http 500 貌似catch會沒有觸發
+		console.log(error);
+	}
+}
+
+const reset = async () => {
 	if (password.value != password2.value) {
 		error.value = 'Two password not same';
 	}
-
 	try {
-		const { data: { success, status, token, err } } = await axiosInstance.post('signup', { username: username.value, password: password.value })
+		const { data: { success, status, token, err } } = await axiosInstance.post('reset', { username: username.value, password: password.value })
 		if (success) {
-			localStorage.setItem('token', token);
 			const swalOptions = <SweetAlertOptions>{
 				title: status,
 				icon: 'success',
@@ -63,23 +74,10 @@ const register = async () => {
 			};
 			Swal.fire(swalOptions).then(() => router.push('login'));
 		}
-		else {
-			const swalOptions = <SweetAlertOptions>{
-				title: status,
-				icon: 'error',
-				showConfirmButton: false,
-				width: '90%',
-			};
-			Swal.fire(swalOptions);
-		}
 	} catch (error) {
 		// 目前axios http 500 貌似catch會沒有觸發
 		console.log(error);
 	}
-
-	
-
-
 }
 
 </script>

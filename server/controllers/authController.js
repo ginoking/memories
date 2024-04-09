@@ -40,12 +40,28 @@ exports.signup = (req, res, next) => {
         })
 };
 
-exports.logout = (req, res, next) => {
-    req.logout((err) => {
-        if (err) {
-            return next(err);
-        }
+// exports.logout = (req, res, next) => {
+//     req.logout((err) => {
+//         if (err) {
+//             return next(err);
+//         }
 
-        res.json({ success: true, status: 'Logout Successful!' });
-    })
+//         res.json({ success: true, status: 'Logout Successful!' });
+//     })
+// };
+
+exports.check = async (req, res, next) => {
+    const user = await Users.findOne({username: req.body.username});
+    if (user) {
+        return res.json({ success: true, status: 'User exist!' });
+    }
+    res.json({ success: false, status: 'User not exist!' });
+};
+
+exports.reset = async (req, res, next) => {
+    const user = await Users.findOne({username: req.body.username});
+    await user.setPassword(req.body.password);
+    await user.save();
+
+    return res.json({ success: true, status: 'Reset Successful!' });
 };

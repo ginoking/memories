@@ -17,7 +17,7 @@
 				<button class="login" @click="login">Login</button>
 				<div class="footer">
 					<span @click="() => router.push('signup')">Sign up</span>
-					<span>Forgot Password?</span>
+					<span @click="() => router.push('reset')">Forgot Password?</span>
 				</div>
 			</div>
 		</div>
@@ -43,6 +43,7 @@ const login = async () => {
             title: 'Login success!',
 			icon: 'success',
             width: '90%',
+			confirmButtonColor: "#4d90d8",
         };
         Swal.fire(swalOptions).then(() => router.push('/'));
 	}
@@ -73,7 +74,7 @@ const login = async () => {
 	justify-content: center;
 	/* background: #dde5f4; */
 	height: 100vh;
-	width: 50%;
+	width: 25%;
 }
 .screen-1 {
 	width: 100%;
