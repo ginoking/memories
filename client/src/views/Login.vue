@@ -193,7 +193,7 @@ button {
 	cursor: pointer;
 }
 
-::v-deep svg {
+:deep(svg) {
 	fill: #4d4d4d;
 	margin-bottom: -0.2em;
 }

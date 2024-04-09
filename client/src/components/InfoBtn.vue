@@ -27,7 +27,7 @@ a {
     transition: all .2s;
 }
 
-::v-deep svg {
+:deep(svg) {
 	fill: #4d90d8;
 }
 
