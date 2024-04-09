@@ -24,10 +24,10 @@
                 <template #action-preview></template>
             </VueDatePicker>
             <label for="" class="swal2-input-label">Image:</label>
-            <p class="filename">{{ selectFile?.name }}</p>
             <input id="file-input" type="file" @change="fileChange"
                 accept="image/png, image/jpeg, image/jpg, image/gif">
             <label for="file-input" class="input-file-trigger">Select a image</label>
+            <img class="preview" :src="imageUrl" alt="">
         </div>
     </div>
 </template>
@@ -45,6 +45,7 @@ const eventDes = ref<string>("");
 const eventDate = ref<Date>(new Date);
 const modelContent = ref<HTMLDivElement>();
 const selectType = ref<string>("");
+const imageUrl = ref<string>("");
 
 const open = () => {
     const swalOptions = {
@@ -52,6 +53,7 @@ const open = () => {
         width: '90%',
         // showCancelButton: true,
         confirmButtonText: "Create",
+        confirmButtonColor: "#4d90d8",
         // cancelButtonText: "取消",
         customClass: {
             input: 'text-left',
@@ -78,6 +80,7 @@ const open = () => {
 const fileChange = (e: Event) => {
     const files = (e.target as HTMLInputElement).files;
     if (files && files[0]) {
+        imageUrl.value = URL.createObjectURL(files[0]);
         selectFile.value = files[0];
     }
 }
@@ -180,8 +183,14 @@ input[type=file] {
     cursor: pointer;
 }
 
-.filename {
-    margin: 0.5rem 0;
+.preview {
+    margin: 0.5rem;
+    width: 80%;
+    /* margin: 0.5rem 0; */
+}
+
+.swal2-confirm .swal2-styled {
+    background-color: var(--color-background);
 }
 
 .type-select {
