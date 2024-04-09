@@ -1,10 +1,9 @@
 <template>
     <router-link to="info" class="effect5">
-        <MdPersonIcon w="1.5rem" h="1.5rem" />
+        <i class="pi pi-user"></i>
     </router-link>
 </template>
 <script setup lang="ts">
-import MdPersonIcon from 'vue-ionicons/dist/md-person.vue'
 
 </script>
 <style scoped>
@@ -28,7 +27,7 @@ a {
 }
 
 :deep(svg) {
-	fill: #4d90d8;
+    fill: #4d90d8;
 }
 
 .effect5>i {
@@ -38,18 +37,16 @@ a {
     transition: all .1s;
 }
 
-.effect5 {
-    &:hover {
-        box-shadow: 0px 0 0 11px #FFF, 0px 0 0 10px #27ae60, 0px 0 0 50px #FFF inset;
-    }
+.effect5:hover {
+    box-shadow: 0px 0 0 11px #fff, 0px 0 0 10px #27ae60, 0px 0 0 50px #fff inset;
+}
 
-    &:active {
-        box-shadow: 0px 0 0 11px #27ae60, 0px 0 0 10px #27ae60, 0px 0 0 50px #FFF inset;
+.effect5:active {
+    box-shadow: 0px 0 0 11px #27ae60, 0px 0 0 10px #27ae60, 0px 0 0 50px #fff inset;
+}
 
-        i {
-            color: #27ae60;
-        }
-    }
+.effect5:active i {
+    color: #27ae60;
 }
 
 @media (max-width: 768px) {

@@ -7,6 +7,7 @@ import moment from 'moment'
 import 'moment/dist/locale/zh-tw';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import 'primeicons/primeicons.css'
 
 import App from './App.vue'
 import router from './router'

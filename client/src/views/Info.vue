@@ -227,18 +227,16 @@ a {
     transition: all .1s;
 }
 
-.effect5 {
-    &:hover {
-        box-shadow: 0px 0 0 11px #FFF, 0px 0 0 10px #27ae60, 0px 0 0 50px #FFF inset;
-    }
+.effect5:hover {
+    box-shadow: 0px 0 0 11px #fff, 0px 0 0 10px #27ae60, 0px 0 0 50px #fff inset;
+}
 
-    &:active {
-        box-shadow: 0px 0 0 11px #27ae60, 0px 0 0 10px #27ae60, 0px 0 0 50px #FFF inset;
+.effect5:active {
+    box-shadow: 0px 0 0 11px #27ae60, 0px 0 0 10px #27ae60, 0px 0 0 50px #fff inset;
+}
 
-        i {
-            color: #27ae60;
-        }
-    }
+.effect5:active i {
+    color: #27ae60;
 }
 
 .error {
