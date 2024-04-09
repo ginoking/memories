@@ -5,7 +5,7 @@
 				<div class="email">
 					<label for="email">User Name</label>
 					<div class="sec-2">
-						<input type="text" name="username" placeholder="gino" v-model="username" />
+						<input type="text" name="username" disabled v-model="username"/>
 					</div>
 				</div>
 				<div class="password">
@@ -14,14 +14,23 @@
 						<input class="pas" v-model="password" type="password" name="password" placeholder="············" />
 					</div>
 				</div>
-				<button class="login" @click="login">Login</button>
-				<div class="footer">
-					<span @click="() => router.push('signup')">Sign up</span>
-					<span @click="() => router.push('reset')">Forgot Password?</span>
+				<div class="password">
+					<label for="password">Password Confirm</label>
+					<div class="sec-2">
+						<input class="pas" v-model="password2" type="password" name="password"
+							placeholder="············" />
+					</div>
 				</div>
+				<button class="login" @click="reset">Reset Password</button>
 			</div>
+			<!-- <div class="container">
+				log
+			</div> -->
 		</div>
 	</div>
+	<a href="#" class="effect5" @click="() => router.back()">
+        <i class="label">{{ '<' }}</i>
+    </a>
 </template>
 
 <script setup lang="ts">
@@ -31,38 +40,36 @@ import axiosInstance from '../axios/axios';
 import Swal, { type SweetAlertOptions } from 'sweetalert2'
 
 const router = useRouter();
+const username = localStorage.getItem("user");
 
-const username = ref<string>('');
 const password = ref<string>('');
+const password2 = ref<string>('');
+const error = ref<string>('');
 
-const login = async () => {
-	const { data: { success, status, token, user } } = await axiosInstance.post('login', {username: username.value, password: password.value})
-	if (success) {		
-		localStorage.setItem('token', token);
-		localStorage.setItem('user', user);
-		const swalOptions = <SweetAlertOptions>{
-            title: 'Login success!',
-			icon: 'success',
-            width: '90%',
-			confirmButtonColor: "#4d90d8",
-        };
-        Swal.fire(swalOptions).then(() => router.push('/'));
+const reset = async () => {
+	if (password.value != password2.value) {
+		error.value = 'Two password not same';
 	}
-	else {
-		const swalOptions = <SweetAlertOptions>{
-            title: status,
-			icon: 'error',
-            showConfirmButton: false,
-            width: '90%',
-        };
-        Swal.fire(swalOptions);
+	try {
+		const { data: { success, status, token, err } } = await axiosInstance.post('reset-password', { password: password.value })
+		if (success) {
+			const swalOptions = <SweetAlertOptions>{
+				title: status,
+				icon: 'success',
+				width: '90%',
+				confirmButtonColor: "#4d90d8",
+			};
+			Swal.fire(swalOptions);
+		}
+	} catch (error) {
+		// 目前axios http 500 貌似catch會沒有觸發
+		console.log(error);
 	}
 }
 
 </script>
 
 <style scoped>
-
 .body {
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -77,12 +84,13 @@ const login = async () => {
 	height: 100vh;
 	width: 25%;
 }
+
 .screen-1 {
 	width: 100%;
 }
 
 .screen-1 .container {
-	background: #f1f7fe;
+	background: #8abae1;
 	padding: 2em;
 	display: flex;
 	flex-direction: column;
@@ -99,13 +107,9 @@ const login = async () => {
 	display: flex;
 }
 
-.screen-1 .container .logo {
-	margin-top: -3em;
-}
-
 .screen-1 .container .email {
 	background: white;
-	box-shadow: 0 0 2em #e6e9f9;
+	/* box-shadow: 0 0 2em #e6e9f9; */
 	padding: 1em;
 	display: flex;
 	flex-direction: column;
@@ -130,13 +134,13 @@ const login = async () => {
 }
 
 .screen-1 .container .email input::placeholder {
-	/* color: black; */
+	color: black;
 	font-size: 0.9em;
 }
 
 .screen-1 .container .password {
 	background: white;
-	box-shadow: 0 0 2em #e6e9f9;
+	/* box-shadow: 0 0 2em #e6e9f9; */
 	padding: 1em;
 	display: flex;
 	flex-direction: column;
@@ -180,9 +184,10 @@ const login = async () => {
 
 .screen-1 .container .footer {
 	display: flex;
-	justify-content: space-between;
 	font-size: 0.7em;
-	color: #5e5e5e;
+	color: var(--color-text);
+	gap: 14em;
+	/* padding-bottom: 10em; */
 }
 
 .screen-1 .container .footer span {
@@ -191,6 +196,53 @@ const login = async () => {
 
 button {
 	cursor: pointer;
+}
+
+a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    margin: 50px;
+
+    border-radius: 190px;
+    border: 3px solid #4d90d8;
+    background: #8abae1;
+    text-align: center;
+
+    text-decoration: none;
+    color: #4d90d8;
+
+    transition: all .2s;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+}
+
+.effect5>i {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-style: normal;
+    transition: all .1s;
+}
+
+.effect5 {
+    &:hover {
+        box-shadow: 0px 0 0 11px #FFF, 0px 0 0 10px #27ae60, 0px 0 0 50px #FFF inset;
+    }
+
+    &:active {
+        box-shadow: 0px 0 0 11px #27ae60, 0px 0 0 10px #27ae60, 0px 0 0 50px #FFF inset;
+
+        i {
+            color: #27ae60;
+        }
+    }
+}
+
+.error {
+	color: red;
 }
 
 ::v-deep svg {
@@ -202,11 +254,14 @@ button {
 	.body {
 		width: 60%;
 	}
+	a {
+        margin: 20px;
+    }
 }
 
 @media (max-width: 414px) {
 	.body {
-		width: 85%;
+		width: 80%;
 	}
 }
 </style>

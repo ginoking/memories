@@ -123,13 +123,10 @@ a {
     color: #4d90d8;
 
     transition: all .2s;
-    position: fixed;
-    bottom: 0;
-    right: 0;
 }
 
 .effect5>i {
-    font-size: 22px;
+    font-size: 1.5rem;
     font-weight: bold;
     font-style: normal;
     transition: all .1s;

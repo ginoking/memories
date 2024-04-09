@@ -14,7 +14,7 @@ exports.login = (req, res, next) => {
         // Response
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        return res.json({ success: true, token: token, status: 'You are successfully logged in!' });
+        return res.json({ success: true, token: token, status: 'You are successfully logged in!', user: user.username });
 
     })(req, res, next)
 };
@@ -59,7 +59,11 @@ exports.check = async (req, res, next) => {
 };
 
 exports.reset = async (req, res, next) => {
-    const user = await Users.findOne({username: req.body.username});
+    const user = req.user;
+    if (!user) {
+        const user = await Users.findOne({username: req.body.username});
+    }
+    
     await user.setPassword(req.body.password);
     await user.save();
 

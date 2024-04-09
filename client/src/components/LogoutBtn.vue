@@ -53,9 +53,6 @@ a {
     color: #4d90d8;
 
     transition: all .2s;
-    position: fixed;
-    bottom: 0;
-    left: 0;
 }
 
 .effect5>i {

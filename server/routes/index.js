@@ -10,6 +10,7 @@ const passwordValidate = require("../validations/passwordValidate");
 
 router.post("/", auth.verifyUser, eventValidate(), eventController.index)
 router.post("/create", auth.verifyUser, createValidate(), createController.index);
+router.post('/reset-password', auth.verifyUser, passwordValidate(), authController.reset);
 // router.get("/logout", auth.verifyUser, authController.logout);
 
 router.post('/signup', passwordValidate(), authController.signup);

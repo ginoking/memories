@@ -19,8 +19,11 @@
 			<p>Hope we can remember our memories forever.</p>
 		</div>
 	</div>
-	<LogoutBtn v-if="store.state.showCreateBtn" />
-	<CreateBtn v-if="store.state.showCreateBtn" />
+	<div class="action-btns" v-if="store.state.showCreateBtn">
+		<LogoutBtn />
+		<InfoBtn />
+		<CreateBtn />
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -30,6 +33,7 @@ import Title from '../components/Title.vue'
 import CreateBtn from '@/components/CreateBtn.vue';
 import { useStore } from "vuex";
 import LogoutBtn from '../components/LogoutBtn.vue';
+import InfoBtn from '../components/InfoBtn.vue';
 
 const store = useStore();
 
@@ -68,6 +72,14 @@ body>.title {
 	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
 	margin-top: 10px;
+}
+
+.action-btns {
+	width: 100vw;
+	position: fixed;
+    bottom: 0;
+	display: flex;
+	justify-content: center;
 }
 
 .title {
