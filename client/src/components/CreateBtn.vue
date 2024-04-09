@@ -15,7 +15,8 @@
             <label for="" class="swal2-input-label">Name:</label>
             <input type="text" class="swal2-input" v-model="eventName">
             <label for="" class="swal2-input-label">Description:</label>
-            <textarea class="swal2-textarea" name="" id="" cols="30" rows="10" v-model="eventDes">{{ eventDes }}</textarea>
+            <textarea class="swal2-textarea" name="" id="" cols="30" rows="10"
+                v-model="eventDes">{{ eventDes }}</textarea>
             <label for="" class="swal2-input-label">Date:</label>
             <VueDatePicker auto-apply v-model="eventDate" :enable-time-picker="false"
                 :format="() => moment(eventDate).format('L')">
@@ -24,7 +25,8 @@
             </VueDatePicker>
             <label for="" class="swal2-input-label">Image:</label>
             <p class="filename">{{ selectFile?.name }}</p>
-            <input id="file-input" type="file" @change="fileChange" accept="image/png, image/jpeg, image/jpg, image/gif">
+            <input id="file-input" type="file" @change="fileChange"
+                accept="image/png, image/jpeg, image/jpg, image/gif">
             <label for="file-input" class="input-file-trigger">Select a image</label>
         </div>
     </div>
@@ -184,6 +186,8 @@ input[type=file] {
 
 .type-select {
     -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     padding: 7px 40px 7px 12px;
     width: 100%;
     border: 1px solid #e8eaed;
@@ -195,10 +199,12 @@ input[type=file] {
     font-size: 16px;
     transition: all 150ms ease;
     margin: 0.5rem 0;
+    color: var(--color-text);
 }
 
 @media (max-width: 768px) {
     a {
         margin: 20px;
     }
-}</style>
+}
+</style>
