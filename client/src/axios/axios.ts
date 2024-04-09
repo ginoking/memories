@@ -31,7 +31,7 @@ instance.interceptors.request.use((config) => {
 instance.interceptors.response.use((response) => {
 	setTimeout(() => {
         loader.hide()
-    }, 1000)
+    }, 500)
 	return response
 }, (error) => {
 	loader.hide();
