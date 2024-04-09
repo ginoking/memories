@@ -19,7 +19,7 @@
 			<p>Hope we can remember our memories forever.</p>
 		</div>
 	</div>
-	<LogoutBtn />
+	<LogoutBtn v-if="store.state.showCreateBtn" />
 	<CreateBtn v-if="store.state.showCreateBtn" />
 </template>
 
@@ -249,8 +249,8 @@ span {
 @media (max-width: 414px) {
 	.calendar {
 		width: 95%;
-		height: 40rem;
-		margin-top: 3rem;
+		/* height: 40rem; */
+		margin-top: 0.5rem;
 	}
 }
 
