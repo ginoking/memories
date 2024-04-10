@@ -19,12 +19,12 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, watch } from "vue"
+import { ref, watch, inject } from "vue"
 import { useStore } from 'vuex'
-import Swal, { type SweetAlertOptions } from 'sweetalert2'
 import EventModal from "./EventModal.vue"
-// import emojis from "../helpers/emojis"
+import { type SwalInstance } from "../interfaces/sweetalert";
 
+const $swal = inject('$swal') as SwalInstance
 const store = useStore();
 
 interface EventObject {
@@ -55,13 +55,13 @@ function dateClickHandler(date: DateEvents)
     if (!date.event) return
     if (date.event.length > 1) {
         events.value = date.event
-        const swalOptions = <SweetAlertOptions>{
+        $swal.fire({
+            icon: undefined,
             title: "Events List",
             html: listContent.value,
             showConfirmButton: false,
             width: '90%',
-        };
-        Swal.fire(swalOptions).then((result) => {            
+        }).then((result) => {            
             if (!result.dismiss) {
                 showEventModal.value = true;
             }
@@ -78,7 +78,7 @@ function dateClickHandler(date: DateEvents)
 function eventClickHandler(date: EventObject): void {
     store.commit('setShowCreateBtn', false);
     event.value = date
-    Swal.close();
+    $swal.close();
 }
 
 watch(() => store.state.days, (newValue) => {

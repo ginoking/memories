@@ -12,6 +12,7 @@ import 'primeicons/primeicons.css'
 import App from './App.vue'
 import router from './router'
 import axios from 'axios'
+import Swal, { type SweetAlertOptions } from 'sweetalert2'
 
 moment.locale('zh-tw');
 
@@ -37,6 +38,11 @@ const store = createStore({
     }
 })
 
+const swalOptions = <SweetAlertOptions>{
+    icon: 'success',
+    width: '90%',
+    confirmButtonColor: "#4d90d8",
+};
 const app = createApp(App)
 
 app.config.globalProperties.$moment=moment;
@@ -46,6 +52,6 @@ app.use(createPinia())
 app.use(router)
 app.use(store)
 
-// app.mixin(axiosInstance)
+app.provide('$swal', Swal.mixin(swalOptions));
 
 app.component('VueDatePicker', VueDatePicker).mount('#app')

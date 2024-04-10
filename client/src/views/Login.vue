@@ -25,37 +25,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, inject } from "vue"
 import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
-import Swal, { type SweetAlertOptions } from 'sweetalert2'
+import { type SwalInstance } from '../interfaces/sweetalert';
 
 const router = useRouter();
 
 const username = ref<string>('');
 const password = ref<string>('');
+const $swal = inject('$swal') as SwalInstance
 
 const login = async () => {
 	const { data: { success, status, token, user } } = await axiosInstance.post('login', {username: username.value, password: password.value})
 	if (success) {		
 		localStorage.setItem('token', token);
 		localStorage.setItem('user', user);
-		const swalOptions = <SweetAlertOptions>{
-            title: 'Login success!',
-			icon: 'success',
-            width: '90%',
-			confirmButtonColor: "#4d90d8",
-        };
-        Swal.fire(swalOptions).then(() => router.push('/'));
+
+        $swal.fire({
+			title: status,
+			icon: 'success'
+		}).then(() => router.push('/'));
 	}
 	else {
-		const swalOptions = <SweetAlertOptions>{
-            title: status,
-			icon: 'error',
-            showConfirmButton: false,
-            width: '90%',
-        };
-        Swal.fire(swalOptions);
+		$swal.fire({
+			title: status,
+			icon: 'error'
+		})
 	}
 }
 

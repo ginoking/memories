@@ -59,9 +59,9 @@ exports.check = async (req, res, next) => {
 };
 
 exports.reset = async (req, res, next) => {
-    const user = req.user;
-    if (!user) {
-        const user = await Users.findOne({username: req.body.username});
+    let user = req.user;
+    if (user === undefined) {
+        user = await Users.findOne({username: req.body.username});
     }
     
     await user.setPassword(req.body.password);

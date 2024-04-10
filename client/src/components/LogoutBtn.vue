@@ -4,33 +4,20 @@
     </a>
 </template>
 <script setup lang="ts">
+import { inject } from 'vue';
 import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
-import Swal, { type SweetAlertOptions } from 'sweetalert2'
+import { type SwalInstance } from '../interfaces/sweetalert';
 
+const $swal = inject('$swal') as SwalInstance
 const router = useRouter();
 
 const logout = async () => {
     localStorage.removeItem('token');
-    router.push('login')
+    $swal.fire({ title: 'Logout success!' });
     // try {
     //     const { data: { status } } = await axiosInstance.get('logout');
-    //     if (status) {
-    //         const swalOptions = <SweetAlertOptions>{
-    //             title: 'Logout success!',
-    //             icon: 'success',
-    //             width: '90%',
-    //         };
-    //         Swal.fire(swalOptions).then(() => router.push('login'));
-    //     }
     // } catch (error) {
-    //     const swalOptions = <SweetAlertOptions>{
-    //         title: error,
-	// 		icon: 'error',
-    //         showConfirmButton: false,
-    //         width: '90%',
-    //     };
-    //     Swal.fire(swalOptions);
     // }
 }
 
