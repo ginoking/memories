@@ -34,10 +34,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, inject } from "vue"
 import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
-import Swal, { type SweetAlertOptions } from 'sweetalert2'
+import { type SwalInstance } from "../interfaces/sweetalert";
 
 const router = useRouter();
 const username = localStorage.getItem("user");
@@ -45,6 +45,7 @@ const username = localStorage.getItem("user");
 const password = ref<string>('');
 const password2 = ref<string>('');
 const error = ref<string>('');
+const $swal = inject('$swal') as SwalInstance
 
 const reset = async () => {
 	if (password.value != password2.value) {
@@ -53,13 +54,9 @@ const reset = async () => {
 	try {
 		const { data: { success, status, token, err } } = await axiosInstance.post('reset-password', { password: password.value })
 		if (success) {
-			const swalOptions = <SweetAlertOptions>{
-				title: status,
-				icon: 'success',
-				width: '90%',
-				confirmButtonColor: "#4d90d8",
-			};
-			Swal.fire(swalOptions);
+			$swal.fire({
+				title: status
+			});
 		}
 	} catch (error) {
 		// 目前axios http 500 貌似catch會沒有觸發

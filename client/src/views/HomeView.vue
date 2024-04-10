@@ -30,10 +30,10 @@
 import 'vue-loading-overlay/dist/css/index.css';
 import Days from '../components/Days.vue'
 import Title from '../components/Title.vue'
-import CreateBtn from '@/components/CreateBtn.vue';
-import { useStore } from "vuex";
+import CreateBtn from '../components/CreateBtn.vue';
 import LogoutBtn from '../components/LogoutBtn.vue';
 import InfoBtn from '../components/InfoBtn.vue';
+import { useStore } from "vuex";
 
 const store = useStore();
 

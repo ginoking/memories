@@ -35,10 +35,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, inject } from "vue"
 import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
-import Swal, { type SweetAlertOptions } from 'sweetalert2'
+import { type SwalInstance } from '../interfaces/sweetalert';
 
 const router = useRouter();
 
@@ -46,6 +46,7 @@ const username = ref<string>('');
 const password = ref<string>('');
 const password2 = ref<string>('');
 const error = ref<string>('');
+const $swal = inject('$swal') as SwalInstance
 
 const register = async () => {
 	if (password.value != password2.value) {
@@ -56,30 +57,15 @@ const register = async () => {
 		const { data: { success, status, token, err } } = await axiosInstance.post('signup', { username: username.value, password: password.value })
 		if (success) {
 			localStorage.setItem('token', token);
-			const swalOptions = <SweetAlertOptions>{
-				title: status,
-				icon: 'success',
-				width: '90%',
-			};
-			Swal.fire(swalOptions).then(() => router.push('login'));
+			$swal.fire({ title: status }).then(() => router.push('login'));
 		}
 		else {
-			const swalOptions = <SweetAlertOptions>{
-				title: status,
-				icon: 'error',
-				showConfirmButton: false,
-				width: '90%',
-			};
-			Swal.fire(swalOptions);
+			$swal.fire({ title: status, icon: 'error' }).then(() => router.push('login'));
 		}
 	} catch (error) {
 		// 目前axios http 500 貌似catch會沒有觸發
 		console.log(error);
 	}
-
-	
-
-
 }
 
 </script>
