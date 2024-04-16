@@ -17,6 +17,8 @@ const corsOptions = {
 	origin: [
 		'https://ginoking-memory-v1-client-qkusmmamqq-de.a.run.app',
 		'http://localhost:7070',
+		'http://172.31.19.209:7070',
+		// 'http://172.20.0.1'
 	],
 	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
 	allowedHeaders: ['Content-Type', 'Authorization'],
