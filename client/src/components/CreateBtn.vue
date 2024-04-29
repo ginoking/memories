@@ -42,7 +42,7 @@ const modelContent = ref<HTMLDivElement>();
 const selectType = ref<string>("");
 const imageUrl = ref<string>("");
 
-const getTypeFromSelect = (data) => selectType.value = data
+const getTypeFromSelect = (data:string) => selectType.value = data
 
 const open = () => {
     const swalOptions = {
