@@ -5,13 +5,7 @@
     <div ref="modelContent">
         <div class="model-content" v-if="showContent">
             <label for="" class="swal2-input-label">Type:</label>
-            <select class="type-select" v-model="selectType">
-                <option disabled selected value="">Select type</option>
-                <option value="happy">😆happy</option>
-                <option value="love">❤️love</option>
-                <option value="sad">😢sad</option>
-                <option value="angry">😡angry</option>
-            </select>
+            <TypeSelector default-text="Select type" @sendType="getTypeFromSelect" />
             <label for="" class="swal2-input-label">Name:</label>
             <input type="text" class="swal2-input" v-model="eventName">
             <label for="" class="swal2-input-label">Description:</label>
@@ -35,6 +29,7 @@
 import { ref, getCurrentInstance } from "vue"
 import axiosInstance from '../axios/axios';
 import Swal from 'sweetalert2'
+import TypeSelector from "./TypeSelector.vue";
 
 const app = getCurrentInstance();
 const moment = app?.appContext.config.globalProperties.$moment;
@@ -46,6 +41,8 @@ const eventDate = ref<Date>(new Date);
 const modelContent = ref<HTMLDivElement>();
 const selectType = ref<string>("");
 const imageUrl = ref<string>("");
+
+const getTypeFromSelect = (data) => selectType.value = data
 
 const open = () => {
     const swalOptions = {
