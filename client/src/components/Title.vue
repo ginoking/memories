@@ -32,7 +32,7 @@ const moment = app?.appContext.config.globalProperties.$moment;
 const currentDate = ref(new Date(`2024-01-01`));
 const selectType = ref('');
 
-const getTypeFromSelect = (data) => {
+const getTypeFromSelect = (data:string) => {
     selectType.value = data
     changeDates();
 }
