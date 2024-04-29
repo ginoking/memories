@@ -22,7 +22,6 @@
 					</div>
 				</div>
 				<button class="login" @click="reset">Reset Password</button>
-				<button class="login" @click="bind">Bind Passkey</button>
 			</div>
 			<!-- <div class="container">
 				log
@@ -39,7 +38,6 @@ import { ref, inject } from "vue"
 import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
 import { type SwalInstance } from "../interfaces/sweetalert";
-import { startRegistration } from '@simplewebauthn/browser';
 
 const router = useRouter();
 const username = localStorage.getItem("user");
@@ -64,39 +62,6 @@ const reset = async () => {
 		// 目前axios http 500 貌似catch會沒有觸發
 		console.log(error);
 	}
-}
-
-const bind = async () => {
-	try {
-		const { data } = await axiosInstance.get('/passkey/register/start')
-		// alert(JSON.stringify(data));
-		
-		const attResp = await startRegistration(data);
-		// console.log(attResp);
-		
-		finish(attResp);
-		
-	} catch (error) {
-		// 目前axios http 500 貌似catch會沒有觸發
-		console.log(error);
-		// alert(error)
-	}
-	
-}
-
-const finish = async (options) => {
-	const { data } = await axiosInstance.post('/passkey/register/finish', { data: options })
-	
-	if (data && data.verified) {
-		$swal.fire({ title: 'Bind success!' });
-	}
-	else {
-		$swal.fire({
-			icon: 'error',
-			title: 'Bind success!' 
-		});
-	}
-
 }
 
 </script>
