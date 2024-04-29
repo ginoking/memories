@@ -75,7 +75,7 @@ changeDates();
 
 .text :deep(.dp__input_wrap) {
     margin: 0 auto;
-    width: 65%;
+    width: 80%;
 }
 
 .text :deep(.dp__overlay_cell_active) {
@@ -83,8 +83,8 @@ changeDates();
 }
 
 .dp__theme_light {
-    --dp-text-color: white;
-    --dp-icon-color: white;
+    --dp-text-color: #e3e3e3;
+    --dp-icon-color: #e3e3e3;
     --dp-background-color: transparent;
     --dp-border-color: transparent;
 }
@@ -106,7 +106,7 @@ changeDates();
     font-family: inherit;
     font-size: 16px;
     transition: all 150ms ease;
-    color: #fff;
+    color: #e3e3e3;
     margin: 0.25rem 0;
 }
 

@@ -98,6 +98,7 @@ const close = () => {
 }
 
 .modal .modal-content .name {
+    padding: 0 1.25rem;
     text-align: left;
     margin: 0;
 }
@@ -111,8 +112,10 @@ const close = () => {
 }
 
 .modal .modal-content .des {
+    padding: 0 1.25rem;
     text-align: left;
     margin-bottom: 0;
+    /* background-color: #fff; */
 }
 
 .modal .modal-content img {
