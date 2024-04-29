@@ -33,15 +33,21 @@ exports.index = async (req, res) => {
 
 		const containEventDays = [];
 		const currentDate = req.body.time;
+		const type = req.body.type;
 
 		const emptyArray = Array.from({ length: moment(currentDate).day() }, () => "");
 		const numberArray = Array.from({ length: moment(currentDate).daysInMonth() }, (_, i) => (i + 1).toString());
 		for (const number of emptyArray.concat(numberArray)) {
 			const dateString = `${currentDate}-${(number ?? '').padStart(2, '0')}`;
-			const event = (number !== '') ? await Stories.find({
+			const query = {
 				date: new Date(dateString),
-				user_id: req.user._id
-			}) : null;
+				user_id: req.user._id,
+			};
+
+			if (type !== '') {
+				query.type = type;
+			}
+			const event = (number !== '') ? await Stories.find(query) : null;
 
 			if (event) {
 				event.map(async (item) => {
