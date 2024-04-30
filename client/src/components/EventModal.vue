@@ -48,6 +48,7 @@ const close = () => {
     bottom: 0;
     left: 0;
     right: 0;
+    z-index: 100;
     display: flex;
     justify-content: center;
     background-color: #000000da;
