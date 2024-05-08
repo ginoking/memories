@@ -8,10 +8,10 @@
                 @slideChange="onSlideChange"
                 @reachEnd="onReachEnd"
                 @reachBeginning="onReachBeginning"
-                @slidesUpdated="onSlidesUpdated"
                 :modules="[Navigation]"
                 :initialSlide="6"
                 :runCallbacksOnInit="false"
+                :loopPreventsSliding="true"
             >
                 <swiper-slide v-for="(date, index) in months" :key="index">
                     <h1 class="date">
@@ -37,7 +37,7 @@
 import { ref, getCurrentInstance, onBeforeMount } from "vue"
 import { useStore } from 'vuex'
 import axiosInstance from '../axios/axios';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/vue';
+import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -47,7 +47,6 @@ const app = getCurrentInstance();
 const store = useStore()
 const moment = app?.appContext.config.globalProperties.$moment;
 const newDateObject = ref<monthObject>();
-const prepend = ref<boolean>(false)
 
 interface monthObject {
     date: string,
@@ -74,46 +73,24 @@ const initMonths = () => {
     }
 }
 
-const onSlidesUpdated = (swiper, e) => {
-    if (prepend.value) {
-        console.log(swiper);
-        
-        swiper.process = 1;
-        swiper.slideToLoop(1, 1000)
-        prepend.value = false;
-    }
-}
-
 onBeforeMount(() => {
     initMonths();
-    console.log(months.value);
-    
 })
 
 const onSlideChange = (swiper) => {
-    // let newDate:string, change:number;
-    // // 日期增加
-    // if (swiper.touches.diff < 0 ) {
-        
-    // }
-    // // 日期減少
-    // else {
-    //     newDate = months.value[0].date;
-        
-    //     newDateObject.value = {
-    //         date: moment(newDate).add(-1, 'M').format('YYYY-MM-DD'),
-    //         month: moment(newDate).add(-1, 'M').locale('en').format('MMMM'),
-    //         year: moment(newDate).add(-1, 'M').format('YYYY')
-    //     };
-    //     months.value.unshift(newDateObject.value);
-    // }
+    
+    if (swiper.activeIndex == 0 && swiper.previousIndex == 1) {
+        swiper.slideTo(1, 0);
+        return;
+    }
 
-    // console.log(months.value);
+    currentDate.value = new Date(months.value[swiper.activeIndex].date);
+
+    getData(moment(currentDate.value).format("YYYY-MM"));
     
 }
 
 const onReachEnd = (swiper) => {
-    console.log('end');
     const newDate:string = months.value[swiper.slides.length - 1].date;
     newDateObject.value = {
         date: moment(newDate).add(1, 'M').format('YYYY-MM-DD'),
@@ -124,15 +101,17 @@ const onReachEnd = (swiper) => {
 }
 
 const onReachBeginning = (swiper) => {
-    // console.log(swiper);
+    
     const newDate:string = months.value[0].date;
     newDateObject.value = {
         date: moment(newDate).add(-1, 'M').format('YYYY-MM-DD'),
         month: moment(newDate).add(-1, 'M').locale('en').format('MMMM'),
         year: moment(newDate).add(-1, 'M').format('YYYY')
     };
-    months.value.unshift(newDateObject.value);
-    prepend.value = true;
+    months.value = [
+        newDateObject.value,
+        ...months.value
+    ]
 }
 
 // swiper init
@@ -154,11 +133,14 @@ const changeDates = async (change?: number) => {
 
     currentDate.value = newMoment.format('YYYY-MM-DD').toString();
 
-    const { data } = await axiosInstance.post('/', { time: newMoment.format("YYYY-MM"), type: selectType.value });
+    getData(newMoment.format("YYYY-MM"));
+
+}
+
+const getData = async (date:string) => {
+    const { data } = await axiosInstance.post('/', { time: date, type: selectType.value });
 
     store.commit('setDays', data)
-    // updateMonths()
-
 }
 
 changeDates();
