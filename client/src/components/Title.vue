@@ -2,7 +2,7 @@
     <div class="title">
         <div class="text">
             
-            <swiper 
+            <swiper-vue 
                 :navigation="true" 
                 @swiper="onSwiper" 
                 @slideChange="onSlideChange"
@@ -19,7 +19,7 @@
                     </h1>
                     <h3 class="date small">{{ date.year }}</h3>
                 </swiper-slide>
-            </swiper>  
+            </swiper-vue>  
             
             <div class="filter">
                 <VueDatePicker auto-apply month-picker v-model="currentDate" :enable-time-picker="false"
@@ -37,7 +37,8 @@
 import { ref, getCurrentInstance, onBeforeMount } from "vue"
 import { useStore } from 'vuex'
 import axiosInstance from '../axios/axios';
-import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Swiper as SwiperVue, SwiperSlide } from 'swiper/vue';
+import Swiper from 'swiper';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -77,7 +78,7 @@ onBeforeMount(() => {
     initMonths();
 })
 
-const onSlideChange = (swiper) => {
+const onSlideChange = (swiper: Swiper) => {
     
     if (swiper.activeIndex == 0 && swiper.previousIndex == 1) {
         swiper.slideTo(1, 0);
@@ -90,7 +91,7 @@ const onSlideChange = (swiper) => {
     
 }
 
-const onReachEnd = (swiper) => {
+const onReachEnd = (swiper: Swiper) => {
     const newDate:string = months.value[swiper.slides.length - 1].date;
     newDateObject.value = {
         date: moment(newDate).add(1, 'M').format('YYYY-MM-DD'),
@@ -100,7 +101,7 @@ const onReachEnd = (swiper) => {
     months.value.push(newDateObject.value);
 }
 
-const onReachBeginning = (swiper) => {
+const onReachBeginning = (swiper: Swiper) => {
     
     const newDate:string = months.value[0].date;
     newDateObject.value = {
@@ -115,7 +116,7 @@ const onReachBeginning = (swiper) => {
 }
 
 // swiper init
-const onSwiper = (swiper) => {
+const onSwiper = (swiper: Swiper) => {
     swiper.activeIndex = 6;
 }
 
