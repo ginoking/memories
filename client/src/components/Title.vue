@@ -1,10 +1,26 @@
 <template>
     <div class="title">
-        <a @click.prevent="changeDates(-1)">{{ '<' }}</a>
         <div class="text">
-            <h1 for="test" class="date" id="calendar-title">{{ moment(currentDate).locale('en').format('MMMM')
-                }}</h1>
-            <h3 class="date small" id="calendar-year">{{ moment(currentDate).format('YYYY') }}</h3>
+            
+            <swiper 
+                :navigation="true" 
+                @swiper="onSwiper" 
+                @slideChange="onSlideChange"
+                @reachEnd="onReachEnd"
+                @reachBeginning="onReachBeginning"
+                :modules="[Navigation]"
+                :initialSlide="6"
+                :runCallbacksOnInit="false"
+                :loopPreventsSliding="true"
+            >
+                <swiper-slide v-for="(date, index) in months" :key="index">
+                    <h1 class="date">
+                        {{ date.month }}
+                    </h1>
+                    <h3 class="date small">{{ date.year }}</h3>
+                </swiper-slide>
+            </swiper>  
+            
             <div class="filter">
                 <VueDatePicker auto-apply month-picker v-model="currentDate" :enable-time-picker="false"
                     :format="() => moment(currentDate).format('YYYY-MM')" :clearable="false"
@@ -14,23 +30,94 @@
                 </VueDatePicker>
                 <TypeSelector default-text="All" @sendType="getTypeFromSelect" />
             </div>
-
         </div>
-        <a @click.prevent="changeDates(1)">{{ '>' }}</a>
     </div>
 </template>
 <script setup lang="ts">
-import { ref, getCurrentInstance } from "vue"
+import { ref, getCurrentInstance, onBeforeMount } from "vue"
 import { useStore } from 'vuex'
 import axiosInstance from '../axios/axios';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 import TypeSelector from "./TypeSelector.vue";
 
 const app = getCurrentInstance();
 const store = useStore()
 const moment = app?.appContext.config.globalProperties.$moment;
+const newDateObject = ref<monthObject>();
+
+interface monthObject {
+    date: string,
+    month: string,
+    year: string,
+}
 
 const currentDate = ref(new Date(`2024-01-01`));
+const months = ref<Array<monthObject>>([]);
 const selectType = ref('');
+
+const initMonths = () => {    
+    months.value = [];
+    let startDate = moment(currentDate.value).add(-6, 'M');
+    let i = 0;
+    while (i < 13) {
+        const newDate = moment(startDate).add(i, 'M');
+        months.value.push({
+            date: newDate.format('YYYY-MM-DD'),
+            month: newDate.locale('en').format('MMMM'),
+            year: newDate.format('YYYY')
+        })
+        i++;
+    }
+}
+
+onBeforeMount(() => {
+    initMonths();
+})
+
+const onSlideChange = (swiper) => {
+    
+    if (swiper.activeIndex == 0 && swiper.previousIndex == 1) {
+        swiper.slideTo(1, 0);
+        return;
+    }
+
+    currentDate.value = new Date(months.value[swiper.activeIndex].date);
+
+    getData(moment(currentDate.value).format("YYYY-MM"));
+    
+}
+
+const onReachEnd = (swiper) => {
+    const newDate:string = months.value[swiper.slides.length - 1].date;
+    newDateObject.value = {
+        date: moment(newDate).add(1, 'M').format('YYYY-MM-DD'),
+        month: moment(newDate).add(1, 'M').locale('en').format('MMMM'),
+        year: moment(newDate).add(1, 'M').format('YYYY')
+    };
+    months.value.push(newDateObject.value);
+}
+
+const onReachBeginning = (swiper) => {
+    
+    const newDate:string = months.value[0].date;
+    newDateObject.value = {
+        date: moment(newDate).add(-1, 'M').format('YYYY-MM-DD'),
+        month: moment(newDate).add(-1, 'M').locale('en').format('MMMM'),
+        year: moment(newDate).add(-1, 'M').format('YYYY')
+    };
+    months.value = [
+        newDateObject.value,
+        ...months.value
+    ]
+}
+
+// swiper init
+const onSwiper = (swiper) => {
+    swiper.activeIndex = 6;
+}
 
 const getTypeFromSelect = (data:string) => {
     selectType.value = data
@@ -46,19 +133,25 @@ const changeDates = async (change?: number) => {
 
     currentDate.value = newMoment.format('YYYY-MM-DD').toString();
 
-    const { data } = await axiosInstance.post('/', { time: newMoment.format("YYYY-MM"), type: selectType.value });
+    getData(newMoment.format("YYYY-MM"));
+
+}
+
+const getData = async (date:string) => {
+    const { data } = await axiosInstance.post('/', { time: date, type: selectType.value });
 
     store.commit('setDays', data)
-
 }
 
 changeDates();
 
 </script>
 <style scoped>
-.date {
+
+.text {
     color: #e3e3e3;
-}
+    width: 100%;
+} 
 
 .title a {
     cursor: pointer;
@@ -75,7 +168,7 @@ changeDates();
 
 .text :deep(.dp__input_wrap) {
     margin: 0 auto;
-    width: 65%;
+    width: 80%;
 }
 
 .text :deep(.dp__overlay_cell_active) {
@@ -83,8 +176,8 @@ changeDates();
 }
 
 .dp__theme_light {
-    --dp-text-color: white;
-    --dp-icon-color: white;
+    --dp-text-color: #e3e3e3;
+    --dp-icon-color: #e3e3e3;
     --dp-background-color: transparent;
     --dp-border-color: transparent;
 }
@@ -106,11 +199,23 @@ changeDates();
     font-family: inherit;
     font-size: 16px;
     transition: all 150ms ease;
-    color: #fff;
+    color: #e3e3e3;
     margin: 0.25rem 0;
 }
 
 .type-select:focus-visible {
     outline: none;
+}
+
+.text :deep(.swiper-button-prev::after) {
+    content: 'prev';
+    color: #e3e3e3;
+    font-size: 2rem;
+}
+
+.text :deep(.swiper-button-next::after) {
+    content: 'next';
+    color: #e3e3e3;
+    font-size: 2rem;
 }
 </style>

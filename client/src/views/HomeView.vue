@@ -42,6 +42,7 @@ const store = useStore();
 <style scoped>
 
 body>.title {
+	width: 100%;
 	letter-spacing: 5px;
 	color: #255d6e;
 	font-family: Arial, Helvetica, sans-serif;
@@ -233,7 +234,7 @@ span {
 	.calendar {
 		width: 95%;
 		/* height: 35rem; */
-		margin-top: 3rem;
+		margin-top: 5rem;
 	}
 
 	.footer {
