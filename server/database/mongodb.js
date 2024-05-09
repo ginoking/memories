@@ -2,7 +2,7 @@
 var mongoose = require("mongoose");
 
 //Set up default mongoose connection
-var mongoDB = process.env.mongoDBUrI + "/memories?directConnection=true";
+var mongoDB = process.env.mongoDBUrI + "/memories";
 mongoose.connect(mongoDB);
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
