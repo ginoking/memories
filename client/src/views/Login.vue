@@ -11,7 +11,7 @@
 				<div class="password">
 					<label for="password">Password</label>
 					<div class="sec-2">
-						<input class="pas" v-model="password" type="password" name="password" placeholder="············" />
+						<input class="pas" @keyup.enter="login" v-model="password" type="password" name="password" placeholder="············" />
 					</div>
 				</div>
 				<button class="login" @click="login">Login</button>
