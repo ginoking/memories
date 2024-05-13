@@ -20,6 +20,10 @@ var UsersSchema = new Schema({
     },
     challenge: {
         type: String,
+    },
+    passkeys: {
+        type: Array,
+        default: []
     }
 });
 

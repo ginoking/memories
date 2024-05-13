@@ -14,7 +14,7 @@ exports.login = (req, res, next) => {
         // Response
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        return res.json({ success: true, token: token, status: 'You are successfully logged in!', user: user.username });
+        return res.json({ success: true, token: token, status: 'You are successfully logged in!', user: user });
 
     })(req, res, next)
 };

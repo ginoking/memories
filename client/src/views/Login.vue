@@ -40,7 +40,7 @@ const login = async () => {
 	const { data: { success, status, token, user } } = await axiosInstance.post('login', {username: username.value, password: password.value})
 	if (success) {		
 		localStorage.setItem('token', token);
-		localStorage.setItem('user', user);
+		localStorage.setItem('user', JSON.stringify(user));
 
         $swal.fire({
 			title: status,
