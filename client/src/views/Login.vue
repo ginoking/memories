@@ -179,6 +179,11 @@ const login = async () => {
 	justify-content: space-between;
 	font-size: 0.7em;
 	color: #5e5e5e;
+<<<<<<< HEAD
+=======
+	gap: 14em;
+	/* padding-bottom: 10em; */
+>>>>>>> a947b87 (error-message css)
 }
 
 .screen-1 .container .footer span {
@@ -194,6 +199,7 @@ button {
 	margin-bottom: -0.2em;
 }
 
+<<<<<<< HEAD
 @media (max-width: 768px) {
 	.body {
 		width: 60%;
@@ -204,5 +210,9 @@ button {
 	.body {
 		width: 85%;
 	}
+=======
+.error-message {
+	color: rgb(255 95 95);
+>>>>>>> a947b87 (error-message css)
 }
 </style>
