@@ -11,7 +11,7 @@
 				<div class="password">
 					<label for="password">Password</label>
 					<div class="sec-2">
-						<input class="pas" v-model="password" type="password" name="password" placeholder="············" />
+						<input class="pas" @keyup.enter="login" v-model="password" type="password" name="password" placeholder="············" />
 					</div>
 				</div>
 				<button class="login" @click="login">Login</button>
@@ -179,6 +179,8 @@ const login = async () => {
 	justify-content: space-between;
 	font-size: 0.7em;
 	color: #5e5e5e;
+	gap: 14em;
+	/* padding-bottom: 10em; */
 }
 
 .screen-1 .container .footer span {
@@ -204,5 +206,8 @@ button {
 	.body {
 		width: 85%;
 	}
+}
+.error-message {
+	color: rgb(255 95 95);
 }
 </style>
