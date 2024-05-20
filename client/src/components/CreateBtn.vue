@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import { ref, getCurrentInstance } from "vue"
 import axiosInstance from '../axios/axios';
+import Compressor from 'compressorjs';
 import Swal from 'sweetalert2'
 import TypeSelector from "./TypeSelector.vue";
 
@@ -82,23 +83,30 @@ const fileChange = (e: Event) => {
     }
 }
 const create = () => {
-    const formData = new FormData;
-    formData.append("type", selectType.value);
-    formData.append("file", selectFile.value!);
-    formData.append("name", eventName.value);
-    formData.append("des", eventDes.value);
-    formData.append("date", eventDate.value.toLocaleDateString('zh').replaceAll('/', '-'));
-    axiosInstance.post("create", formData,
-        {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            }
+    
+    new Compressor(selectFile.value!, {
+        quality: 0.6,
+        success(result) {
+            const formData = new FormData;
+            formData.append("type", selectType.value);
+            formData.append("file", result);
+            formData.append("name", eventName.value);
+            formData.append("des", eventDes.value);
+            formData.append("date", eventDate.value.toLocaleDateString('zh').replaceAll('/', '-'));
+            axiosInstance.post("create", formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    }
+                }
+            ).then((response) => {
+                Swal.fire("Done");
+            }).catch((error) => {
+                Swal.fire(error.response.data.message);
+            });
         }
-    ).then((response) => {
-        Swal.fire("Done");
-    }).catch((error) => {
-        Swal.fire(error.response.data.message);
-    });
+    })
+    
 }
 
 </script>
