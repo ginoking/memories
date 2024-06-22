@@ -22,12 +22,8 @@
 							placeholder="············" />
 					</div>
 				</div>
-<<<<<<< HEAD
-				<button class="login" @click="reset">Reset Password</button>
-=======
 				<button :disabled="password == '' || password2 == ''" class="login" @click="reset">Reset Password</button>
 				<button :disabled="!passkeyCheck" class="login" @click="bind">Bind Passkey</button>
->>>>>>> feat/passkey
 			</div>
 			<!-- <div class="container">
 				log
