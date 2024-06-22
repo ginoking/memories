@@ -51,8 +51,8 @@ function checkEventClass(date: DateEvents) : string {
 }
 
 function dateClickHandler(date: DateEvents)
-{    
-    if (!date.event) return
+{        
+    if (date.event.length === 0) return
     if (date.event.length > 1) {
         events.value = date.event
         $swal.fire({

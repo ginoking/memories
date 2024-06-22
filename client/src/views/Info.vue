@@ -5,13 +5,14 @@
 				<div class="email">
 					<label for="email">User Name</label>
 					<div class="sec-2">
-						<input type="text" name="username" disabled v-model="username"/>
+						<input type="text" name="username" disabled v-model="user.username" />
 					</div>
 				</div>
 				<div class="password">
 					<label for="password">Password</label>
 					<div class="sec-2">
-						<input class="pas" v-model="password" type="password" name="password" placeholder="············" />
+						<input class="pas" v-model="password" type="password" name="password"
+							placeholder="············" />
 					</div>
 				</div>
 				<div class="password">
@@ -21,7 +22,8 @@
 							placeholder="············" />
 					</div>
 				</div>
-				<button class="login" @click="reset">Reset Password</button>
+				<button :disabled="password == '' || password2 == ''" class="login" @click="reset">Reset Password</button>
+				<button :disabled="!passkeyCheck" class="login" @click="bind">Bind Passkey</button>
 			</div>
 			<!-- <div class="container">
 				log
@@ -29,8 +31,8 @@
 		</div>
 	</div>
 	<a href="#" class="effect5" @click="() => router.back()">
-        <i class="label">{{ '<' }}</i>
-    </a>
+		<i class="label">{{ '<' }}</i>
+	</a>
 </template>
 
 <script setup lang="ts">
@@ -40,12 +42,27 @@ import axiosInstance from '../axios/axios';
 import { type SwalInstance } from "../interfaces/sweetalert";
 
 const router = useRouter();
-const username = localStorage.getItem("user");
+const user = JSON.parse(localStorage.getItem("user") ?? '');
 
 const password = ref<string>('');
 const password2 = ref<string>('');
 const error = ref<string>('');
+const passkeyCheck = ref<boolean>(false);
 const $swal = inject('$swal') as SwalInstance
+
+if (window.PublicKeyCredential &&
+	PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable &&
+	PublicKeyCredential.isConditionalMediationAvailable) {
+	// Check if user verifying platform authenticator is available.  
+	Promise.all([
+		PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable(),
+		PublicKeyCredential.isConditionalMediationAvailable(),
+	]).then(results => {
+		if (results.every(r => r === true)) {
+			passkeyCheck.value = true;
+		}
+	});
+}
 
 const reset = async () => {
 	if (password.value != password2.value) {
@@ -62,6 +79,43 @@ const reset = async () => {
 		// 目前axios http 500 貌似catch會沒有觸發
 		console.log(error);
 	}
+}
+
+const bind = async () => {
+	try {
+		const { data } = await axiosInstance.get('/passkey/register/start')
+		// alert(JSON.stringify(data));
+
+		const attResp = await startRegistration(data);
+		// console.log(attResp);
+
+		finish(attResp);
+
+	} catch (error: any) {
+		if (error.message === 'The authenticator was previously registered') {
+			passkeyCheck.value = false;
+			$swal.fire({
+				icon: 'info',
+				title: 'Already bind'
+			});
+		}
+	}
+
+}
+
+const finish = async (options: object) => {
+	const { data } = await axiosInstance.post('/passkey/register/finish', { data: options })
+
+	if (data) {
+		$swal.fire({ title: 'Bind success!' });
+	}
+	else {
+		$swal.fire({
+			icon: 'error',
+			title: 'Bind Error QQ'
+		});
+	}
+
 }
 
 </script>
@@ -179,6 +233,11 @@ const reset = async () => {
 	font-weight: 600;
 }
 
+.screen-1 .container .login:disabled {
+	background-color: var(--vt-c-indigo);
+	color: #ccc;
+}
+
 .screen-1 .container .footer {
 	display: flex;
 	font-size: 0.7em;
@@ -196,44 +255,44 @@ button {
 }
 
 a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    width: 50px;
-    margin: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 50px;
+	width: 50px;
+	margin: 50px;
 
-    border-radius: 190px;
-    border: 3px solid #4d90d8;
-    background: #8abae1;
-    text-align: center;
+	border-radius: 190px;
+	border: 3px solid #4d90d8;
+	background: #8abae1;
+	text-align: center;
 
-    text-decoration: none;
-    color: #4d90d8;
+	text-decoration: none;
+	color: #4d90d8;
 
-    transition: all .2s;
+	transition: all .2s;
 	position: fixed;
 	bottom: 0;
 	left: 0;
 }
 
 .effect5>i {
-    font-size: 1.5rem;
-    font-weight: bold;
-    font-style: normal;
-    transition: all .1s;
+	font-size: 1.5rem;
+	font-weight: bold;
+	font-style: normal;
+	transition: all .1s;
 }
 
 .effect5:hover {
-    box-shadow: 0px 0 0 11px #fff, 0px 0 0 10px #27ae60, 0px 0 0 50px #fff inset;
+	box-shadow: 0px 0 0 11px #fff, 0px 0 0 10px #27ae60, 0px 0 0 50px #fff inset;
 }
 
 .effect5:active {
-    box-shadow: 0px 0 0 11px #27ae60, 0px 0 0 10px #27ae60, 0px 0 0 50px #fff inset;
+	box-shadow: 0px 0 0 11px #27ae60, 0px 0 0 10px #27ae60, 0px 0 0 50px #fff inset;
 }
 
 .effect5:active i {
-    color: #27ae60;
+	color: #27ae60;
 }
 
 .error {
@@ -249,9 +308,10 @@ a {
 	.body {
 		width: 60%;
 	}
+
 	a {
-        margin: 20px;
-    }
+		margin: 20px;
+	}
 }
 
 @media (max-width: 414px) {
