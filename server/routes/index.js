@@ -24,4 +24,7 @@ router.post('/reset', passwordValidate(), authController.reset);
 router.get('/passkey/register/start', auth.verifyUser, passkeyController.registerStart);
 router.post('/passkey/register/finish', auth.verifyUser, passkeyController.registerFinish);
 
+router.post('/passkey/login/start', passkeyController.loginStart);
+router.post('/passkey/login/finish', passkeyController.loginFinish);
+
 module.exports = router;

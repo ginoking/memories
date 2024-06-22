@@ -16,9 +16,9 @@ const instance: AxiosInstance = axios.create({
 
 instance.interceptors.request.use((config) => {
 	
-	if (config.url != 'login') {
+	// if (config.url != 'login') {
 		loader = $loading.show();
-	}
+	// }
 	const token = localStorage.getItem('token');
 	if (token) {
 		config.headers.Authorization = "Bearer " + token;

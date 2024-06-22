@@ -92,11 +92,7 @@ const bind = async () => {
 
 		finish(attResp);
 
-	} catch (error) {
-		// 目前axios http 500 貌似catch會沒有觸發
-		console.log(error);
-		// alert(error)
-
+	} catch (error: any) {
 		if (error.message === 'The authenticator was previously registered') {
 			passkeyCheck.value = false;
 			$swal.fire({
@@ -108,10 +104,10 @@ const bind = async () => {
 
 }
 
-const finish = async (options) => {
+const finish = async (options: object) => {
 	const { data } = await axiosInstance.post('/passkey/register/finish', { data: options })
 
-	if (data && data.verified) {
+	if (data) {
 		$swal.fire({ title: 'Bind success!' });
 	}
 	else {
