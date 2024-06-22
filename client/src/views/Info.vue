@@ -40,6 +40,8 @@ import { ref, inject } from "vue"
 import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
 import { type SwalInstance } from "../interfaces/sweetalert";
+import { startRegistration } from '@simplewebauthn/browser';
+
 
 const router = useRouter();
 const user = JSON.parse(localStorage.getItem("user") ?? '');
