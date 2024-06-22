@@ -15,6 +15,7 @@
 					</div>
 				</div>
 				<button class="login" @click="login">Login</button>
+				<button class="login" @click="loginWithPasskey">Login with Passkey</button>
 				<div class="footer">
 					<span @click="() => router.push('signup')">Sign up</span>
 					<span @click="() => router.push('reset')">Forgot Password?</span>
@@ -29,6 +30,7 @@ import { ref, inject } from "vue"
 import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
 import { type SwalInstance } from '../interfaces/sweetalert';
+import { startAuthentication } from '@simplewebauthn/browser';
 
 const router = useRouter();
 
@@ -40,7 +42,28 @@ const login = async () => {
 	const { data: { success, status, token, user } } = await axiosInstance.post('login', {username: username.value, password: password.value})
 	if (success) {		
 		localStorage.setItem('token', token);
-		localStorage.setItem('user', user);
+		localStorage.setItem('user', JSON.stringify(user));
+
+        $swal.fire({
+			title: status,
+			icon: 'success'
+		}).then(() => router.push('/'));
+	}
+	else {
+		$swal.fire({
+			title: status,
+			icon: 'error'
+		})
+	}
+}
+
+const loginWithPasskey = async () => {
+	const { data } = await axiosInstance.post('passkey/login/start', {username: username.value})
+	const attResp = await startAuthentication(data);
+	const { data: { success, status, token, user } } = await axiosInstance.post('/passkey/login/finish', {username: username.value, data: attResp})
+	if (success) {		
+		localStorage.setItem('token', token);
+		localStorage.setItem('user', JSON.stringify(user));
 
         $swal.fire({
 			title: status,

@@ -17,6 +17,13 @@ var UsersSchema = new Schema({
     created_at: {
         type: Date,
         default: Date.now
+    },
+    challenge: {
+        type: String,
+    },
+    passkeys: {
+        type: Array,
+        default: []
     }
 });
 
