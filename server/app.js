@@ -9,6 +9,7 @@ const fileUpload = require('express-fileupload');
 
 var app = express();
 app.disable("x-powered-by");
+app.listen(process.env.PORT);
 
 passport.initialize();
 passport.session();
