@@ -5,16 +5,22 @@ const {
     verifyAuthenticationResponse 
 } = require("@simplewebauthn/server");
 
+const { isoBase64URL } = require("@simplewebauthn/server/helpers");
+
 const Users = require('../database/users');
+const Credentials = require('../database/credentials');
+const auth = require("../auth/auth");
 const { result } = require("lodash");
 
 const rpName = 'ginoking-memories'; // 伺服器名稱
+// const rpID = 'localhost';
 const rpID = 'ginoking-memory-v1-client-qkusmmamqq-de.a.run.app'; // 伺服器 id，通常是網域名稱
 const expectedOrigin = ['http://localhost:7070', 'https://ginoking-memory-v1-client-qkusmmamqq-de.a.run.app']; // 允許驗證的來源
 
 exports.registerStart = async (req, res, next) => {
     // 實際上可能是從 jwt token 取得使用者帳號
     let user = req.user;
+    const credentials = await Credentials.findOne({ user_id: user._id });
 
     // 產生裝置註冊選項
     // generateRegistrationOptions 為 SimpleWebAuthn 提供的 API
@@ -27,7 +33,8 @@ exports.registerStart = async (req, res, next) => {
         attestationType: 'none',
         // Prevent users from re-registering existing authenticators
         excludeCredentials: user.passkeys.map(passkey => ({
-            id: Buffer.from(passkey.credentialID, 'base64').toString('utf-8'),
+            id: passkey.credentialID,
+            type: 'public-key',
             // Optional
             transports: passkey.transports,
         })),
@@ -38,7 +45,7 @@ exports.registerStart = async (req, res, next) => {
             userVerification: 'required',
             // Optional
             authenticatorAttachment: 'platform',
-            requireResidentKey: false,
+            requireResidentKey: true,
         },
         ubKeyCredParams: [
             {type: 'public-key', alg: -7},
@@ -64,8 +71,8 @@ exports.registerFinish = async (req, res, next) => {
             expectedChallenge: user.challenge,
             // 預期的來源
             expectedOrigin,
-            // expectedRPID: rpId,
-            // requireUserVerification: true
+            expectedRPID: rpID,
+            requireUserVerification: false
         });
     } catch (error) {
         // 驗證失敗
@@ -78,10 +85,14 @@ exports.registerFinish = async (req, res, next) => {
         // 註冊使用的驗證器
         const { credentialPublicKey, credentialID, counter } = registrationInfo;
 
+        // console.log(credentialPublicKey, credentialID, counter);
+
+        console.log(isoBase64URL.fromBuffer(credentialID));
+
         // 新的驗證器資訊
         const newAuthenticator = {
-            credentialID: Buffer.from(credentialID).toString('base64'),
-            credentialPublicKey: Buffer.from(credentialPublicKey).toString('base64'),
+            credentialID: credentialID,
+            credentialPublicKey: isoBase64URL.fromBuffer(credentialPublicKey),
             counter,
             transports: req.body.data.response.transports,
         };
@@ -108,12 +119,9 @@ exports.loginStart = async (req, res, next) => {
     }
     // 產生裝置登入選項
     const options = await generateAuthenticationOptions({
-        allowCredentials: user.passkeys.map((authenticator) => ({
-            id: Buffer.from(authenticator.credentialID).toString('base64'),
-            type: 'public-key',
-            transports: authenticator.transports,
-        })),
-        userVerification: 'preferred',
+        rpID,
+        allowCredentials: [],
+        // userVerification: 'preferred',
     });
 
     await Users.findOneAndUpdate({ _id: user._id }, { challenge: options.challenge });
@@ -150,17 +158,17 @@ exports.loginFinish = async (req, res, next) => {
             response: req.body.data,
             expectedChallenge: user.challenge,
             expectedOrigin,
-            expectedRPID: rpId,
+            expectedRPID: rpID,
             authenticator: {
-                credentialID: Buffer.from(authenticator.credentialID).toString('base64'),
-                credentialPublicKey: Buffer.from(authenticator.credentialPublicKey).toString('base64'),
-                counter: authenticator.counter,
+                credentialID: authenticator.credentialID,
+                credentialPublicKey: isoBase64URL.toBuffer(authenticator.credentialPublicKey),
+                // counter: authenticator.counter,
                 transports: authenticator.transports,
             },
             requireUserVerification: false,
         });
     } catch (error) {
-        console.error(error);
+        console.log(error.message);
         return res.status(400).send({ status: error.message });
     }
 

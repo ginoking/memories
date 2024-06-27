@@ -33,6 +33,7 @@ services:
     environment:
       mongoDBUrI: mongodb://db:27017
       jwtSecretKey: jwtSecretKey
+      passkeyRPID: localhost
     volumes:
       - ./server:/usr/src/app
   db:
