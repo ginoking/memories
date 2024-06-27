@@ -86,10 +86,8 @@ const reset = async () => {
 const bind = async () => {
 	try {
 		const { data } = await axiosInstance.get('/passkey/register/start')
-		// alert(JSON.stringify(data));
 
 		const attResp = await startRegistration(data);
-		// console.log(attResp);
 
 		finish(attResp);
 
@@ -99,6 +97,12 @@ const bind = async () => {
 			$swal.fire({
 				icon: 'info',
 				title: 'Already bind'
+			});
+		}
+		else {
+			$swal.fire({
+				icon: 'info',
+				title: 'System Error'
 			});
 		}
 	}
