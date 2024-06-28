@@ -23,7 +23,7 @@
 					</div>
 				</div>
 				<button :disabled="password == '' || password2 == ''" class="login" @click="reset">Reset Password</button>
-				<button :disabled="!passkeyCheck" class="login" @click="bind">Bind Passkey</button>
+				<button v-if="canPasskey" :disabled="passkeyBound" class="login" @click="bind">Bind Passkey</button>
 			</div>
 			<!-- <div class="container">
 				log
@@ -41,6 +41,7 @@ import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
 import { type SwalInstance } from "../interfaces/sweetalert";
 import { startRegistration } from '@simplewebauthn/browser';
+import { passkeyCheck } from "../helpers/passkey";
 
 
 const router = useRouter();
@@ -49,22 +50,9 @@ const user = JSON.parse(localStorage.getItem("user") ?? '');
 const password = ref<string>('');
 const password2 = ref<string>('');
 const error = ref<string>('');
-const passkeyCheck = ref<boolean>(false);
+const passkeyBound = ref<boolean>(false);
+const canPasskey = passkeyCheck();
 const $swal = inject('$swal') as SwalInstance
-
-if (window.PublicKeyCredential &&
-	PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable &&
-	PublicKeyCredential.isConditionalMediationAvailable) {
-	// Check if user verifying platform authenticator is available.  
-	Promise.all([
-		PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable(),
-		PublicKeyCredential.isConditionalMediationAvailable(),
-	]).then(results => {
-		if (results.every(r => r === true)) {
-			passkeyCheck.value = true;
-		}
-	});
-}
 
 const reset = async () => {
 	if (password.value != password2.value) {
@@ -92,8 +80,8 @@ const bind = async () => {
 		finish(attResp);
 
 	} catch (error: any) {
+		passkeyBound.value = true;
 		if (error.message === 'The authenticator was previously registered') {
-			passkeyCheck.value = false;
 			$swal.fire({
 				icon: 'info',
 				title: 'Already bind'
@@ -113,6 +101,7 @@ const finish = async (options: object) => {
 	const { data } = await axiosInstance.post('/passkey/register/finish', { data: options })
 
 	if (data) {
+		passkeyBound.value = true;
 		$swal.fire({ title: 'Bind success!' });
 	}
 	else {
