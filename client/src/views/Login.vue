@@ -31,13 +31,12 @@ import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
 import { type SwalInstance } from '../interfaces/sweetalert';
 import { startAuthentication } from '@simplewebauthn/browser';
-import { passkeyCheck } from "../helpers/passkey";
 
 const router = useRouter();
-
 const username = ref<string>('');
 const password = ref<string>('');
-const canPasskey = passkeyCheck();
+const canPasskey = localStorage.getItem('canPasskey');
+
 const $swal = inject('$swal') as SwalInstance
 
 const login = async () => {
