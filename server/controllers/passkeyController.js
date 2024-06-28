@@ -13,8 +13,8 @@ const auth = require("../auth/auth");
 const { result } = require("lodash");
 
 const rpName = 'ginoking-memories'; // 伺服器名稱
-// const rpID = 'localhost';
-const rpID = 'ginoking-memory-v1-client-qkusmmamqq-de.a.run.app'; // 伺服器 id，通常是網域名稱
+const rpID = 'localhost';
+// const rpID = 'ginoking-memory-v1-client-qkusmmamqq-de.a.run.app'; // 伺服器 id，通常是網域名稱
 const expectedOrigin = ['http://localhost:7070', 'https://ginoking-memory-v1-client-qkusmmamqq-de.a.run.app']; // 允許驗證的來源
 
 exports.registerStart = async (req, res, next) => {

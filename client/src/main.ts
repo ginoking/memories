@@ -14,6 +14,8 @@ import router from './router'
 import axios from 'axios'
 import Swal, { type SweetAlertOptions } from 'sweetalert2'
 
+// import { startAuthentication } from '@simplewebauthn/browser';
+
 moment.locale('zh-tw');
 
 const store = createStore({
@@ -55,3 +57,17 @@ app.use(store)
 app.provide('$swal', Swal.mixin(swalOptions));
 
 app.component('VueDatePicker', VueDatePicker).mount('#app')
+
+if (window.PublicKeyCredential &&
+	PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable &&
+	PublicKeyCredential.isConditionalMediationAvailable) {
+	// Check if user verifying platform authenticator is available.  
+	Promise.all([
+		PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable(),
+		PublicKeyCredential.isConditionalMediationAvailable(),
+	]).then(results => {
+		if (results.every(r => r === true)) {
+			localStorage.setItem('canPasskey', 'true');
+		}
+	});
+}
