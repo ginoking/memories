@@ -15,7 +15,7 @@
 					</div>
 				</div>
 				<button class="login" :disabled="!username || !password" @click="login">Login</button>
-				<button class="login" v-if="canPasskey" @click="loginWithPasskey">Login with Passkey</button>
+				<button class="login" :disabled="!username" v-if="canPasskey" @click="loginWithPasskey">Login with Passkey</button>
 				<div class="footer">
 					<span @click="() => router.push('signup')">Sign up</span>
 					<span @click="() => router.push('reset')">Forgot Password?</span>
