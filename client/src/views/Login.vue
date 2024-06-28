@@ -14,8 +14,8 @@
 						<input class="pas" @keyup.enter="login" v-model="password" type="password" name="password" placeholder="············" />
 					</div>
 				</div>
-				<button class="login" @click="login">Login</button>
-				<button class="login" @click="loginWithPasskey">Login with Passkey</button>
+				<button class="login" :disabled="!username || !password" @click="login">Login</button>
+				<button class="login" v-if="canPasskey" @click="loginWithPasskey">Login with Passkey</button>
 				<div class="footer">
 					<span @click="() => router.push('signup')">Sign up</span>
 					<span @click="() => router.push('reset')">Forgot Password?</span>
@@ -31,11 +31,13 @@ import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
 import { type SwalInstance } from '../interfaces/sweetalert';
 import { startAuthentication } from '@simplewebauthn/browser';
+import { passkeyCheck } from "../helpers/passkey";
 
 const router = useRouter();
 
 const username = ref<string>('');
 const password = ref<string>('');
+const canPasskey = passkeyCheck();
 const $swal = inject('$swal') as SwalInstance
 
 const login = async () => {
@@ -195,6 +197,11 @@ const loginWithPasskey = async () => {
 	border: none;
 	border-radius: 30px;
 	font-weight: 600;
+}
+
+.screen-1 .container .login:disabled {
+	background-color: var(--vt-c-indigo);
+	color: #ccc;
 }
 
 .screen-1 .container .footer {
