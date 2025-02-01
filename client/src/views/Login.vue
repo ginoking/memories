@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <el-form
-      :model="username"
       label-width="auto"
       style="max-width: 600px"
       class="screen-1"
