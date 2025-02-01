@@ -1,240 +1,126 @@
 <template>
-	<div class="body">
-		<div class="screen-1">
-			<div class="container">
-				<div class="email">
-					<label for="email">User Name</label>
-					<div class="sec-2">
-						<input type="text" name="username" placeholder="gino" v-model="username" />
-					</div>
-				</div>
-				<div class="password">
-					<label for="password">Password</label>
-					<div class="sec-2">
-						<input class="pas" @keyup.enter="login" v-model="password" type="password" name="password" placeholder="············" />
-					</div>
-				</div>
-				<button class="login" :disabled="!username || !password" @click="login">Login</button>
-				<button class="login" :disabled="!username" v-if="canPasskey" @click="loginWithPasskey">Login with Passkey</button>
-				<div class="footer">
-					<span @click="() => router.push('signup')">Sign up</span>
-					<span @click="() => router.push('reset')">Forgot Password?</span>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="container">
+    <el-form
+      :model="username"
+      label-width="auto"
+      style="max-width: 600px"
+      class="screen-1"
+      label-position="top"
+    >
+      <el-form-item label="User Name">
+        <el-input v-model="username" required />
+      </el-form-item>
+      <el-form-item label="Password">
+        <el-input v-model="password" type="password" />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" class="button" @click="login" :disabled="!username || !password"
+          >Login</el-button
+        >
+        <el-button type="primary" class="button" @click="loginWithPasskey" :disabled="!username"
+          >Login with Passkey</el-button
+        >
+      </el-form-item>
+	  <div class="footer">
+		<el-link type="info" @click="() => router.push('signup')">Sign up</el-link>
+		<el-link type="info" @click="() => router.push('reset')">Forgot Password?</el-link>
+	  </div>
+    </el-form>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from "vue"
+import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
-import axiosInstance from '../axios/axios';
-import { type SwalInstance } from '../interfaces/sweetalert';
-import { startAuthentication } from '@simplewebauthn/browser';
+import axiosInstance from '../axios/axios'
+import { type SwalInstance } from '../interfaces/sweetalert'
+import { startAuthentication } from '@simplewebauthn/browser'
 
-const router = useRouter();
-const username = ref<string>('');
-const password = ref<string>('');
-const canPasskey = localStorage.getItem('canPasskey');
+const router = useRouter()
 
+const username = ref<string>('')
+const password = ref<string>('')
 const $swal = inject('$swal') as SwalInstance
 
 const login = async () => {
-	const { data: { success, status, token, user } } = await axiosInstance.post('login', {username: username.value, password: password.value})
-	if (success) {		
-		localStorage.setItem('token', token);
-		localStorage.setItem('user', JSON.stringify(user));
+  const {
+    data: { success, status, token, user }
+  } = await axiosInstance.post('login', { username: username.value, password: password.value })
+  if (success) {
+    localStorage.setItem('token', token)
+    localStorage.setItem('user', JSON.stringify(user))
 
-        $swal.fire({
-			title: status,
-			icon: 'success'
-		}).then(() => router.push('/'));
-	}
-	else {
-		$swal.fire({
-			title: status,
-			icon: 'error'
-		})
-	}
+    $swal
+      .fire({
+        title: status,
+        icon: 'success'
+      })
+      .then(() => router.push('/'))
+  } else {
+    $swal.fire({
+      title: status,
+      icon: 'error'
+    })
+  }
 }
 
 const loginWithPasskey = async () => {
-	const { data } = await axiosInstance.post('passkey/login/start', {username: username.value})
-	const attResp = await startAuthentication(data);
-	const { data: { success, status, token, user } } = await axiosInstance.post('/passkey/login/finish', {username: username.value, data: attResp})
-	if (success) {		
-		localStorage.setItem('token', token);
-		localStorage.setItem('user', JSON.stringify(user));
+  const { data } = await axiosInstance.post('passkey/login/start', { username: username.value })
+  const attResp = await startAuthentication(data)
+  const {
+    data: { success, status, token, user }
+  } = await axiosInstance.post('/passkey/login/finish', { username: username.value, data: attResp })
+  if (success) {
+    localStorage.setItem('token', token)
+    localStorage.setItem('user', JSON.stringify(user))
 
-        $swal.fire({
-			title: status,
-			icon: 'success'
-		}).then(() => router.push('/'));
-	}
-	else {
-		$swal.fire({
-			title: status,
-			icon: 'error'
-		})
-	}
+    $swal
+      .fire({
+        title: status,
+        icon: 'success'
+      })
+      .then(() => router.push('/'))
+  } else {
+    $swal.fire({
+      title: status,
+      icon: 'error'
+    })
+  }
 }
-
 </script>
 
 <style scoped>
-
-.body {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	overflow-y: hidden;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	/* background: #dde5f4; */
-	height: 100vh;
-	width: 25%;
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .screen-1 {
-	width: 100%;
+  background: #f1f7fe;
+  padding: 2em;
+  border-radius: 30px;
+  gap: 2em;
 }
 
-.screen-1 .container {
-	background: #f1f7fe;
-	padding: 2em;
-	display: flex;
-	flex-direction: column;
-	border-radius: 30px;
-	/* box-shadow: 0 0 2em #e6e9f9; */
-	gap: 2em;
+.footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7em;
+  width: 100%;
+  margin-top: 50px;
 }
 
-.sec-2 {
-	display: flex;
+.button {
+  margin: 5px 0;
+  width: 100%;
+  font-family: 'Shantell Sans', cursive;
 }
 
-.screen-1 .container {
-	display: flex;
-}
-
-.screen-1 .container .logo {
-	margin-top: -3em;
-}
-
-.screen-1 .container .email {
-	background: white;
-	box-shadow: 0 0 2em #e6e9f9;
-	padding: 1em;
-	display: flex;
-	flex-direction: column;
-	gap: 0.5em;
-	border-radius: 20px;
-	color: #4d4d4d;
-}
-
-.screen-1 .container .email input {
-	outline: none;
-	border: none;
-}
-
-.screen-1 .container .email input::-moz-placeholder {
-	color: black;
-	font-size: 0.9em;
-}
-
-.screen-1 .container .email input:-ms-input-placeholder {
-	color: black;
-	font-size: 0.9em;
-}
-
-.screen-1 .container .email input::placeholder {
-	/* color: black; */
-	font-size: 0.9em;
-}
-
-.screen-1 .container .password {
-	background: white;
-	box-shadow: 0 0 2em #e6e9f9;
-	padding: 1em;
-	display: flex;
-	flex-direction: column;
-	gap: 0.5em;
-	border-radius: 20px;
-	color: #4d4d4d;
-}
-
-.screen-1 .container .password input {
-	outline: none;
-	border: none;
-}
-
-.screen-1 .container .password input::-moz-placeholder {
-	color: black;
-	font-size: 0.9em;
-}
-
-.screen-1 .container .password input:-ms-input-placeholder {
-	color: black;
-	font-size: 0.9em;
-}
-
-.screen-1 .container .password input::placeholder {
-	color: black;
-	font-size: 0.9em;
-}
-
-.screen-1 .container .password .show-hide {
-	margin-right: -5em;
-}
-
-.screen-1 .container .login {
-	padding: 1em;
-	background-color: var(--color-background);
-	color: white;
-	border: none;
-	border-radius: 30px;
-	font-weight: 600;
-}
-
-.screen-1 .container .login:disabled {
-	background-color: var(--vt-c-indigo);
-	color: #ccc;
-}
-
-.screen-1 .container .footer {
-	display: flex;
-	justify-content: space-between;
-	font-size: 0.7em;
-	color: #5e5e5e;
-	gap: 14em;
-	/* padding-bottom: 10em; */
-}
-
-.screen-1 .container .footer span {
-	cursor: pointer;
-}
-
-button {
-	cursor: pointer;
-}
-
-:deep(svg) {
-	fill: #4d4d4d;
-	margin-bottom: -0.2em;
-}
-
-@media (max-width: 768px) {
-	.body {
-		width: 60%;
-	}
-}
-
-@media (max-width: 414px) {
-	.body {
-		width: 85%;
-	}
+.el-button+.el-button {
+    margin-left: 0;
 }
 .error-message {
 	color: rgb(255 95 95);
