@@ -122,7 +122,4 @@ const loginWithPasskey = async () => {
 .el-button+.el-button {
     margin-left: 0;
 }
-.error-message {
-	color: rgb(255 95 95);
-}
 </style>
