@@ -31,8 +31,9 @@ services:
     networks:
       - myNetwork
     environment:
-      mongoDBUrI: mongodb://db:27017
-      jwtSecretKey: jwtSecretKey
+      - environment=development
+      - mongoDBUrI=mongodb://db:27017
+      - jwtSecretKey=jwtSecretKey
     volumes:
       - ./server:/usr/src/app
   db:

@@ -9,7 +9,7 @@ const Users = require('../database/users');
 const { result } = require("lodash");
 
 const rpName = 'ginoking-memories'; // 伺服器名稱
-const rpID = 'ginoking-memory-v1-client-qkusmmamqq-de.a.run.app'; // 伺服器 id，通常是網域名稱
+const rpID = process.env.environment === 'development' ? 'localhost' : 'ginoking-memory-v1-client-qkusmmamqq-de.a.run.app'; // 伺服器 id，通常是網域名稱
 const expectedOrigin = ['http://localhost:7070', 'http://localhost:3000']; // 允許驗證的來源
 
 exports.registerStart = async (req, res, next) => {
@@ -105,6 +105,7 @@ exports.loginStart = async (req, res, next) => {
     const user = await Users.findOne({ username });
     if (!user) {
         res.status(404).send('User not found');
+        return;
     }
     // 產生裝置登入選項
     const options = await generateAuthenticationOptions({
