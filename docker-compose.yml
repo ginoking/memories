@@ -31,9 +31,9 @@ services:
     networks:
       - myNetwork
     environment:
-      mongoDBUrI: mongodb://db:27017
-      jwtSecretKey: jwtSecretKey
-      passkeyRPID: localhost
+      - environment=development
+      - mongoDBUrI=mongodb://db:27017
+      - jwtSecretKey=jwtSecretKey
     volumes:
       - ./server:/usr/src/app
   db:
