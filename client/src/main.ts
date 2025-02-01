@@ -14,6 +14,9 @@ import router from './router'
 import axios from 'axios'
 import Swal, { type SweetAlertOptions } from 'sweetalert2'
 
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+
 moment.locale('zh-tw');
 
 const store = createStore({
@@ -51,7 +54,7 @@ app.config.globalProperties.$axios=axios;
 app.use(createPinia())
 app.use(router)
 app.use(store)
-
+app.use(ElementPlus)
 app.provide('$swal', Swal.mixin(swalOptions));
 
 app.component('VueDatePicker', VueDatePicker).mount('#app')
