@@ -13,7 +13,6 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@esbuild/linux-arm64": "^0.24.2",
     "@simplewebauthn/browser": "^10.0.0",
     "@vuepic/vue-datepicker": "^7.4.0",
     "axios": "^1.4.0",
@@ -29,6 +28,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@esbuild/linux-arm64": "^0.24.2",
     "@rushstack/eslint-patch": "^1.2.0",
     "@tsconfig/node18": "^2.0.1",
     "@types/jsdom": "^21.1.1",
