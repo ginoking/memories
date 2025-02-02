@@ -65,6 +65,7 @@ const login = async () => {
 
 const loginWithPasskey = async () => {
   const { data } = await axiosInstance.post('passkey/login/start', { username: username.value })
+  console.log(data)
   const attResp = await startAuthentication(data)
   const {
     data: { success, status, token, user }
@@ -121,5 +122,14 @@ const loginWithPasskey = async () => {
 
 .el-button+.el-button {
     margin-left: 0;
+<<<<<<< HEAD
+=======
+}
+
+@media screen and (max-width: 768px) {
+  .screen-1 {
+    width: 75%;
+  }
+>>>>>>> feat/passkey
 }
 </style>
