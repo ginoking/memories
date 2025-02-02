@@ -10,7 +10,7 @@
         <el-input v-model="username" required />
       </el-form-item>
       <el-form-item label="Password">
-        <el-input v-model="password" type="password" />
+        <el-input v-model="password" type="password" @keyup.enter="login" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" class="button" @click="login" :disabled="!username || !password"
