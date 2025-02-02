@@ -122,14 +122,11 @@ const loginWithPasskey = async () => {
 
 .el-button+.el-button {
     margin-left: 0;
-<<<<<<< HEAD
-=======
 }
 
 @media screen and (max-width: 768px) {
   .screen-1 {
     width: 75%;
   }
->>>>>>> feat/passkey
 }
 </style>
