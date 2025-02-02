@@ -102,6 +102,7 @@ const loginWithPasskey = async () => {
   padding: 2em;
   border-radius: 30px;
   gap: 2em;
+  width: 50%;
 }
 
 .footer {
