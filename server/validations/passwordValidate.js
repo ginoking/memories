@@ -8,7 +8,11 @@ module.exports = () => async (req, res, next) => {
 			body: yup.object({
 				password: yup.string()
 							.password()
+							.required(),
+				password2: yup.string()
+							.password()
 							.required()
+							.oneOf([yup.ref('password')], 'Passwords must match')
 			}),
 		});
 		await linkSchema.validate({
@@ -17,6 +21,6 @@ module.exports = () => async (req, res, next) => {
 		
 		return next();
 	} catch (err) {
-		return res.status(500).json({ type: err.name, message: err.message });
+		return res.status(422).json({ type: err.name, message: err.message });
 	}
 };

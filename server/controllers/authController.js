@@ -25,15 +25,13 @@ exports.signup = (req, res, next) => {
     Users.register(new Users({ username: req.body.username, active: true, created_at: new Date }),
         req.body.password, (err, user) => {
             if (err) {
-                res.statusCode = 500;
-                res.setHeader('Content-Type', 'application/json');
+                res.statusCode = 422;
                 res.json({ err: err });
             }
             else {
                 // Use passport to authenticate User
                 passport.authenticate('local')(req, res, () => {
                     res.statusCode = 200;
-                    res.setHeader('Content-Type', 'application/json');
                     res.json({ success: true, status: 'Registration Successful!' });
                 });
             }
