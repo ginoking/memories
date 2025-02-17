@@ -32,6 +32,8 @@ import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios'
 import { type SwalInstance } from '../interfaces/sweetalert'
 import type { FormRules, FormInstance } from 'element-plus'
+import { startRegistration } from '@simplewebauthn/browser'
+
 const router = useRouter()
 
 const $swal = inject('$swal') as SwalInstance

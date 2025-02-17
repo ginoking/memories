@@ -59,7 +59,7 @@ import Compressor from 'compressorjs';
 import emojis from "../helpers/emojis"
 import { Plus, Delete } from '@element-plus/icons-vue'
 import { type SwalInstance } from '../interfaces/sweetalert'
-import type { UploadProps, UploadUserFile } from 'element-plus'
+import type { UploadProps, UploadUserFile, UploadFile } from 'element-plus'
 
 const $swal = inject('$swal') as SwalInstance
 const showContent = ref<boolean>(false);
@@ -75,8 +75,8 @@ const open = () => {
     showContent.value = true;
 }
 
-const handleRemove: UploadProps['onRemove'] = (uploadFile: UploadUserFile, uploadFiles: UploadUserFile[]) => {
-    const index = fileList.value.indexOf(uploadFile);
+const handleRemove = (file: UploadFile) => {
+    const index = fileList.value.indexOf(file);
     fileList.value.splice(index, 1);
     isHideUpload.value = fileList.value.length == 1;
 }
