@@ -1,11 +1,6 @@
 <template>
   <div class="container">
-    <el-form
-      label-width="auto"
-      style="max-width: 600px"
-      class="screen-1"
-      label-position="top"
-    >
+    <el-form label-width="auto" style="max-width: 600px" class="screen-1" label-position="top">
       <el-form-item label="User Name">
         <el-input v-model="username" required />
       </el-form-item>
@@ -13,17 +8,14 @@
         <el-input v-model="password" type="password" @keyup.enter="login" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" class="button" @click="login" :disabled="!username || !password"
-          >Login</el-button
-        >
-        <el-button type="primary" class="button" @click="loginWithPasskey" :disabled="!username"
-          >Login with Passkey</el-button
-        >
+        <el-button type="primary" class="button" @click="login" :disabled="!username || !password">Login</el-button>
+        <el-button type="primary" class="button" @click="loginWithPasskey" :disabled="!username">Login with
+          Passkey</el-button>
       </el-form-item>
-	  <div class="footer">
-		<el-link type="info" @click="() => router.push('signup')">Sign up</el-link>
-		<el-link type="info" @click="() => router.push('reset')">Forgot Password?</el-link>
-	  </div>
+      <div class="footer">
+        <el-link type="info" @click="() => router.push('signup')">Sign up</el-link>
+        <el-link type="info" @click="() => router.push('reset')">Forgot Password?</el-link>
+      </div>
     </el-form>
   </div>
 </template>
@@ -121,7 +113,7 @@ const loginWithPasskey = async () => {
 }
 
 .el-button+.el-button {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 @media screen and (max-width: 768px) {

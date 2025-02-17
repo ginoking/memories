@@ -2,34 +2,62 @@
     <a href="#" class="effect5" @click="open">
         <i class="label">+</i>
     </a>
-    <div ref="modelContent">
-        <div class="model-content" v-if="showContent">
-            <label for="" class="swal2-input-label">Type:</label>
-            <TypeSelector default-text="Select type" @sendType="getTypeFromSelect" />
-            <label for="" class="swal2-input-label">Name:</label>
-            <input type="text" class="swal2-input" v-model="eventName">
-            <label for="" class="swal2-input-label">Description:</label>
-            <textarea class="swal2-textarea" name="" id="" cols="30" rows="10"
-                v-model="eventDes">{{ eventDes }}</textarea>
-            <label for="" class="swal2-input-label">Date:</label>
-            <VueDatePicker auto-apply v-model="eventDate" :enable-time-picker="false"
-                :format="() => moment(eventDate).format('L')">
-                <template #action-buttons></template>
-                <template #action-preview></template>
-            </VueDatePicker>
-            <label for="" class="swal2-input-label">Image:</label>
-            <input id="file-input" type="file" @change="fileChange"
-                accept="image/png, image/jpeg, image/jpg, image/gif">
-            <label for="file-input" class="input-file-trigger">Select a image</label>
-            <img class="preview" :src="imageUrl" alt="">
-        </div>
-    </div>
+    <el-dialog v-model="showContent" title="Create">
+        <el-form label-width="auto" label-position="top">
+            <el-form-item label="Date:">
+                <el-date-picker v-model="eventDate" type="date" placeholder="Pick a day" />
+            </el-form-item>
+            <el-form-item label="Type:">
+                <el-select v-model="selectType" placeholder="Select" style="width: 100%">
+                    <el-option v-for="item in emojis" :key="item.key" :label="item.text" :value="item.key" />
+                </el-select>
+            </el-form-item>
+            <el-form-item label="Name:">
+                <el-input required v-model="eventName" />
+            </el-form-item>
+            <el-form-item label="Description:">
+                <el-mention v-model="eventDes" type="textarea" style="width: 100%" placeholder="Please input" />
+            </el-form-item>
+
+            <el-form-item label="Image:">
+                <el-upload 
+                    :class="{hide:isHideUpload}" 
+                    v-model:file-list="fileList" 
+                    action="#" 
+                    list-type="picture-card" 
+                    :auto-upload="false"
+                    :on-change="handleChange"
+                >
+                    <el-icon>
+                        <Plus />
+                    </el-icon>
+
+                    <template #file="{ file }">
+                        <div>
+                            <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
+                            <span class="el-upload-list__item-actions">
+                                <span class="el-upload-list__item-delete" @click="handleRemove(file)">
+                                    <el-icon>
+                                        <Delete />
+                                    </el-icon>
+                                </span>
+                            </span>
+                        </div>
+                    </template>
+                </el-upload>
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <el-button type="primary" @click="create">Create</el-button>
+        </template>
+    </el-dialog>
 </template>
 <script setup lang="ts">
 import { ref, getCurrentInstance } from "vue"
 import axiosInstance from '../axios/axios';
 import Swal from 'sweetalert2'
-import TypeSelector from "./TypeSelector.vue";
+import emojis from "../helpers/emojis"
+import { Plus, Delete } from '@element-plus/icons-vue'
 
 const app = getCurrentInstance();
 const moment = app?.appContext.config.globalProperties.$moment;
@@ -38,50 +66,30 @@ const selectFile = ref<File>();
 const eventName = ref<string>("");
 const eventDes = ref<string>("");
 const eventDate = ref<Date>(new Date);
-const modelContent = ref<HTMLDivElement>();
 const selectType = ref<string>("");
-const imageUrl = ref<string>("");
+const isHideUpload = ref<boolean>(false);
 
-const getTypeFromSelect = (data:string) => selectType.value = data
+const fileList = ref<UploadUserFile[]>([])
+
+const getTypeFromSelect = (data: string) => selectType.value = data
 
 const open = () => {
-    const swalOptions = {
-        html: modelContent.value,
-        width: '90%',
-        // showCancelButton: true,
-        confirmButtonText: "Create",
-        confirmButtonColor: "#4d90d8",
-        // cancelButtonText: "取消",
-        customClass: {
-            input: 'text-left',
-            inputLabel: 'text-left'
-        },
-        preConfirm: () => {
-            if (eventName.value == '' || eventDes.value == '' || !selectFile.value || selectType.value == '') {
-                return false;
-            }
-        }
-    };
-
-    if (window.innerWidth >= 1200) swalOptions.width = '50%';
-    else if (window.innerWidth >= 768) swalOptions.width = '70%';
     showContent.value = true;
-    // Use sweetalert2
-    Swal.fire(swalOptions).then((result) => {
-        if (result.isConfirmed) {
-            create();
-        }
-    });
 }
 
-const fileChange = (e: Event) => {
-    const files = (e.target as HTMLInputElement).files;
-    if (files && files[0]) {
-        imageUrl.value = URL.createObjectURL(files[0]);
-        selectFile.value = files[0];
-    }
+const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
+    const index = fileList.value.indexOf(uploadFile);
+    fileList.value.splice(index, 1);
+    isHideUpload.value = fileList.value.length == 1;
 }
+
+const handleChange: UploadProps['onChange'] = (uploadFile, uploadFiles) => {
+    fileList.value = uploadFiles
+    isHideUpload.value = fileList.value.length == 1;
+}
+
 const create = () => {
+    selectFile.value = fileList.value[0].raw;
     const formData = new FormData;
     formData.append("type", selectType.value);
     formData.append("file", selectFile.value!);
@@ -96,6 +104,7 @@ const create = () => {
         }
     ).then((response) => {
         Swal.fire("Done");
+        showContent.value = false;
     }).catch((error) => {
         Swal.fire(error.response.data.message);
     });
@@ -103,6 +112,10 @@ const create = () => {
 
 </script>
 <style scoped>
+::v-deep(.el-date-editor.el-input) {
+    width: 100%;
+}
+
 a {
     display: flex;
     justify-content: center;
@@ -122,29 +135,17 @@ a {
     transition: all .2s;
 }
 
+@media (max-width: 768px) {
+    a {
+        margin: 20px;
+    }
+}
+
 .effect5>i {
     font-size: 1.5rem;
     font-weight: bold;
     font-style: normal;
     transition: all .1s;
-}
-
-.dp__action_buttons {
-    flex: 1 !important;
-}
-
-.swal2-input {
-    width: 100%;
-    margin: 0.5rem 0;
-}
-
-.swal2-textarea {
-    width: 100%;
-    margin: 0.5rem 0;
-}
-
-.swal2-file {
-    width: 100%;
 }
 
 .effect5:hover {
@@ -159,53 +160,7 @@ a {
     color: #27ae60;
 }
 
-input[type=file] {
-    width: 0px;
-    opacity: 0;
-}
-
-.input-file-trigger {
-    margin: 1.5rem;
-    display: block;
-    padding: 14px 45px;
-    background-color: var(--color-background);
-    color: #fff;
-    font-size: 1em;
-    transition: all .4s;
-    cursor: pointer;
-}
-
-.preview {
-    margin: 0.5rem;
-    width: 80%;
-    /* margin: 0.5rem 0; */
-}
-
-.swal2-confirm .swal2-styled {
-    background-color: var(--color-background);
-}
-
-.type-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding: 7px 40px 7px 12px;
-    width: 100%;
-    border: 1px solid #e8eaed;
-    border-radius: 5px;
-    background: #fff;
-    box-shadow: 0 1px 3px -2px #9098a9;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 16px;
-    transition: all 150ms ease;
-    margin: 0.5rem 0;
-    color: var(--color-text);
-}
-
-@media (max-width: 768px) {
-    a {
-        margin: 20px;
-    }
+::v-deep(.hide .el-upload--picture-card) {
+    display: none;
 }
 </style>
