@@ -159,6 +159,11 @@ changeDates();
     font-size: 25px;
 }
 
+.text {
+    color: #fff;
+    width: 100%;
+} 
+
 .text :deep(.dp__overlay_cell) {
     color: #53656d;
 }
@@ -173,6 +178,10 @@ changeDates();
 
 .text :deep(.dp__overlay_cell_active) {
     background-color: #8abae1;
+}
+
+.text :deep(.dp__input) {
+    color: #fff;
 }
 
 .dp__theme_light {
