@@ -4,7 +4,7 @@
       v-model="dialogVisible"
       :class="props.event.type"
       :title="props.event.name"
-      width="500"
+      width="90%"
       :before-close="close"
     >
       <p class="date">{{ moment(props.event.date).format('YYYY/MM/DD') }}</p>
