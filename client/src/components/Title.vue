@@ -29,7 +29,7 @@ const app = getCurrentInstance();
 const store = useStore()
 const moment = app?.appContext.config.globalProperties.$moment;
 
-const currentDate = ref(new Date(`2024-01-01`));
+const currentDate = ref(moment().format('YYYY-MM-01'));
 const selectType = ref('');
 
 const getTypeFromSelect = (data:string) => {
