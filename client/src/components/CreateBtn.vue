@@ -53,13 +53,14 @@
     </el-dialog>
 </template>
 <script setup lang="ts">
-import { ref, getCurrentInstance } from "vue"
+import { ref, getCurrentInstance, inject } from "vue"
 import axiosInstance from '../axios/axios';
-import Swal from 'sweetalert2'
 import emojis from "../helpers/emojis"
 import { Plus, Delete } from '@element-plus/icons-vue'
+import { type SwalInstance } from '../interfaces/sweetalert'
 
 const app = getCurrentInstance();
+const $swal = inject('$swal') as SwalInstance
 const moment = app?.appContext.config.globalProperties.$moment;
 const showContent = ref<boolean>(false);
 const selectFile = ref<File>();
@@ -68,10 +69,7 @@ const eventDes = ref<string>("");
 const eventDate = ref<Date>(new Date);
 const selectType = ref<string>("");
 const isHideUpload = ref<boolean>(false);
-
 const fileList = ref<UploadUserFile[]>([])
-
-const getTypeFromSelect = (data: string) => selectType.value = data
 
 const open = () => {
     showContent.value = true;
@@ -103,16 +101,16 @@ const create = () => {
             }
         }
     ).then((response) => {
-        Swal.fire("Done");
+        $swal.fire("Done");
         showContent.value = false;
     }).catch((error) => {
-        Swal.fire(error.response.data.message);
+        $swal.fire(error.response.data.message);
     });
 }
 
 </script>
 <style scoped>
-::v-deep(.el-date-editor.el-input) {
+:deep(.el-date-editor.el-input) {
     width: 100%;
 }
 
@@ -160,7 +158,7 @@ a {
     color: #27ae60;
 }
 
-::v-deep(.hide .el-upload--picture-card) {
+:deep(.hide .el-upload--picture-card) {
     display: none;
 }
 </style>
