@@ -1,7 +1,7 @@
 <template>
   <div class="event-modal">
     <el-dialog
-      v-model="props.event"
+      v-model="dialogVisible"
       :class="props.event.type"
       :title="props.event.name"
       width="500"
@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
 interface EventObject {
@@ -30,6 +31,12 @@ const store = useStore()
 const props = defineProps<{
   event: EventObject
 }>()
+const dialogVisible = ref(false)
+
+onMounted(() => {
+  dialogVisible.value = true
+})
+
 const emit = defineEmits(['close-modal'])
 const close = () => {
   emit('close-modal', false)
@@ -71,7 +78,11 @@ const close = () => {
 }
 
 :deep(.sad) {
-  background-color: #5682aa;
+  background-color: #669ed2;
+}
+
+:deep(.good) {
+  background-color: #acd27d;
 }
 
 :deep(.modal-content) {
