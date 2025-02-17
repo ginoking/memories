@@ -12,7 +12,9 @@
                     <template #action-buttons></template>
                     <template #action-preview></template>
                 </VueDatePicker>
-                <TypeSelector default-text="All" @sendType="getTypeFromSelect" />
+                <el-select v-model="selectType" placeholder="All" style="width: 100%" @change="getTypeFromSelect">
+                    <el-option v-for="item in emojis" :key="item.key" :label="item.text" :value="item.key" />
+                </el-select>
             </div>
 
         </div>
@@ -23,7 +25,7 @@
 import { ref, getCurrentInstance } from "vue"
 import { useStore } from 'vuex'
 import axiosInstance from '../axios/axios';
-import TypeSelector from "./TypeSelector.vue";
+import emojis from "../helpers/emojis"
 
 const app = getCurrentInstance();
 const store = useStore()
@@ -57,7 +59,7 @@ changeDates();
 </script>
 <style scoped>
 .date {
-    color: #e3e3e3;
+    color: #fff;
 }
 
 .title a {
@@ -75,7 +77,6 @@ changeDates();
 
 .text :deep(.dp__input_wrap) {
     margin: 0 auto;
-    width: 65%;
 }
 
 .text :deep(.dp__overlay_cell_active) {
@@ -94,23 +95,22 @@ changeDates();
     align-items: center;
 }
 
-.type-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding: 7px 40px 7px 12px;
-    width: 70%;
-    border: 0;
-    background: #8abae1;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 16px;
-    transition: all 150ms ease;
+:deep(.el-select__caret) {
     color: #fff;
-    margin: 0.25rem 0;
+    font-weight: 900;
 }
 
-.type-select:focus-visible {
-    outline: none;
+:deep(.el-select__wrapper) {
+    background: #8abae1;
+    box-shadow: none;
+}
+
+:deep(.el-select__placeholder.is-transparent) {
+    color: #fff;
+}
+
+:deep(.el-select__placeholder) {
+    color: #fff;
+    letter-spacing: 2px;
 }
 </style>

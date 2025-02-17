@@ -8,7 +8,7 @@
                 <el-date-picker v-model="eventDate" type="date" placeholder="Pick a day" />
             </el-form-item>
             <el-form-item label="Type:">
-                <el-select v-model="selectType" placeholder="Select" style="width: 100%">
+                <el-select v-model="selectType" placeholder="Select Type" style="width: 100%">
                     <el-option v-for="item in emojis" :key="item.key" :label="item.text" :value="item.key" />
                 </el-select>
             </el-form-item>
