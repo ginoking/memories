@@ -53,13 +53,13 @@
     </el-dialog>
 </template>
 <script setup lang="ts">
-import { ref, getCurrentInstance, inject } from "vue"
+import { ref, inject } from "vue"
 import axiosInstance from '../axios/axios';
 import Compressor from 'compressorjs';
-import Swal from 'sweetalert2'
 import emojis from "../helpers/emojis"
 import { Plus, Delete } from '@element-plus/icons-vue'
 import { type SwalInstance } from '../interfaces/sweetalert'
+import type { UploadProps, UploadUserFile } from 'element-plus'
 
 const $swal = inject('$swal') as SwalInstance
 const showContent = ref<boolean>(false);
@@ -75,13 +75,13 @@ const open = () => {
     showContent.value = true;
 }
 
-const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
+const handleRemove: UploadProps['onRemove'] = (uploadFile: UploadUserFile, uploadFiles: UploadUserFile[]) => {
     const index = fileList.value.indexOf(uploadFile);
     fileList.value.splice(index, 1);
     isHideUpload.value = fileList.value.length == 1;
 }
 
-const handleChange: UploadProps['onChange'] = (uploadFile, uploadFiles) => {
+const handleChange: UploadProps['onChange'] = (uploadFile: UploadUserFile, uploadFiles: UploadUserFile[]) => {
     fileList.value = uploadFiles
     isHideUpload.value = fileList.value.length == 1;
 }
@@ -105,33 +105,17 @@ const create = () => {
                     }
                 }
             ).then((response) => {
-                $swal.fire("Done");
-        showContent.value = false;
+                $swal.fire({
+                    text: "Done"
+                });
+                showContent.value = false;
             }).catch((error) => {
-                Swal.fire(error.response.data.message);
+                $swal.fire({
+                    text: error.response.data.message
+                });
             });
         }
     })
-    
-    selectFile.value = fileList.value[0].raw;
-    const formData = new FormData;
-    formData.append("type", selectType.value);
-    formData.append("file", selectFile.value!);
-    formData.append("name", eventName.value);
-    formData.append("des", eventDes.value);
-    formData.append("date", eventDate.value.toLocaleDateString('zh').replaceAll('/', '-'));
-    axiosInstance.post("create", formData,
-        {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            }
-        }
-    ).then((response) => {
-        $swal.fire("Done");
-        showContent.value = false;
-    }).catch((error) => {
-        $swal.fire(error.response.data.message);
-    });
 }
 
 </script>
