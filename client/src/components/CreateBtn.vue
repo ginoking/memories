@@ -2,7 +2,7 @@
     <a href="#" class="effect5" @click="open">
         <i class="label">+</i>
     </a>
-    <el-dialog v-model="showContent" title="Create">
+    <el-dialog v-model="showContent">
         <el-form label-width="auto" label-position="top">
             <el-form-item label="Date:">
                 <el-date-picker v-model="eventDate" type="date" placeholder="Pick a day" />
