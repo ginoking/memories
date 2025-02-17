@@ -27,6 +27,7 @@
                     list-type="picture-card" 
                     :auto-upload="false"
                     :on-change="handleChange"
+                    :before-upload="handleCompress"
                 >
                     <el-icon>
                         <Plus />
@@ -86,36 +87,40 @@ const handleChange: UploadProps['onChange'] = (uploadFile: UploadUserFile, uploa
     isHideUpload.value = fileList.value.length == 1;
 }
 
+const handleCompress = (file: UploadFile) => {
+    new Compressor(file.raw!, {
+        quality: 0.6,
+        success(result: File) {
+            selectFile.value = result;
+        }
+    });
+}
+
 const create = () => {
     
-    new Compressor(selectFile.value!, {
-        quality: 0.6,
-        success(result) {
-            selectFile.value = fileList.value[0].raw;
-            const formData = new FormData;
-            formData.append("type", selectType.value);
-            formData.append("file", result);
-            formData.append("name", eventName.value);
-            formData.append("des", eventDes.value);
-            formData.append("date", eventDate.value.toLocaleDateString('zh').replaceAll('/', '-'));
-            axiosInstance.post("create", formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    }
-                }
-            ).then((response) => {
-                $swal.fire({
-                    text: "Done"
-                });
-                showContent.value = false;
-            }).catch((error) => {
-                $swal.fire({
-                    text: error.response.data.message
-                });
-            });
+    selectFile.value = fileList.value[0].raw;
+    const formData = new FormData;
+    formData.append("type", selectType.value);
+    formData.append("file", selectFile.value!);
+    formData.append("name", eventName.value);
+    formData.append("des", eventDes.value);
+    formData.append("date", eventDate.value.toLocaleDateString('zh').replaceAll('/', '-'));
+    axiosInstance.post("create", formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            }
         }
-    })
+    ).then((response) => {
+        $swal.fire({
+            text: "Done"
+        });
+        showContent.value = false;
+    }).catch((error) => {
+        $swal.fire({
+            text: error.response.data.message
+        });
+    });
 }
 
 </script>
