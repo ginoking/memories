@@ -28,7 +28,9 @@
                     <template #action-buttons></template>
                     <template #action-preview></template>
                 </VueDatePicker>
-                <TypeSelector default-text="All" @sendType="getTypeFromSelect" />
+                <el-select v-model="selectType" placeholder="All" style="width: 100%" @change="getTypeFromSelect">
+                    <el-option v-for="item in emojis" :key="item.key" :label="item.text" :value="item.key" />
+                </el-select>
             </div>
         </div>
     </div>
@@ -42,7 +44,7 @@ import Swiper from 'swiper';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import TypeSelector from "./TypeSelector.vue";
+import emojis from "../helpers/emojis"
 
 const app = getCurrentInstance();
 const store = useStore()
@@ -55,8 +57,8 @@ interface monthObject {
     year: string,
 }
 
-const currentDate = ref(new Date(`2024-01-01`));
 const months = ref<Array<monthObject>>([]);
+const currentDate = ref(moment().format('YYYY-MM-01'));
 const selectType = ref('');
 
 const initMonths = () => {    
@@ -148,11 +150,9 @@ changeDates();
 
 </script>
 <style scoped>
-
-.text {
-    color: #e3e3e3;
-    width: 100%;
-} 
+.date {
+    color: #fff;
+}
 
 .title a {
     cursor: pointer;
@@ -169,7 +169,6 @@ changeDates();
 
 .text :deep(.dp__input_wrap) {
     margin: 0 auto;
-    width: 80%;
 }
 
 .text :deep(.dp__overlay_cell_active) {
@@ -188,24 +187,23 @@ changeDates();
     align-items: center;
 }
 
-.type-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding: 7px 40px 7px 12px;
-    width: 70%;
-    border: 0;
-    background: #8abae1;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 16px;
-    transition: all 150ms ease;
-    color: #e3e3e3;
-    margin: 0.25rem 0;
+:deep(.el-select__caret) {
+    color: #fff;
+    font-weight: 900;
 }
 
-.type-select:focus-visible {
-    outline: none;
+:deep(.el-select__wrapper) {
+    background: #8abae1;
+    box-shadow: none;
+}
+
+:deep(.el-select__placeholder.is-transparent) {
+    color: #fff;
+}
+
+:deep(.el-select__placeholder) {
+    color: #fff;
+    letter-spacing: 2px;
 }
 
 .text :deep(.swiper-button-prev::after) {

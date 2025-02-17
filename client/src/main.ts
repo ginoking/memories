@@ -44,7 +44,7 @@ const store = createStore({
 
 const swalOptions = <SweetAlertOptions>{
     icon: 'success',
-    width: '90%',
+    width: '50%',
     confirmButtonColor: "#4d90d8",
 };
 const app = createApp(App)
