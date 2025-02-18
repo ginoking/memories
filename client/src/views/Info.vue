@@ -75,9 +75,7 @@ const rules = reactive<FormRules<RuleForm>>({
 })
 
 const reset = async () => {
-	if (password.value != password2.value) {
-		error.value = 'Two password not same';
-	}
+	
 	try {
 		const { data: { success, status, token, err } } = await axiosInstance.post('reset-password', ruleForm)
 		if (success) {
