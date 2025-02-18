@@ -28,7 +28,7 @@ exports.index = async (req, res) => {
 		const data = req.body;
 
 		const extension = _.split(myFile.name, '.').slice(-1)[0];
-		const newFileName = data.date + "." + extension;
+		const newFileName = data.date + "_" + moment().unix() + "." + extension;
 
 		if (process.env.hasOwnProperty('memoryStorageSecret')) {
 			uploadGCS(myFile, req.app.locals.bucket, newFileName);

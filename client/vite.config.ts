@@ -18,6 +18,8 @@ export default defineConfig({
   server: {
     open: false,
     host: '0.0.0.0',
+    port: 5173,
+    allowedHosts: ['vueServer'] 
   },
   build: {
     envFile: '.env.production'

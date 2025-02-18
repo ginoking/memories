@@ -15,6 +15,8 @@ import axios from 'axios'
 import Swal, { type SweetAlertOptions } from 'sweetalert2'
 
 // import { startAuthentication } from '@simplewebauthn/browser';
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 
 moment.locale('zh-tw');
 
@@ -42,7 +44,7 @@ const store = createStore({
 
 const swalOptions = <SweetAlertOptions>{
     icon: 'success',
-    width: '90%',
+    width: '50%',
     confirmButtonColor: "#4d90d8",
 };
 const app = createApp(App)
@@ -53,7 +55,7 @@ app.config.globalProperties.$axios=axios;
 app.use(createPinia())
 app.use(router)
 app.use(store)
-
+app.use(ElementPlus)
 app.provide('$swal', Swal.mixin(swalOptions));
 
 app.component('VueDatePicker', VueDatePicker).mount('#app')

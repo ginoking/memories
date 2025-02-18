@@ -1,59 +1,76 @@
 <template>
-	<div class="body">
-		<div class="screen-1">
-			<div class="container">
-				<div class="email">
-					<label for="email">User Name</label>
-					<div class="sec-2">
-						<input type="text" name="username" placeholder="gino" v-model="username" />
-					</div>
-				</div>
-
-				<div v-if="exists">
-					<div class="password">
-						<label for="password">New Password</label>
-						<div class="sec-2">
-							<input class="pas" v-model="password" type="password" name="password"
-								placeholder="············" />
-						</div>
-					</div>
-					<div class="password">
-						<label for="password">New Password Confirm</label>
-						<div class="sec-2">
-							<input class="pas" v-model="password2" type="password" name="password"
-								placeholder="············" />
-						</div>
-					</div>
-				</div>
-				<span class="error" v-if="error">{{ error }}</span>
-				<button v-if="!exists" class="login" @click="check">Check User</button>
-				<button v-else class="login" @click="reset">Reset Password</button>
-				<div class="footer">
-					<span @click="() => router.push('login')">Login</span>
-				</div>
+	<div class="container">
+		<el-form label-width="auto" style="max-width: 600px" class="screen-1" label-position="top" :rules="rules" :model="ruleForm" ref="ruleFormRef">
+			<el-form-item label="User Name">
+				<el-input v-model="ruleForm.username" required />
+			</el-form-item>
+			<el-form-item>
+				<el-button v-if="!exists" type="primary" class="button" @click="check" @keyup.enter="check"
+					:disabled="!ruleForm.username">Check
+					User</el-button>
+			</el-form-item>
+			<el-form-item v-if="exists" label="Password">
+				<el-input v-model="ruleForm.password" type="password" @keyup.enter="reset" />
+			</el-form-item>
+			<el-form-item v-if="exists" label="Password Confirm">
+				<el-input v-model="ruleForm.password2" type="password" @keyup.enter="reset" />
+			</el-form-item>
+			<el-form-item v-if="exists">
+				<el-button type="primary" class="button" @click="reset"
+					:disabled="!ruleForm.password || !ruleForm.password2">Reset</el-button>
+			</el-form-item>
+			<div class="footer">
+				<el-link type="info" @click="() => router.push('login')">Login</el-link>
 			</div>
-		</div>
+		</el-form>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from "vue"
+import { ref, inject, reactive } from "vue"
 import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
 import type { SwalInstance } from "../interfaces/sweetalert";
+import type { FormRules, FormInstance } from 'element-plus'
 
 const router = useRouter();
 
-const username = ref<string>('');
-const password = ref<string>('');
-const password2 = ref<string>('');
-const error = ref<string>('');
+const ruleFormRef = ref<FormInstance>()
+
+interface RuleForm {
+	username: string
+	password: string
+	password2: string
+}
+
+const ruleForm = reactive<RuleForm>({
+	username: '',
+	password: '',
+	password2: ''
+})
+
+const validatePass2 = (rule: any, value: any, callback: any) => {
+	if (value === '') {
+		callback(new Error('Please input the password again'))
+	} else if (value !== ruleForm.password) {
+		callback(new Error("Two inputs don't match!"))
+	} else {
+		callback()
+	}
+}
+
+const rules = reactive<FormRules<RuleForm>>({
+	username: [{ required: true, message: 'Please input username', trigger: 'blur' }],
+	password: [{ required: true, message: 'Please input password', trigger: 'blur' }],
+	password2: [{ validator: validatePass2, trigger: 'blur' }]
+})
+
 const exists = ref<boolean>(false);
 const $swal = inject('$swal') as SwalInstance
 
 const check = async () => {
 	try {
-		const { data: { success, status, token, err } } = await axiosInstance.post('check', { username: username.value })
+		const { data: { success, status, token, err } } = await axiosInstance.post('check', { username: ruleForm.username })
 		exists.value = success;
 	} catch (error) {
 		// 目前axios http 500 貌似catch會沒有觸發
@@ -62,173 +79,60 @@ const check = async () => {
 }
 
 const reset = async () => {
-	if (password.value != password2.value) {
-		error.value = 'Two password not same';
-	}
 	try {
-		const { data: { success, status, token, err } } = await axiosInstance.post('reset', { username: username.value, password: password.value })
+		const { data: { success, status } } = await axiosInstance.post('reset', {
+			username: ruleForm.username,
+			password: ruleForm.password,
+			password2: ruleForm.password2
+		})
 		if (success) {
 			$swal.fire({ title: status }).then(() => router.push('login'));
 		}
-	} catch (error) {
-		// 目前axios http 500 貌似catch會沒有觸發
-		console.log(error);
+	} catch (error: any) {
+		$swal.fire({ title: error.response.data.message, icon: 'error' })
 	}
 }
 
 </script>
 
 <style scoped>
-.body {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	overflow-y: hidden;
+.container {
+	width: 100%;
+	height: 100vh;
 	display: flex;
-	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	/* background: #dde5f4; */
-	height: 100vh;
-	width: 25%;
 }
 
 .screen-1 {
-	width: 100%;
-}
-
-.screen-1 .container {
 	background: #f1f7fe;
 	padding: 2em;
-	display: flex;
-	flex-direction: column;
 	border-radius: 30px;
-	/* box-shadow: 0 0 2em #e6e9f9; */
 	gap: 2em;
+	width: 50%;
 }
 
-.sec-2 {
+.footer {
 	display: flex;
-}
-
-.screen-1 .container {
-	display: flex;
-}
-
-.screen-1 .container .logo {
-	margin-top: -3em;
-}
-
-.screen-1 .container .email {
-	background: white;
-	box-shadow: 0 0 2em #e6e9f9;
-	padding: 1em;
-	display: flex;
-	flex-direction: column;
-	gap: 0.5em;
-	border-radius: 20px;
-	color: #4d4d4d;
-}
-
-.screen-1 .container .email input {
-	outline: none;
-	border: none;
-}
-
-.screen-1 .container .email input::-moz-placeholder {
-	color: black;
-	font-size: 0.9em;
-}
-
-.screen-1 .container .email input:-ms-input-placeholder {
-	color: black;
-	font-size: 0.9em;
-}
-
-.screen-1 .container .email input::placeholder {
-	color: black;
-	font-size: 0.9em;
-}
-
-.screen-1 .container .password {
-	background: white;
-	box-shadow: 0 0 2em #e6e9f9;
-	padding: 1em;
-	display: flex;
-	flex-direction: column;
-	gap: 0.5em;
-	border-radius: 20px;
-	color: #4d4d4d;
-}
-
-.screen-1 .container .password input {
-	outline: none;
-	border: none;
-}
-
-.screen-1 .container .password input::-moz-placeholder {
-	color: black;
-	font-size: 0.9em;
-}
-
-.screen-1 .container .password input:-ms-input-placeholder {
-	color: black;
-	font-size: 0.9em;
-}
-
-.screen-1 .container .password input::placeholder {
-	color: black;
-	font-size: 0.9em;
-}
-
-.screen-1 .container .password .show-hide {
-	margin-right: -5em;
-}
-
-.screen-1 .container .login {
-	padding: 1em;
-	background-color: var(--color-background);
-	color: white;
-	border: none;
-	border-radius: 30px;
-	font-weight: 600;
-}
-
-.screen-1 .container .footer {
-	display: flex;
+	justify-content: space-between;
 	font-size: 0.7em;
-	color: #5e5e5e;
-	gap: 14em;
-	/* padding-bottom: 10em; */
+	width: 100%;
+	margin-top: 50px;
 }
 
-.screen-1 .container .footer span {
-	cursor: pointer;
+.button {
+	margin: 5px 0;
+	width: 100%;
+	font-family: 'Shantell Sans', cursive;
 }
 
-button {
-	cursor: pointer;
+.el-button+.el-button {
+	margin-left: 0;
 }
 
-.error {
-	color: red;
-}
-
-:deep(svg) {
-	fill: #4d4d4d;
-	margin-bottom: -0.2em;
-}
-
-@media (max-width: 768px) {
-	.body {
-		width: 60%;
-	}
-}
-
-@media (max-width: 414px) {
-	.body {
-		width: 80%;
+@media screen and (max-width: 768px) {
+	.screen-1 {
+		width: 75%;
 	}
 }
 </style>

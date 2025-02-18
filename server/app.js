@@ -9,6 +9,7 @@ const fileUpload = require('express-fileupload');
 
 var app = express();
 app.disable("x-powered-by");
+// app.listen(process.env.PORT);
 
 passport.initialize();
 passport.session();
@@ -39,6 +40,10 @@ app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
+	
+	res.setHeader('Content-Type', 'application/json');
+
+
 	next(createError(404));
 	res.send("Sorry can't find that!")
 });
