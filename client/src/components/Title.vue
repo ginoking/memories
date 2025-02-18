@@ -36,7 +36,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, getCurrentInstance, onBeforeMount } from "vue"
+import { ref, getCurrentInstance, onBeforeMount, watch } from "vue"
 import { useStore } from 'vuex'
 import axiosInstance from '../axios/axios';
 import { Swiper as SwiperVue, SwiperSlide } from 'swiper/vue';
@@ -87,10 +87,8 @@ const onSlideChange = (swiper: Swiper) => {
         return;
     }
 
-    currentDate.value = new Date(months.value[swiper.activeIndex].date);
+    currentDate.value = moment(months.value[swiper.activeIndex].date).format('YYYY-MM-DD');
 
-    getData(moment(currentDate.value).format("YYYY-MM"));
-    
 }
 
 const onReachEnd = (swiper: Swiper) => {
@@ -136,8 +134,7 @@ const changeDates = async (change?: number) => {
 
     currentDate.value = newMoment.format('YYYY-MM-DD').toString();
 
-    getData(newMoment.format("YYYY-MM"));
-
+    initMonths();
 }
 
 const getData = async (date:string) => {
@@ -146,7 +143,9 @@ const getData = async (date:string) => {
     store.commit('setDays', data)
 }
 
-changeDates();
+watch(currentDate, () => {
+    getData(moment(currentDate.value).format("YYYY-MM"));
+}, { immediate: true })
 
 </script>
 <style scoped>
