@@ -71,5 +71,8 @@ if (window.PublicKeyCredential &&
 		if (results.every(r => r === true)) {
 			localStorage.setItem('canPasskey', 'true');
 		}
+        else {
+            localStorage.setItem('canPasskey', 'false');
+        }
 	});
 }

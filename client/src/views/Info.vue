@@ -3,21 +3,21 @@
 		<el-form ref="ruleFormRef" label-width="auto" style="max-width: 600px" class="screen-1" label-position="top"
 			:rules="rules" :model="ruleForm">
 			<el-form-item label="User Name">
-				<el-input v-model="user.username" required readonly />
+				<el-input v-model="ruleForm.username" required readonly />
 			</el-form-item>
 			<el-form-item label="Password">
-				<el-input v-model="password" type="password" @keyup.enter="reset" />
+				<el-input v-model="ruleForm.password" type="password" @keyup.enter="reset" />
 			</el-form-item>
 			<el-form-item label="Password Confirm">
-				<el-input v-model="password2" type="password" @keyup.enter="reset" />
+				<el-input v-model="ruleForm.password2" type="password" @keyup.enter="reset" />
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" class="button" @click="reset"
-					:disabled="!user.username || !password || !password2">Reset Password</el-button>
+					:disabled="!ruleForm.password || !ruleForm.password2">Reset Password</el-button>
 			</el-form-item>
-			<el-form-item>
+			<el-form-item v-if="passkeyCheck">
 				<el-button type="primary" class="button" @click="bind"
-					:disabled="!user.username || !password || !password2">Bind Passkey</el-button>
+					:disabled="!ruleForm.username || !ruleForm.password || !ruleForm.password2">Bind Passkey</el-button>
 			</el-form-item>
 			<div class="footer">
 				<el-link type="info" @click="() => router.push('/')">Back</el-link>
@@ -33,6 +33,7 @@ import axiosInstance from '../axios/axios';
 import { type SwalInstance } from "../interfaces/sweetalert";
 import { startRegistration } from '@simplewebauthn/browser';
 import type { FormRules, FormInstance } from 'element-plus'
+import canPasskey from '../helpers/canPasskey';
 
 const router = useRouter()
 
@@ -40,26 +41,8 @@ const $swal = inject('$swal') as SwalInstance
 
 const user = JSON.parse(localStorage.getItem("user") ?? '');
 
-const password = ref<string>('');
-const password2 = ref<string>('');
-const error = ref<string>('');
 const passkeyBound = ref<boolean>(false);
-const canPasskey = localStorage.getItem('canPasskey');
-const passkeyCheck = ref<boolean>(false);
-
-if (window.PublicKeyCredential &&
-	PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable &&
-	PublicKeyCredential.isConditionalMediationAvailable) {
-	// Check if user verifying platform authenticator is available.  
-	Promise.all([
-		PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable(),
-		PublicKeyCredential.isConditionalMediationAvailable(),
-	]).then(results => {
-		if (results.every(r => r === true)) {
-			passkeyCheck.value = true;
-		}
-	});
-}
+const passkeyCheck = canPasskey();
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -70,7 +53,7 @@ interface RuleForm {
 }
 
 const ruleForm = reactive<RuleForm>({
-	username: '',
+	username: user.username,
 	password: '',
 	password2: ''
 })
@@ -96,15 +79,17 @@ const reset = async () => {
 		error.value = 'Two password not same';
 	}
 	try {
-		const { data: { success, status, token, err } } = await axiosInstance.post('reset-password', { password: password.value })
+		const { data: { success, status, token, err } } = await axiosInstance.post('reset-password', ruleForm)
 		if (success) {
 			$swal.fire({
 				title: status
 			});
 		}
-	} catch (error) {
-		// 目前axios http 500 貌似catch會沒有觸發
-		console.log(error);
+	} catch (error: any) {
+		$swal.fire({
+			icon: 'error',
+			title: error.response.data.message
+		});
 	}
 }
 

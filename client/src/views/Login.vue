@@ -9,7 +9,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" class="button" @click="login" :disabled="!username || !password">Login</el-button>
-        <el-button type="primary" class="button" @click="loginWithPasskey" :disabled="!username">Login with
+        <el-button v-if="passkeyCheck" type="primary" class="button" @click="loginWithPasskey" :disabled="!username">Login with
           Passkey</el-button>
       </el-form-item>
       <div class="footer">
@@ -26,11 +26,13 @@ import { useRouter } from 'vue-router'
 import axiosInstance from '../axios/axios';
 import { type SwalInstance } from '../interfaces/sweetalert';
 import { startAuthentication } from '@simplewebauthn/browser';
+import canPasskey from '../helpers/canPasskey';
+
+const passkeyCheck = canPasskey();
 
 const router = useRouter();
 const username = ref<string>('');
 const password = ref<string>('');
-const canPasskey = localStorage.getItem('canPasskey');
 
 const $swal = inject('$swal') as SwalInstance
 
