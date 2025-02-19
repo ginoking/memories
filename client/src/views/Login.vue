@@ -93,8 +93,7 @@ const loginWithPasskey = async () => {
         icon: 'error'
       })
     }
-  } catch (error) {
-    // console.log(error)
+  } catch (error: any) {
     $swal.fire({
       title: error.response.data.error,
       icon: 'error'
