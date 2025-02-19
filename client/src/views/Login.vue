@@ -8,9 +8,17 @@
         <el-input v-model="password" type="password" @keyup.enter="login" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" class="button" @click="login" :disabled="!username || !password">Login</el-button>
-        <el-button v-if="passkeyCheck" type="primary" class="button" @click="loginWithPasskey" :disabled="!username">Login with
-          Passkey</el-button>
+        <el-button type="primary" class="button" @click="login" :disabled="!username || !password"
+          >Login</el-button
+        >
+        <el-button
+          v-if="passkeyCheck"
+          type="primary"
+          class="button"
+          @click="loginWithPasskey"
+          :disabled="!username"
+          >Login with Passkey</el-button
+        >
       </el-form-item>
       <div class="footer">
         <el-link type="info" @click="() => router.push('signup')">Sign up</el-link>
@@ -23,16 +31,16 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
-import axiosInstance from '../axios/axios';
-import { type SwalInstance } from '../interfaces/sweetalert';
-import { startAuthentication } from '@simplewebauthn/browser';
-import canPasskey from '../helpers/canPasskey';
+import axiosInstance from '../axios/axios'
+import { type SwalInstance } from '../interfaces/sweetalert'
+import { startAuthentication } from '@simplewebauthn/browser'
+import canPasskey from '../helpers/canPasskey'
 
-const passkeyCheck = canPasskey();
+const passkeyCheck = canPasskey()
 
-const router = useRouter();
-const username = ref<string>('');
-const password = ref<string>('');
+const router = useRouter()
+const username = ref<string>('')
+const password = ref<string>('')
 
 const $swal = inject('$swal') as SwalInstance
 
@@ -62,22 +70,33 @@ const loginWithPasskey = async () => {
   const { data } = await axiosInstance.post('passkey/login/start', { username: username.value })
   console.log(data)
   const attResp = await startAuthentication(data)
-  const {
-    data: { success, status, token, user }
-  } = await axiosInstance.post('/passkey/login/finish', { username: username.value, data: attResp })
-  if (success) {
-    localStorage.setItem('token', token)
-    localStorage.setItem('user', JSON.stringify(user))
+  try {
+    const {
+      data: { success, status, token, user }
+    } = await axiosInstance.post('/passkey/login/finish', {
+      username: username.value,
+      data: attResp
+    })
+    if (success) {
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(user))
 
-    $swal
-      .fire({
+      $swal
+        .fire({
+          title: status,
+          icon: 'success'
+        })
+        .then(() => router.push('/'))
+    } else {
+      $swal.fire({
         title: status,
-        icon: 'success'
+        icon: 'error'
       })
-      .then(() => router.push('/'))
-  } else {
+    }
+  } catch (error) {
+    // console.log(error)
     $swal.fire({
-      title: status,
+      title: error.response.data.error,
       icon: 'error'
     })
   }
@@ -115,7 +134,7 @@ const loginWithPasskey = async () => {
   font-family: 'Shantell Sans', cursive;
 }
 
-.el-button+.el-button {
+.el-button + .el-button {
   margin-left: 0;
 }
 

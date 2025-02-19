@@ -17,7 +17,7 @@
 			</el-form-item>
 			<el-form-item v-if="passkeyCheck">
 				<el-button type="primary" class="button" @click="bind"
-					:disabled="!ruleForm.username || !ruleForm.password || !ruleForm.password2">Bind Passkey</el-button>
+					:disabled="!passkeyCheck">Bind Passkey</el-button>
 			</el-form-item>
 			<div class="footer">
 				<el-link type="info" @click="() => router.push('/')">Back</el-link>
