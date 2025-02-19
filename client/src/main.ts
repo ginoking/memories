@@ -44,7 +44,11 @@ const store = createStore({
 
 const swalOptions = <SweetAlertOptions>{
     icon: 'success',
-    width: '50%',
+    width: (() => {
+        if (window.innerWidth <= 480) return '95%';      // 手機
+        if (window.innerWidth <= 768) return '80%';      // 平板
+        return '50%';                                     // 桌面
+    })(),
     confirmButtonColor: "#4d90d8",
 };
 const app = createApp(App)
